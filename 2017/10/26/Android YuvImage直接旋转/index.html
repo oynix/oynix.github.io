@@ -7,20 +7,20 @@
   
   <title>Android YuvImage直接旋转 | Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(Prev">
+  <meta name="description" content="操作相机的Preview可通过以下三种方式添加回调接口： 123Camera.setPreviewCallbackBuffer(PreviewCallback);Camera.setOneShotPreviewCallback(PreviewCallback);Camera.setPreviewCallback(Pre">
 <meta name="keywords" content="Android,Yuv">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android YuvImage直接旋转">
 <meta property="og:url" content="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)   PreviewCallback接口里面只有一个回">
+<meta property="og:description" content="操作相机的Preview可通过以下三种方式添加回调接口： 123Camera.setPreviewCallbackBuffer(PreviewCallback);Camera.setOneShotPreviewCallback(PreviewCallback);Camera.setPreviewCallback(PreviewCallback); PreviewCallback接口里面只有一个回">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171026204516630?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-12-03T00:43:33.845Z">
+<meta property="og:updated_time" content="2017-12-03T00:51:00.404Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android YuvImage直接旋转">
-<meta name="twitter:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)   PreviewCallback接口里面只有一个回">
+<meta name="twitter:description" content="操作相机的Preview可通过以下三种方式添加回调接口： 123Camera.setPreviewCallbackBuffer(PreviewCallback);Camera.setOneShotPreviewCallback(PreviewCallback);Camera.setPreviewCallback(PreviewCallback); PreviewCallback接口里面只有一个回">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
     <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -96,17 +96,8 @@
       
         <hr>
 <p>操作相机的<code>Preview</code>可通过以下三种方式添加回调接口：</p>
-<blockquote>
-<ol>
-<li><code>Camera.setPreviewCallbackBuffer(PreviewCallback)</code></li>
-<li><code>Camera.setOneShotPreviewCallback(PreviewCallback)</code></li>
-<li><code>Camera.setPreviewCallback(PreviewCallback)</code></li>
-</ol>
-</blockquote>
-<p><code>PreviewCallback</code>接口里面只有一个回调方法:</p>
-<blockquote>
-<p> void onPreviewFrame(byte[] data, Camera camera);</p>
-</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Camera.setPreviewCallbackBuffer(PreviewCallback);</span><br><span class="line">Camera.setOneShotPreviewCallback(PreviewCallback);</span><br><span class="line">Camera.setPreviewCallback(PreviewCallback);</span><br></pre></td></tr></table></figure>
+<p><strong>PreviewCallback</strong>接口里面只有一个回调方法:<br><code>void onPreviewFrame(byte[] data, Camera camera);</code></p>
 <p>其中的<code>byte[] data</code>就是<code>Preview</code>的图像数据，格式为<code>YuvImage</code>，而这个图像天生是横着的，一般的旋转操作是:</p>
 <h2 id="YuvImage的byte-–-gt-Bitmap的byte-–-gt-生成Bitmap-–-gt-旋转Bitmap"><a href="#YuvImage的byte-–-gt-Bitmap的byte-–-gt-生成Bitmap-–-gt-旋转Bitmap" class="headerlink" title="YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap"></a>YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap</h2><a id="more"></a>
 <p><strong>示例代码</strong></p>
@@ -118,7 +109,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1n24p0000hgcmuc76k7m3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1wo4l0001t8cmkkk6lnb0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Yuv/">Yuv</a></li></ul>
