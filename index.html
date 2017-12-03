@@ -101,7 +101,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/20/Windows下编译OpenSSL/" data-id="cjaq3m37z000314cmern0qajj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/20/Windows下编译OpenSSL/" data-id="cjaq3nzlf0003i4cmfmmqobuh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenSSL/">OpenSSL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li></ul>
@@ -145,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/『Effective Java』读书整理/" data-id="cjaq3m381000514cm6hwlq5q0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/『Effective Java』读书整理/" data-id="cjaq3nzli0005i4cmysnhb706" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -193,7 +193,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq3m37r000014cmgnesjnv9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq3nzl60000i4cm7hevmx0m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Yuv/">Yuv</a></li></ul>
@@ -239,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/" data-id="cjaq3m37v000114cm75gs9l40" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/" data-id="cjaq3nzlb0001i4cmnjmncaxd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SlidingUpPanelLayout/">SlidingUpPanelLayout</a></li></ul>
@@ -285,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/12/手把手教你实现RecyclerView的下拉刷新和上拉加载更多/" data-id="cjaq3m38k000n14cmi4v6ehn9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/12/手把手教你实现RecyclerView的下拉刷新和上拉加载更多/" data-id="cjaq3nzlh0004i4cmb9v1k8tk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li></ul>
@@ -320,56 +320,17 @@
     <div class="article-entry" itemprop="articleBody">
       
         <hr>
-<p>在AndroidStudio中导入开源库一般就是一句话的事：  <figure class="highlight plain"><figcaption><span>'xxx.xx.xx:xx'```。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行`compile 'xxx.xxx.xx:xx'` 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发布开源库，要通过它的托管商--Bintray（Bintray托管着很多仓库，jCenter只是其中一个）来完成。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">把自己平时经常用到的一些代码写到一起上传到jCenter，以后不管做什么项目一句话就能导入，算来还是一个比较实用的功能。</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">#### 总体步骤概览</span><br><span class="line"></span><br><span class="line"> &gt;  [1. 注册Bintray账号并创建仓库](#step1)</span><br><span class="line">      [2. 准备开源库](#step2)</span><br><span class="line">      [3. 修改gradle文件](#step3)</span><br><span class="line">      [4. 编译并上传至Bintray](#step4)</span><br><span class="line">      [5. linked to jCenter](#step5)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">----------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;h3 id=&quot;step1&gt; 1. 注册Bintray账号并创建仓库&lt;/h3&gt;</span><br><span class="line"></span><br><span class="line">使用Bintray当然要先注册个账号，[注册地址](https://bintray.com/signup/oss)</span><br><span class="line"></span><br><span class="line">![注册界面](http://img.blog.csdn.net/20171010100820145?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line">我选的是`Sign up with Github`。</span><br><span class="line">注册登录之后应该是这个样子， 点击`Add New Repository`</span><br><span class="line"></span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010101403107?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010105227242?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line">* Name：仓库的名字，写了之后不能再改，记住该名字，后面上传时会用到；</span><br><span class="line">* Type：仓库类型，选择`Maven`；</span><br><span class="line">* License：开源协议，随便选一个就好；</span><br><span class="line">* Description：仓库描述，随便写；</span><br><span class="line"></span><br><span class="line">**点击`Create` 完成仓库创建，到此第一步完成。**</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">----------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;h3 id=&quot;step2&quot;&gt; 2. 准备开源库&lt;/h3&gt;</span><br><span class="line">备好你想要上传的开源库，有两种方式：</span><br><span class="line">1. AndroidStudio中new一个project，然后在project中new一个Module，类型选择`Android Library` ；</span><br><span class="line">2. 直接修改当前Module的build.gradle（**注意区分project的build.gradle文件和Module的build.gradle文件，前者在project根目录下，后者在对应的Module目录下**）文件，将第一行的`apply plugin: &apos;com.android.application` 改为 `apply plugin: com.android.library` ，再把下面的`applicationId &quot;你的包名&quot;` 这一行删除（library是不允许有applicationId的）；</span><br><span class="line"></span><br><span class="line">两种方式最终结果都是得到了一个`Android Library` 类型的Module，在Module里添加你想要上传的开源库代码（我随便弄了一个，里面有个我常用到的加载App Icon的方法）。</span><br><span class="line"></span><br><span class="line">**到此第二步准备开源库完成**</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">----------</span><br><span class="line">&lt;h3 id=&quot;step3&quot;&gt; 3. 修改gradle文件&lt;/h3&gt;</span><br><span class="line">**还是那句话，注意区分project的build.gradle文件和Module的build.gradle文件，前者在project根目录下，后者在对应的Module目录下**</span><br><span class="line"></span><br><span class="line">* 修改project的build.gradle文件，添加下面这两句话</span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010104850957?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line">[*Maven Github地址*](https://github.com/dcendents/android-maven-gradle-plugin)：对应里面的说明选择使用的版本号</span><br><span class="line">[*Bintray Github地址*](https://github.com/bintray/gradle-bintray-plugin)：对应里面的说明选择使用的版本号</span><br><span class="line"></span><br><span class="line">* 修改Module的build.gradle文件（这步有点乱，认真看）</span><br><span class="line">需要配置3个信息：</span><br><span class="line">1. Bintray账号配置和Developer信息，告诉AndroidStudio传到哪及开发者介绍；</span><br><span class="line">2. Project信息，开源库的介绍；</span><br><span class="line">3. 上传配置，对以上3个信息的调用以及其他一些配置；</span><br><span class="line"></span><br><span class="line">为了看起来条理清晰，我把能独立的部分都独立到单独文件里了，便于阅读，以下分别说明。</span><br><span class="line"></span><br><span class="line">**1. Bintray账号信息和Developer信息**</span><br><span class="line">`AndroidStudio`创建项目时默认会在project根目录下创建`local.properties` 文件并添加到了`.gitignore` 文件中（如果没有请自行创建并添加至`.gitignore` 中），在其中添加以下内容：</span><br><span class="line"></span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010111605003?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line"> * bintray.user：Bintray注册的用户名</span><br><span class="line"> * bintray.apikey：Bintray的API key</span><br><span class="line"> * developer.id：开源社区的昵称（一般指github，或是使用的其他开源社区）</span><br><span class="line"> * developer.name：姓名</span><br><span class="line"> * developer.email：邮箱地址</span><br><span class="line"></span><br><span class="line">*查看API key方法：*</span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010112807330?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010112831149?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**2. Project信息配置**</span><br><span class="line"></span><br><span class="line">在***开源库Module目录***下新建`project.properties`文件，添加以下内容：</span><br><span class="line"></span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20171010113427439?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line">* project.name：开源库名字</span><br><span class="line">* project.groupId：项目组ID，写包名</span><br><span class="line">* project.artifaceId：项目ID，写Module名</span><br><span class="line">* project.packaging：打包方式，写aar</span><br><span class="line">* project.siteUrl：项目主页，没有就写github地址</span><br><span class="line">* project.gitUrl：项目仓库地址</span><br><span class="line">* javadoc.name：javadoc主页显示的名称，写项目名字就好</span><br><span class="line"></span><br><span class="line">**3. 上传配置**</span><br><span class="line"></span><br><span class="line">在***开源库Module目录***下新建`bintrayUpload.gradle`文件，添加以下内容：(内容较多，直接贴源码了，阅读可能不太美观）</span><br></pre></td></tr></table></figure></p>
-<p>apply plugin: ‘com.github.dcendents.android-maven’<br>apply plugin: ‘com.jfrog.bintray’</p>
-<p>// load properties<br>Properties properties = new Properties()</p>
-<p>File projectPropertiesFile = project.file(“project.properties”)<br>if(projectPropertiesFile.exists()){<br>    properties.load(projectPropertiesFile.newDataInputStream())<br>}</p>
-<p>// read properties<br>def projectName = properties.getProperty(“project.name”)<br>def projectGroupId = properties.getProperty(“project.groupId”)<br>def projectArtifactId = properties.getProperty(“project.artifactId”)<br>def projectVersionName = android.defaultConfig.versionName<br>def projectPackaging = properties.getProperty(“project.packaging”)<br>def projectSiteUrl = properties.getProperty(“project.siteUrl”)<br>def projectGitUrl = properties.getProperty(“project.gitUrl”)<br>def javadocName = properties.getProperty(“javadoc.name”)</p>
-<p>File localPropertiesFile = project.rootProject.file(“local.properties”)<br>if(localPropertiesFile.exists()){<br>    properties.load(localPropertiesFile.newDataInputStream())<br>}<br>def developerId = properties.getProperty(“developer.id”)<br>def developerName = properties.getProperty(“developer.name”)<br>def developerEmail = properties.getProperty(“developer.email”)</p>
-<p>def bintrayUser = properties.getProperty(“bintray.user”)<br>def bintrayApikey = properties.getProperty(“bintray.apikey”)</p>
-<p>group = projectGroupId</p>
-<p>// This generates POM.xml with proper parameters<br>install {<br>    repositories.mavenInstaller {<br>        pom {<br>            project {<br>                name projectName<br>                groupId projectGroupId<br>                artifactId projectArtifactId<br>                version projectVersionName<br>                packaging projectPackaging<br>                url projectSiteUrl<br>                licenses {<br>                    license {<br>                        name ‘The Apache Software License, Version 2.0’<br>                        url ‘<a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank" rel="noopener">http://www.apache.org/licenses/LICENSE-2.0.txt</a>‘<br>                    }<br>                }<br>                developers {<br>                    developer {<br>                        id developerId<br>                        name developerName<br>                        email developerEmail<br>                    }<br>                }<br>                scm {<br>                    connection projectGitUrl<br>                    developerConnection projectGitUrl<br>                    url projectSiteUrl<br>                }<br>            }<br>        }<br>    }<br>}</p>
-<p>// This generates sources.jar<br>task sourcesJar(type: Jar) {<br>    from android.sourceSets.main.java.srcDirs<br>    classifier = ‘sources’<br>}</p>
-<p>task javadoc(type: Javadoc) {<br>    source = android.sourceSets.main.java.srcDirs<br>    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))<br>}</p>
-<p>// This generates javadoc.jar<br>task javadocJar(type: Jar, dependsOn: javadoc) {<br>    classifier = ‘javadoc’<br>    from javadoc.destinationDir<br>}</p>
-<p>artifacts {<br>    archives javadocJar<br>    archives sourcesJar<br>}</p>
-<p>// javadoc configuration<br>javadoc {<br>    options{<br>        encoding “UTF-8”<br>        charSet ‘UTF-8’<br>        author true<br>        version projectVersionName<br>        links “<a href="http://docs.oracle.com/javase/7/docs/api" target="_blank" rel="noopener">http://docs.oracle.com/javase/7/docs/api</a>“<br>        title javadocName<br>    }<br>}</p>
-<p>// bintray configuration<br>bintray {<br>    user = bintrayUser<br>    key = bintrayApikey<br>    configurations = [‘archives’]<br>    pkg {<br>        repo = “maven”<br>        name = projectName<br>        websiteUrl = projectSiteUrl<br>        vcsUrl = projectGitUrl<br>        licenses = [“Apache-2.0”]<br>        publish = true<br>    }<br>}<br>```</p>
-<p>上传开源库的配置基本都是这样，不用改动什么，值得注意的是<code>bintray</code> 节点的<code>repo</code> 指的是第一步中创建的Maven仓库的名字，这两个名字要一致；此外开源库的版本号默认取的是project的版本号<code>def projectVersionName = android.defaultConfig.versionName</code>，如果有需要也可把这两个属性抽取到<code>project.properties</code> 文件中，便于管理。</p>
-<p>最后一个操作，在<strong><em>开源库Module</em></strong>的<code>build.gradle</code> 文件末尾中添加如下代码<code>apply from: &#39;bintrayUpload.gradle&#39;</code> 来调用配置文件。</p>
-<p><strong>至此第3步配置gradle文件完成。</strong></p>
-<hr>
-<p></p><h3 id="step4"> 4. 编译并上传至Bintray</h3><p></p>
-<ul>
-<li>编译：打开AndroidStudio的Terminal窗口（一般在底部，没有的话点击<code>顶部工具栏</code>-&gt;<code>View</code>-&gt;<code>Tools Windows</code>-&gt;<code>Terminal</code>），输入命令并回车：</li>
-</ul>
-<blockquote>
-<p>gradlew install</p>
-</blockquote>
-<p>等待一段时间后提示<code>BUILD SUCCESSFUL</code>，表示成功。</p>
-<ul>
-<li>上传，同样在Terminal中输入以下命令并回车：</li>
-</ul>
-<blockquote>
-<p>gradlew bintrayUpload</p>
-</blockquote>
-<p>等待一段时间后提示<code>BUILD SUCCESSFUL</code>，表示成功。</p>
-<p><strong>至此第4步编译并上传完成。</strong></p>
-<hr>
-<p></p><h3 id="step5"> 5. Linked to jCenter</h3><br><img src="http://img.blog.csdn.net/20171010130732249?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20171010130755306?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20171010130819024?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20171010130848144?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><p></p>
-<p><strong>按照上面4步，发送include request之后等待Bintray团队审核，审核完成后会收到邮件和站内信。</strong></p>
-<p><img src="http://img.blog.csdn.net/20171010131204996?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p><strong>至此第5步Linked to jCenter完成。</strong></p>
-<hr>
-<h3 id="如果遇到问题，请参考这两篇文章"><a href="#如果遇到问题，请参考这两篇文章" class="headerlink" title="如果遇到问题，请参考这两篇文章"></a>如果遇到问题，请参考这两篇文章</h3><ol>
-<li><a href="http://www.jianshu.com/p/c721f9297b2f?utm_campaign=hugo&amp;utm_medium=reader_share&amp;utm_content=note" target="_blank" rel="noopener">Android 项目打包到 JCenter 的坑</a></li>
-<li><a href="http://www.jianshu.com/p/c518a10fdaed" target="_blank" rel="noopener">Android 发布项目到 JCenter 遇到的各种坑</a></li>
-</ol>
-<h4 id="如有问题，欢迎指正"><a href="#如有问题，欢迎指正" class="headerlink" title="如有问题，欢迎指正~"></a><strong>如有问题，欢迎指正~</strong></h4>
+<p>在AndroidStudio中导入开源库一般就是一句话的事：<strong>compile ‘xxx.xx.xx:xx’</strong>。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行<code>compile &#39;xxx.xxx.xx:xx&#39;</code> 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发布开源库，要通过它的托管商–Bintray（Bintray托管着很多仓库，jCenter只是其中一个）来完成。</p>
+<p>把自己平时经常用到的一些代码写到一起上传到jCenter，以后不管做什么项目一句话就能导入，算来还是一个比较实用的功能。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/10/10/几分钟完成发布开源库到jCenter/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/几分钟完成发布开源库到jCenter/" data-id="cjaq3m380000414cmfhl503wv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/几分钟完成发布开源库到jCenter/" data-id="cjaq3nzlj0007i4cmnpw3m6uv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jCenter/">jCenter</a></li></ul>
