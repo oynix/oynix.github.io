@@ -101,7 +101,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/20/Windows下编译OpenSSL/" data-id="cjaq1jdj300017gcmszku48jd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/20/Windows下编译OpenSSL/" data-id="cjaq1n24u0001hgcm8iyacabf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenSSL/">OpenSSL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li></ul>
@@ -145,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/『Effective Java』读书整理/" data-id="cjaq1jdj700037gcm0y8jvqqy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/『Effective Java』读书整理/" data-id="cjaq1n24y0003hgcmk1bfa295" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -185,7 +185,15 @@
 <ol>
 <li><code>Camera.setPreviewCallbackBuffer(PreviewCallback)</code></li>
 <li><code>Camera.setOneShotPreviewCallback(PreviewCallback)</code></li>
-<li><code>Camera.setPreviewCallback(PreviewCallback)</code>
+<li><code>Camera.setPreviewCallback(PreviewCallback)</code></li>
+</ol>
+</blockquote>
+<p><code>PreviewCallback</code>接口里面只有一个回调方法:</p>
+<blockquote>
+<p> void onPreviewFrame(byte[] data, Camera camera);</p>
+</blockquote>
+<p>其中的<code>byte[] data</code>就是<code>Preview</code>的图像数据，格式为<code>YuvImage</code>，而这个图像天生是横着的，一般的旋转操作是:</p>
+<h2 id="YuvImage的byte-–-gt-Bitmap的byte-–-gt-生成Bitmap-–-gt-旋转Bitmap"><a href="#YuvImage的byte-–-gt-Bitmap的byte-–-gt-生成Bitmap-–-gt-旋转Bitmap" class="headerlink" title="YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap"></a>YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap</h2>
         
           <p class="article-more-link">
             <a href="/2017/10/26/Android YuvImage直接旋转/#more">Read More</a>
@@ -194,7 +202,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1jdiy00007gcma9ccgx5u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1n24p0000hgcmuc76k7m3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Yuv/">Yuv</a></li></ul>

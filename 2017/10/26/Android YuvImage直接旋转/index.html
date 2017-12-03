@@ -13,14 +13,14 @@
 <meta property="og:title" content="Android YuvImage直接旋转">
 <meta property="og:url" content="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)">
+<meta property="og:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)   PreviewCallback接口里面只有一个回">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171026204516630?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-12-03T00:40:41.410Z">
+<meta property="og:updated_time" content="2017-12-03T00:43:33.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android YuvImage直接旋转">
-<meta name="twitter:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)">
+<meta name="twitter:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)   PreviewCallback接口里面只有一个回">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
     <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -100,11 +100,16 @@
 <ol>
 <li><code>Camera.setPreviewCallbackBuffer(PreviewCallback)</code></li>
 <li><code>Camera.setOneShotPreviewCallback(PreviewCallback)</code></li>
-<li><code>Camera.setPreviewCallback(PreviewCallback)</code><a id="more"></a>
-<code>PreviewCallback</code>接口里面只有一个回调方法:<br>void onPreviewFrame(byte[] data, Camera camera);</li>
+<li><code>Camera.setPreviewCallback(PreviewCallback)</code></li>
 </ol>
 </blockquote>
-<p>其中的<code>byte[] data</code>就是<code>Preview</code>的图像数据，格式为<code>YuvImage</code>，而这个图像天生是横着的，一般的旋转操作是:<br>YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap<br><strong>示例代码</strong></p>
+<p><code>PreviewCallback</code>接口里面只有一个回调方法:</p>
+<blockquote>
+<p> void onPreviewFrame(byte[] data, Camera camera);</p>
+</blockquote>
+<p>其中的<code>byte[] data</code>就是<code>Preview</code>的图像数据，格式为<code>YuvImage</code>，而这个图像天生是横着的，一般的旋转操作是:</p>
+<h2 id="YuvImage的byte-–-gt-Bitmap的byte-–-gt-生成Bitmap-–-gt-旋转Bitmap"><a href="#YuvImage的byte-–-gt-Bitmap的byte-–-gt-生成Bitmap-–-gt-旋转Bitmap" class="headerlink" title="YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap"></a>YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap</h2><a id="more"></a>
+<p><strong>示例代码</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreviewFrame</span><span class="params">(<span class="keyword">byte</span>[] data, Camera camera)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> width = camera.getParameters().getPreviewSize().width;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> height = camera.getParameters().getPreviewSize().height;</span><br><span class="line">        <span class="comment">// 通过YuvImage得到Bitmap格式的byte[]</span></span><br><span class="line">        YuvImage yuvImage = <span class="keyword">new</span> YuvImage(data, ImageFormat.NV21, width, height, <span class="keyword">null</span>);</span><br><span class="line">        ByteArrayOutputStream out = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        yuvImage.compressToJpeg(<span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, width, height), <span class="number">100</span>, out);</span><br><span class="line">        <span class="keyword">byte</span>[] dataBmp = out.toByteArray();</span><br><span class="line">        <span class="comment">// 生成Bitmap</span></span><br><span class="line">        Bitmap bitmap = BitmapFactory.decodeByteArray(data, <span class="number">0</span>, dataBmp.length);</span><br><span class="line">        <span class="comment">// 旋转</span></span><br><span class="line">        Matrix matrix = <span class="keyword">new</span> Matrix();</span><br><span class="line">        matrix.setRotate(<span class="number">90</span>);</span><br><span class="line">        Bitmap bmp = Bitmap.createBitmap(bitmap, <span class="number">0</span>, <span class="number">0</span>, width, height, matrix, <span class="keyword">false</span>);</span><br><span class="line">        <span class="comment">// 保存到本地</span></span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"/storage/emulated/0/"</span> + System.currentTimeMillis() + <span class="string">".jpg"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            bmp.compress(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, fos);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><hr>
 <p>实际上，可以直接旋转YuvImage。Camera返回的数据格式默认是<code>NV21</code>，即YUV420的YV12，每4个Y共用一组UV分量。换句话说就是假设一张宽为<code>width</code>高为<code>height</code>的图像，共<code>sum = width * height</code>个像素点，那么Y分量一共<code>sum</code>个，U分量一共<code>sum/4</code>,V分量一共<code>sum/4</code>，YUV同RGB类似，都是用来表示图像属性，YUV各占1个byte，所以存储该图像的byte[] 的长度为YUV的数量之和，3/2<em>sum。<br>例如，一张4像素x4像素的图片，存储格式为<br><img src="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><strong>每个像素点都有YUV3个分量</strong>，一个方格代表1byte，Y分量顺序排列，之后VU分量交叉排列，Y1、Y2、Y5、Y6共用V1U1分量，也就是说第1个像素点为[Y1 V1 U1]，第2个像素点为[Y2 V1 U1]，第5个像素点[Y5 V1 U1]，第6个像素点[Y6 V1 U1]，同理颜色相同都共用。有了上面的基础再来说旋转，图像旋转就是改变数组中YUV各个分量的位置，变换之后要保证共用关系不能变，即Y1、Y2、Y5、Y6还要共用V1、U1分量，顺时针旋转90度后如下<br><img src="http://img.blog.csdn.net/20171026204516630?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>由图可以看出，<em>*简单说就是Y分量部分和VU分量部分分别旋转</em></em><br>有了以上的基础，再来总结一下顺时针旋转90后角标对应关系：<br>旋转前的图：srcWidth、srcHeight<br>旋转后的图：dstWidth、dstHeight（旋转前后宽高对调，即sW=dH、sH=dW）<br>先看Y分量，假设旋转后的图中第i行，第j列的一个像素，它的Y分量为(i, j)，它在旋转(顺时针旋转90度)前的位置为(srcHeight-1-j, i)；<br>再看VU分量，因为<code>NV21</code>格式每组UV分量有4个Y分量共用，所以只要随着4个中的一个改变一次就可以了，我选择让VU分量跟着左上角的Y分量一起变换（例如，V1U1跟着旋转后的Y5变换）即，当(i, j)为左上角的Y时，这个时候它对应旋转前的4个分量中左下角的Y（后Y5和前Y5），前Y5的VU分量，放到后Y5VU分量的位置即可，当进行到旋转后的图4个Y分量中的其他3个分量时不再进行VU分量的操作；<br>Y分量与其对应的VU分量的行角标对应关系为：目标VU行角标 = Y行角标 + 图像的高。</p>
@@ -113,7 +118,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1jdiy00007gcma9ccgx5u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1n24p0000hgcmuc76k7m3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Yuv/">Yuv</a></li></ul>
