@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>&lt;Effective Java&gt;读书整理 | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(Prev">
+<meta name="keywords" content="Android,Yuv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="&lt;Effective Java&gt;读书整理">
+<meta property="og:url" content="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171026204516630?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-12-03T00:36:52.497Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="&lt;Effective Java&gt;读书整理">
+<meta name="twitter:description" content="操作相机的Preview可通过以下三种方式添加回调接口：   Camera.setPreviewCallbackBuffer(PreviewCallback) Camera.setOneShotPreviewCallback(PreviewCallback) Camera.setPreviewCallback(PreviewCallback)">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+  
+    <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Oynix</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android YuvImage直接旋转" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/26/Android YuvImage直接旋转/" class="article-date">
+  <time datetime="2017-10-26T10:58:53.000Z" itemprop="datePublished">2017-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      &lt;Effective Java&gt;读书整理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>操作相机的<code>Preview</code>可通过以下三种方式添加回调接口：</p>
+<blockquote>
+<ol>
+<li><code>Camera.setPreviewCallbackBuffer(PreviewCallback)</code></li>
+<li><code>Camera.setOneShotPreviewCallback(PreviewCallback)</code></li>
+<li><code>Camera.setPreviewCallback(PreviewCallback)</code><a id="more"></a>
+<code>PreviewCallback</code>接口里面只有一个回调方法:<br>void onPreviewFrame(byte[] data, Camera camera);</li>
+</ol>
+</blockquote>
+<p>其中的<code>byte[] data</code>就是<code>Preview</code>的图像数据，格式为<code>YuvImage</code>，而这个图像天生是横着的，一般的旋转操作是:<br>YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap<br><strong>示例代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreviewFrame</span><span class="params">(<span class="keyword">byte</span>[] data, Camera camera)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> width = camera.getParameters().getPreviewSize().width;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> height = camera.getParameters().getPreviewSize().height;</span><br><span class="line">        <span class="comment">// 通过YuvImage得到Bitmap格式的byte[]</span></span><br><span class="line">        YuvImage yuvImage = <span class="keyword">new</span> YuvImage(data, ImageFormat.NV21, width, height, <span class="keyword">null</span>);</span><br><span class="line">        ByteArrayOutputStream out = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        yuvImage.compressToJpeg(<span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, width, height), <span class="number">100</span>, out);</span><br><span class="line">        <span class="keyword">byte</span>[] dataBmp = out.toByteArray();</span><br><span class="line">        <span class="comment">// 生成Bitmap</span></span><br><span class="line">        Bitmap bitmap = BitmapFactory.decodeByteArray(data, <span class="number">0</span>, dataBmp.length);</span><br><span class="line">        <span class="comment">// 旋转</span></span><br><span class="line">        Matrix matrix = <span class="keyword">new</span> Matrix();</span><br><span class="line">        matrix.setRotate(<span class="number">90</span>);</span><br><span class="line">        Bitmap bmp = Bitmap.createBitmap(bitmap, <span class="number">0</span>, <span class="number">0</span>, width, height, matrix, <span class="keyword">false</span>);</span><br><span class="line">        <span class="comment">// 保存到本地</span></span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"/storage/emulated/0/"</span> + System.currentTimeMillis() + <span class="string">".jpg"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            bmp.compress(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, fos);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><hr>
+<p>实际上，可以直接旋转YuvImage。Camera返回的数据格式默认是<code>NV21</code>，即YUV420的YV12，每4个Y共用一组UV分量。换句话说就是假设一张宽为<code>width</code>高为<code>height</code>的图像，共<code>sum = width * height</code>个像素点，那么Y分量一共<code>sum</code>个，U分量一共<code>sum/4</code>,V分量一共<code>sum/4</code>，YUV同RGB类似，都是用来表示图像属性，YUV各占1个byte，所以存储该图像的byte[] 的长度为YUV的数量之和，3/2<em>sum。<br>例如，一张4像素x4像素的图片，存储格式为<br><img src="http://img.blog.csdn.net/20171026201401247?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><strong>每个像素点都有YUV3个分量</strong>，一个方格代表1byte，Y分量顺序排列，之后VU分量交叉排列，Y1、Y2、Y5、Y6共用V1U1分量，也就是说第1个像素点为[Y1 V1 U1]，第2个像素点为[Y2 V1 U1]，第5个像素点[Y5 V1 U1]，第6个像素点[Y6 V1 U1]，同理颜色相同都共用。有了上面的基础再来说旋转，图像旋转就是改变数组中YUV各个分量的位置，变换之后要保证共用关系不能变，即Y1、Y2、Y5、Y6还要共用V1、U1分量，顺时针旋转90度后如下<br><img src="http://img.blog.csdn.net/20171026204516630?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>由图可以看出，<em>*简单说就是Y分量部分和VU分量部分分别旋转</em></em><br>有了以上的基础，再来总结一下顺时针旋转90后角标对应关系：<br>旋转前的图：srcWidth、srcHeight<br>旋转后的图：dstWidth、dstHeight（旋转前后宽高对调，即sW=dH、sH=dW）<br>先看Y分量，假设旋转后的图中第i行，第j列的一个像素，它的Y分量为(i, j)，它在旋转(顺时针旋转90度)前的位置为(srcHeight-1-j, i)；<br>再看VU分量，因为<code>NV21</code>格式每组UV分量有4个Y分量共用，所以只要随着4个中的一个改变一次就可以了，我选择让VU分量跟着左上角的Y分量一起变换（例如，V1U1跟着旋转后的Y5变换）即，当(i, j)为左上角的Y时，这个时候它对应旋转前的4个分量中左下角的Y（后Y5和前Y5），前Y5的VU分量，放到后Y5VU分量的位置即可，当进行到旋转后的图4个Y分量中的其他3个分量时不再进行VU分量的操作；<br>Y分量与其对应的VU分量的行角标对应关系为：目标VU行角标 = Y行角标 + 图像的高。</p>
+<h2 id="实践（上面不懂不重要，代码可以直接用-）"><a href="#实践（上面不懂不重要，代码可以直接用-）" class="headerlink" title="实践（上面不懂不重要，代码可以直接用~）"></a>实践（上面不懂不重要，代码可以直接用~）</h2><hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreviewFrame</span><span class="params">(<span class="keyword">final</span> <span class="keyword">byte</span>[] data, Camera camera)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 将系统回调的数组拷贝一份,操作拷贝的数据</span></span><br><span class="line">        <span class="keyword">byte</span>[] dataCopy = <span class="keyword">new</span> <span class="keyword">byte</span>[data.length];</span><br><span class="line">        System.arraycopy(srcData, <span class="number">0</span>, dataCopy , <span class="number">0</span>, data.length);</span><br><span class="line">        Camera.Size size = camera.getParameters().getPreviewSize();</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> srcWidth = size.width;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> srcHeight = size.height;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> dstWidth = size.height;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> dstHeight = size.width;</span><br><span class="line">        <span class="comment">// 1.5倍的总数,多出来的部分装VU分量</span></span><br><span class="line">        <span class="keyword">byte</span>[] buf = <span class="keyword">new</span> <span class="keyword">byte</span>[dstWidth * dstHeight * <span class="number">3</span> / <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; dstHeight; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; dstWidth; j++) &#123;</span><br><span class="line">                <span class="comment">// 新数组中摆放Y值 旋转后(i,j) --&gt; 旋转前(srcHeight-1-j, i)</span></span><br><span class="line">                buf[i * dstWidth + j] = dataCopy[(srcHeight - <span class="number">1</span> - j) * srcWidth + i];</span><br><span class="line">                <span class="comment">// 确认是左上角的点</span></span><br><span class="line">                <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span> &amp;&amp; j % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// 摆放V值 目标行号= 行号/2 + 高</span></span><br><span class="line">                    buf[(i / <span class="number">2</span> + srcWidth) * dstWidth + j] = dataCopy[((srcHeight - <span class="number">1</span> - j) / <span class="number">2</span> + srcHeight) * srcWidth + j];</span><br><span class="line">                    <span class="comment">// 摆放U值</span></span><br><span class="line">                    buf[(i / <span class="number">2</span> + srcWidth) * dstWidth + j + <span class="number">1</span>] = dataCopy[((srcHeight - <span class="number">1</span> - j) / <span class="number">2</span> + srcHeight) * srcWidth + j + <span class="number">1</span>];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        YuvImage yuvImage = <span class="keyword">new</span> YuvImage(buf, ImageFormat.NV21, dstWidth, dstHeight, <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"/storage/emulated/0/"</span> + System.currentTimeMillis() + <span class="string">".jpg"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            yuvImage.compressToJpeg(<span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, dstWidth, dstHeight), <span class="number">100</span>, fos);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/26/Android YuvImage直接旋转/" data-id="cjaq1egw40000d0cmk6v1tlxn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Yuv/">Yuv</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/07/『Effective Java』读书整理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          &lt;Effective Java&gt;读书整理
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSSL/">OpenSSL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Yuv/">Yuv</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/OpenSSL/" style="font-size: 10px;">OpenSSL</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/Yuv/" style="font-size: 10px;">Yuv</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/11/20/Windows下编译OpenSSL/">Windows下编译OpenSSL</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/07/『Effective Java』读书整理/">&lt;Effective Java&gt;读书整理</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/26/Android YuvImage直接旋转/">&lt;Effective Java&gt;读书整理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Oynix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
