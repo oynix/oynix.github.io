@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Android获取系统相册所有图片 | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="直接获取所有照片的信息，而不是打开照片选择页面">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android获取系统相册所有图片">
+<meta property="og:url" content="http://yoursite.com/2017/06/05/Android获取系统相册所有图片/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="直接获取所有照片的信息，而不是打开照片选择页面">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-03T02:01:24.633Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android获取系统相册所有图片">
+<meta name="twitter:description" content="直接获取所有照片的信息，而不是打开照片选择页面">
+  
+    <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Oynix</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android获取系统相册所有图片" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/05/Android获取系统相册所有图片/" class="article-date">
+  <time datetime="2017-06-05T03:15:53.000Z" itemprop="datePublished">2017-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android获取系统相册所有图片
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="直接获取所有照片的信息，而不是打开照片选择页面"><a href="#直接获取所有照片的信息，而不是打开照片选择页面" class="headerlink" title="直接获取所有照片的信息，而不是打开照片选择页面"></a>直接获取所有照片的信息，而不是打开照片选择页面</h3><a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">private</span> ArrayList&lt;CategoryFile&gt; <span class="title">queryCategoryFilesSync</span><span class="params">(FileType type)</span> </span>&#123;</span><br><span class="line">   ArrayList&lt;CategoryFile&gt; files = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   Uri uri = MediaStore.Images.Media.getContentUri(<span class="string">"external"</span>);</span><br><span class="line">   <span class="keyword">if</span> (uri != <span class="keyword">null</span>) &#123;</span><br><span class="line">       String[] projection = <span class="keyword">new</span> String[]&#123;FileColumns._ID, <span class="comment">// id</span></span><br><span class="line">               FileColumns.DATA, <span class="comment">// 文件路径</span></span><br><span class="line">               FileColumns.SIZE, <span class="comment">// 文件大小</span></span><br><span class="line">               FileColumns.DATE_MODIFIED&#125;; <span class="comment">// 修改日期</span></span><br><span class="line">       Cursor cursor = getContentResolver().query(uri, projection, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">       <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                   <span class="keyword">final</span> <span class="keyword">int</span> pathIdx = cursor</span><br><span class="line">                           .getColumnIndex(FileColumns.DATA);</span><br><span class="line">                   <span class="keyword">final</span> <span class="keyword">int</span> sizeIdx = cursor</span><br><span class="line">                           .getColumnIndex(FileColumns.SIZE);</span><br><span class="line">                   <span class="keyword">final</span> <span class="keyword">int</span> modifyIdx = cursor</span><br><span class="line">                           .getColumnIndex(FileColumns.DATE_MODIFIED);</span><br><span class="line">                   <span class="keyword">do</span> &#123;</span><br><span class="line">                       String path = cursor.getString(pathIdx);</span><br><span class="line">                       CategoryFile file = <span class="keyword">new</span> CategoryFile();</span><br><span class="line">                       file.mType = type;</span><br><span class="line">                       file.mPath = path;</span><br><span class="line">                       file.mParent = FileUtil.getPathFromFilepath(file.mPath);</span><br><span class="line">                       file.mName = FileUtil.getNameFromFilepath(file.mPath);</span><br><span class="line">                       file.mSize = cursor.getLong(sizeIdx);</span><br><span class="line">                       file.mLastModifyTime = cursor.getLong(modifyIdx);</span><br><span class="line">                       files.add(file);</span><br><span class="line">                   &#125; <span class="keyword">while</span> (cursor.moveToNext());</span><br><span class="line">               &#125;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">               e.printStackTrace();</span><br><span class="line">           &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">               cursor.close();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> files;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中<code>CategoryFile</code>为存储照片信息的Bean类</p>
+<h3 id="FileUtil类"><a href="#FileUtil类" class="headerlink" title="FileUtil类"></a>FileUtil类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class FileUtil &#123;</span><br><span class="line"></span><br><span class="line">    private static final char UNIX_SEPARATOR = &apos;/&apos;;</span><br><span class="line"></span><br><span class="line">    public static String getPathFromFilepath(String filepath) &#123;</span><br><span class="line">        if (!TextUtils.isEmpty(filepath)) &#123;</span><br><span class="line">            int pos = filepath.lastIndexOf(UNIX_SEPARATOR);</span><br><span class="line">            if (pos != -1) &#123;</span><br><span class="line">                return filepath.substring(0, pos);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static String getNameFromFilepath(String filepath) &#123;</span><br><span class="line">        if (!TextUtils.isEmpty(filepath)) &#123;</span><br><span class="line">            int pos = filepath.lastIndexOf(UNIX_SEPARATOR);</span><br><span class="line">            if (pos != -1) &#123;</span><br><span class="line">                return filepath.substring(pos + 1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/06/05/Android获取系统相册所有图片/" data-id="cjaq4f8xs00047gcmcgnaneoa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/12/Android 自定义样式通知栏的坑RemoteServiceException/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android 自定义样式通知栏的坑RemoteServiceException
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drawable/">Drawable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSSL/">OpenSSL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RemoteServiceException/">RemoteServiceException</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SlidingUpPanelLayout/">SlidingUpPanelLayout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Yuv/">Yuv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jCenter/">jCenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片饱和度/">图片饱和度</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Drawable/" style="font-size: 10px;">Drawable</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/OpenSSL/" style="font-size: 10px;">OpenSSL</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/RemoteServiceException/" style="font-size: 10px;">RemoteServiceException</a> <a href="/tags/SlidingUpPanelLayout/" style="font-size: 10px;">SlidingUpPanelLayout</a> <a href="/tags/Windows/" style="font-size: 15px;">Windows</a> <a href="/tags/Yuv/" style="font-size: 10px;">Yuv</a> <a href="/tags/jCenter/" style="font-size: 10px;">jCenter</a> <a href="/tags/图片饱和度/" style="font-size: 10px;">图片饱和度</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/11/20/Windows下编译OpenSSL/">Windows下编译OpenSSL</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/07/『Effective Java』读书整理/">&lt;Effective Java&gt;读书整理</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/26/Android YuvImage直接旋转/">Android YuvImage直接旋转</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/">ScrollView在SlidingUpPanelLayout中下滑无效问题</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/12/手把手教你实现RecyclerView的下拉刷新和上拉加载更多/">手把手教你实现RecyclerView的下拉刷新和上拉加载更多</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Oynix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
