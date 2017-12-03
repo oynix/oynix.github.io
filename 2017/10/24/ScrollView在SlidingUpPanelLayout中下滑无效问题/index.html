@@ -5,18 +5,20 @@
   
 
   
-  <title>Tag: Android | Blog</title>
+  <title>ScrollView在SlidingUpPanelLayout中下滑无效问题 | Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Blog of Oynix">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Blog">
-<meta property="og:url" content="http://yoursite.com/tags/Android/index.html">
+  <meta name="description" content="当在ScrollableView(即, 可上下滑动的ViewGroup)中含有ScrollView时，向上滑动ScrollableView至其全部上移展示出来时，继续向上滑动时ScrollView会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是ScrollabldView，这就导致Scroll">
+<meta name="keywords" content="Android,SlidingUpPanelLayout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ScrollView在SlidingUpPanelLayout中下滑无效问题">
+<meta property="og:url" content="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="Blog of Oynix">
+<meta property="og:description" content="当在ScrollableView(即, 可上下滑动的ViewGroup)中含有ScrollView时，向上滑动ScrollableView至其全部上移展示出来时，继续向上滑动时ScrollView会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是ScrollabldView，这就导致ScrollView无法下滑，解决该问题一种简单有效的实践：  SlidingUpPane">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-03T00:54:36.693Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Blog">
-<meta name="twitter:description" content="Blog of Oynix">
+<meta name="twitter:title" content="ScrollView在SlidingUpPanelLayout中下滑无效问题">
+<meta name="twitter:description" content="当在ScrollableView(即, 可上下滑动的ViewGroup)中含有ScrollView时，向上滑动ScrollableView至其全部上移展示出来时，继续向上滑动时ScrollView会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是ScrollabldView，这就导致ScrollView无法下滑，解决该问题一种简单有效的实践：  SlidingUpPane">
   
     <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
   
@@ -67,59 +69,63 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/10/26/Android YuvImage直接旋转/" class="archive-article-date">
-  <time datetime="2017-10-26T10:58:53.000Z" itemprop="datePublished">10月 26</time>
+        <section id="main"><article id="post-ScrollView在SlidingUpPanelLayout中下滑无效问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/" class="article-date">
+  <time datetime="2017-10-24T12:42:53.000Z" itemprop="datePublished">2017-10-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/26/Android YuvImage直接旋转/">Android YuvImage直接旋转</a>
+    <h1 class="article-title" itemprop="name">
+      ScrollView在SlidingUpPanelLayout中下滑无效问题
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/" class="archive-article-date">
-  <time datetime="2017-10-24T12:42:53.000Z" itemprop="datePublished">10月 24</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/">ScrollView在SlidingUpPanelLayout中下滑无效问题</a>
-    </h1>
-  
+        <hr>
+<p>当在<code>ScrollableView</code>(即, 可上下滑动的ViewGroup)中含有<code>ScrollView</code>时，向上滑动<code>ScrollableView</code>至其全部上移展示出来时，继续向上滑动时<code>ScrollView</code>会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是<code>ScrollabldView</code>，这就导致<code>ScrollView</code>无法下滑，解决该问题一种简单有效的实践：</p>
+<blockquote>
+<p>SlidingUpPanelLayout.setScrollableView(ScrollView)</p>
+</blockquote>
+<p><strong>用<code>ScrollView</code>替换整个滑动的ViewGroup</strong></p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/" data-id="cjaq21b3f00045ocmhdmfy6kv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SlidingUpPanelLayout/">SlidingUpPanelLayout</a></li></ul>
+
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/26/Android YuvImage直接旋转/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android YuvImage直接旋转
+        
+      </div>
+    </a>
   
   
-    </div></section>
-  
+</nav>
 
+  
+</article>
 
 </section>
         
