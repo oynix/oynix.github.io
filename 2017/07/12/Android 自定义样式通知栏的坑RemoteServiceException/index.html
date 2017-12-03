@@ -5,18 +5,20 @@
   
 
   
-  <title>Tag: OpenSSL | Blog</title>
+  <title>Android 自定义样式通知栏的坑RemoteServiceException | Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Blog of Oynix">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Blog">
-<meta property="og:url" content="http://yoursite.com/tags/OpenSSL/index.html">
+  <meta name="description" content="Android 自定义样式通知栏的坑RemoteServiceException1Android.app.RemoteServiceException: Bad notification posted from packagecom.my.package: 是的，就是这个异常。">
+<meta name="keywords" content="Android,RemoteServiceException">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 自定义样式通知栏的坑RemoteServiceException">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/Android 自定义样式通知栏的坑RemoteServiceException/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="Blog of Oynix">
+<meta property="og:description" content="Android 自定义样式通知栏的坑RemoteServiceException1Android.app.RemoteServiceException: Bad notification posted from packagecom.my.package: 是的，就是这个异常。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-03T01:53:58.267Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Blog">
-<meta name="twitter:description" content="Blog of Oynix">
+<meta name="twitter:title" content="Android 自定义样式通知栏的坑RemoteServiceException">
+<meta name="twitter:description" content="Android 自定义样式通知栏的坑RemoteServiceException1Android.app.RemoteServiceException: Bad notification posted from packagecom.my.package: 是的，就是这个异常。">
   
     <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
   
@@ -67,40 +69,75 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/11/20/Windows下编译OpenSSL/" class="archive-article-date">
-  <time datetime="2017-11-20T12:53:53.000Z" itemprop="datePublished">11月 20</time>
+        <section id="main"><article id="post-Android 自定义样式通知栏的坑RemoteServiceException" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/12/Android 自定义样式通知栏的坑RemoteServiceException/" class="article-date">
+  <time datetime="2017-07-12T06:58:53.000Z" itemprop="datePublished">2017-07-12</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/20/Windows下编译OpenSSL/">Windows下编译OpenSSL</a>
+    <h1 class="article-title" itemprop="name">
+      Android 自定义样式通知栏的坑RemoteServiceException
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>Android 自定义样式通知栏的坑RemoteServiceException<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Android.app.RemoteServiceException: Bad notification posted from packagecom.my.package:</span><br></pre></td></tr></table></figure></p>
+<p>是的，就是这个异常。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>没有使用系统提供的三个方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setContentText（）</span><br><span class="line">setContentTitle（）</span><br><span class="line">setSmallIcon（）</span><br></pre></td></tr></table></figure>
+<p>而用的是<code>RemoteViews</code>，然后就掉坑里了。</p>
+<p><strong>原因是这样的，请往下看~</strong></p>
+<ol>
+<li><p>布局中的控件只有<strong>7种</strong>，除此之外，均会报错！</p>
+<blockquote>
+<p>AnalogClock，Button，Chronometer，ImageButton，mageView，ProgressBar，TextView</p>
+</blockquote>
+</li>
+<li><p>另外还有一个问题，就是控件长宽的设定，必须为<code>0dp</code>，<code>wrap_content</code>或者<code>match_parent</code>，除此之外，也均会报错！</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (layoutWidth != 0 &amp;&amp; layoutWidth != ViewGroup.LayoutParams.MATCH_PARENT</span><br><span class="line">            &amp;&amp; layoutWidth != ViewGroup.LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;Only supports 0, WRAP_CONTENT and MATCH_PARENT&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>这就是原因，内部会检测。但不知为何，我接收到的都是文章开头提到的那个异常，让我好苦恼。</strong></p>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/07/12/Android 自定义样式通知栏的坑RemoteServiceException/" data-id="cjaq45ptj0003n4cmh2u9ae8j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RemoteServiceException/">RemoteServiceException</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/04/Android改变图片属性之饱和度/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android改变图片属性之饱和度
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
 
 </section>
         
