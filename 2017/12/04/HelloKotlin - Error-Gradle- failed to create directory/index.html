@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Android,SlidingUpPanelLayout," />
+  <meta name="keywords" content="AndroidStudio,Kotlin," />
 
 
 
@@ -79,18 +79,24 @@
 
 
 
-<meta name="description" content="当在ScrollableView(即, 可上下滑动的ViewGroup)中含有ScrollView时，向上滑动ScrollableView至其全部上移展示出来时，继续向上滑动时ScrollView会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是ScrollabldView，这就导致Scroll">
-<meta name="keywords" content="Android,SlidingUpPanelLayout">
+<meta name="description" content="今天在看Kotlin-Docs，于是随手建了一个HelloKotlin的项目准备练练手，于是引发了一连串的问题。在此记录过程。">
+<meta name="keywords" content="AndroidStudio,Kotlin">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ScrollView在SlidingUpPanelLayout中下滑无效问题">
-<meta property="og:url" content="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/index.html">
+<meta property="og:title" content="HelloKotlin - Error:Gradle-failed to create directory">
+<meta property="og:url" content="http://yoursite.com/2017/12/04/HelloKotlin - Error-Gradle- failed to create directory/index.html">
 <meta property="og:site_name" content="Oynix">
-<meta property="og:description" content="当在ScrollableView(即, 可上下滑动的ViewGroup)中含有ScrollView时，向上滑动ScrollableView至其全部上移展示出来时，继续向上滑动时ScrollView会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是ScrollabldView，这就导致ScrollView无法下滑，解决该问题一种简单有效的实践： 1SlidingUpPane">
+<meta property="og:description" content="今天在看Kotlin-Docs，于是随手建了一个HelloKotlin的项目准备练练手，于是引发了一连串的问题。在此记录过程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-03T00:56:45.598Z">
+<meta property="og:image" content="http://img.blog.csdn.net/20171204124145220?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171204114812416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171204122641437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171204122921212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171204124755663?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-12-04T05:39:56.373Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ScrollView在SlidingUpPanelLayout中下滑无效问题">
-<meta name="twitter:description" content="当在ScrollableView(即, 可上下滑动的ViewGroup)中含有ScrollView时，向上滑动ScrollableView至其全部上移展示出来时，继续向上滑动时ScrollView会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是ScrollabldView，这就导致ScrollView无法下滑，解决该问题一种简单有效的实践： 1SlidingUpPane">
+<meta name="twitter:title" content="HelloKotlin - Error:Gradle-failed to create directory">
+<meta name="twitter:description" content="今天在看Kotlin-Docs，于是随手建了一个HelloKotlin的项目准备练练手，于是引发了一连串的问题。在此记录过程。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20171204124145220?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/04/HelloKotlin - Error-Gradle- failed to create directory/"/>
 
 
 
 
 
-  <title>ScrollView在SlidingUpPanelLayout中下滑无效问题 | Oynix</title>
+  <title>HelloKotlin - Error:Gradle-failed to create directory | Oynix</title>
   
 
 
@@ -233,7 +239,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/24/ScrollView在SlidingUpPanelLayout中下滑无效问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/HelloKotlin - Error-Gradle- failed to create directory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Oynix">
@@ -250,7 +256,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ScrollView在SlidingUpPanelLayout中下滑无效问题</h1>
+          <h1 class="post-title" itemprop="name headline">HelloKotlin - Error:Gradle-failed to create directory</h1>
         
 
         <div class="post-meta">
@@ -262,8 +268,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T20:42:53+08:00">
-                2017-10-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T13:37:53+08:00">
+                2017-12-04
               </time>
             
 
@@ -301,9 +307,24 @@
 
       
         <hr>
-<p>当在<code>ScrollableView</code>(即, 可上下滑动的ViewGroup)中含有<code>ScrollView</code>时，向上滑动<code>ScrollableView</code>至其全部上移展示出来时，继续向上滑动时<code>ScrollView</code>会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是<code>ScrollabldView</code>，这就导致<code>ScrollView</code>无法下滑，解决该问题一种简单有效的实践：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SlidingUpPanelLayout.setScrollableView(ScrollView)</span><br></pre></td></tr></table></figure>
-<p><strong>用<code>ScrollView</code>替换整个滑动的ViewGroup</strong><br><a id="more"></a></p>
+<p>今天在看Kotlin-Docs，于是随手建了一个HelloKotlin的项目准备练练手，于是引发了一连串的问题。在此记录过程。</p>
+<a id="more"></a>
+<p><strong>环境</strong></p>
+<ul>
+<li>Windows 7 64bit</li>
+<li>AndroidStudio 3.0.1</li>
+</ul>
+<hr>
+<p>一般的，像下面这样，直接写一个程序入口main函数，跑一些简单代码时不用构建apk省时省力：<br><img src="http://img.blog.csdn.net/20171204124145220?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>同样的，我想创建一个Kotlin的程序入口。<br>创建项目时勾选上Kotlin，AndroidStudio便自动导入Kotlin环境，然后直接新建了一个Hello.kt的文件，里面代码很简单，只有三行，如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</span><br><span class="line">	System.<span class="keyword">out</span>.print(<span class="string">"Hello Kotlin"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>fun</strong>单词前有个彩色的Kotlin Logo，直接点击就可以运行HelloKotlin（按道理这样就可以正常跑起来了，我是这么以为的），<strong>但是，报了下面这个错误</strong>：<br><img src="http://img.blog.csdn.net/20171204114812416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>在网上搜索<strong>Error:Gradle:failed to create directory</strong>一番后，找到了解决办法，原来是新版AndroidStudio自带的Aapt2引起的，直接禁用就好：在<strong>gradle.properties</strong>添加如下配置即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.enableAapt2=false</span><br></pre></td></tr></table></figure>
+<p>再次点击<strong>fun</strong>前面的彩色Kotlin Logo，我以为可以运行了，<strong>但是，又报了下面这个错误</strong>：<br><img src="http://img.blog.csdn.net/20171204122641437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><br><br><strong>IDE说找不到HelloKt.class，然而勤劳的我却凭借双手找到了，措不及防</strong><br><img src="http://img.blog.csdn.net/20171204122921212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><br><br>这下我就有点不知所措了。。。<br>网上也没查出什么相关参考，又试了几种不同的写法，依然不行，最后不知怎么突然想到修改Gradle版本试试看，事实证明此路可行！<br>AndroidStudio 3.0.1创建新项目默认的Gradle版本时4.1，Android Plugin Version是3.0.1。我把HelloKotlin项目向下降了一个版本，即Gradle-3.4，Android Plugin - 2.3.3，去掉DSL method google()<br><img src="http://img.blog.csdn.net/20171204124755663?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>相应的，Module的build.gradle里一些版本都要下调。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 部分内容</span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion 25</span><br><span class="line">    buildToolsVersion &apos;25.0.3&apos;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId &quot;com.oy.hellokot&quot;</span><br><span class="line">        minSdkVersion 15</span><br><span class="line">        targetSdkVersion 25</span><br><span class="line">        versionCode 1</span><br><span class="line">        versionName &quot;1.0&quot;</span><br><span class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])</span><br><span class="line">    compile&quot;org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version&quot;</span><br><span class="line">    compile &apos;com.android.support:appcompat-v7:25.3.1&apos;</span><br><span class="line">    compile &apos;com.android.support.constraint:constraint-layout:1.0.2&apos;</span><br><span class="line">    testCompile &apos;junit:junit:4.12&apos;</span><br><span class="line">    androidTestCompile &apos;com.android.support.test.espresso:espresso-core:2.2.2&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上配置以后，再次点击<strong>fun</strong>之前的彩色Kotlin Logo，程序便可以跑起来了。</p>
 
       
     </div>
@@ -321,9 +342,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
+            <a href="/tags/AndroidStudio/" rel="tag"># AndroidStudio</a>
           
-            <a href="/tags/SlidingUpPanelLayout/" rel="tag"># SlidingUpPanelLayout</a>
+            <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
           
         </div>
       
@@ -336,8 +357,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/12/手把手教你实现RecyclerView的下拉刷新和上拉加载更多/" rel="next" title="手把手教你实现RecyclerView的下拉刷新和上拉加载更多">
-                <i class="fa fa-chevron-left"></i> 手把手教你实现RecyclerView的下拉刷新和上拉加载更多
+              <a href="/2017/11/20/Windows下编译OpenSSL/" rel="next" title="Windows下编译OpenSSL">
+                <i class="fa fa-chevron-left"></i> Windows下编译OpenSSL
               </a>
             
           </div>
@@ -345,10 +366,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/10/26/Android YuvImage直接旋转/" rel="prev" title="Android YuvImage直接旋转">
-                Android YuvImage直接旋转 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
