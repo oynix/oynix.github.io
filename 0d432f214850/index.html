@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="今天为了获取FB秘钥，里面有个命令openssl，于是网上找了一下教程，众说纷纭，最后可算成功了，在此记录过程。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://img.blog.csdn.net/20171120204720006?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20171120204650767?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/hbDj3oUKWFLJfuq.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/UHcXsjCJErxna65.png">
 <meta property="article:published_time" content="2017-11-20T12:53:53.000Z">
-<meta property="article:modified_time" content="2017-12-03T00:32:34.000Z">
+<meta property="article:modified_time" content="2021-07-06T16:11:45.132Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Windows">
 <meta property="article:tag" content="OpenSSL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20171120204720006?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta name="twitter:image" content="https://i.loli.net/2021/07/07/hbDj3oUKWFLJfuq.png">
 
 <link rel="canonical" href="http://yoursite.com/0d432f214850/">
 
@@ -104,7 +104,7 @@
       <h1 class="site-title">oynix</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">Avoid actions without plan</p>
+      <p class="site-subtitle" itemprop="description">github这个域名也挺好</p>
   </div>
 
   <div class="site-nav-right">
@@ -194,6 +194,15 @@
 
               <time title="创建时间：2017-11-20 20:53:53" itemprop="dateCreated datePublished" datetime="2017-11-20T20:53:53+08:00">2017-11-20</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenSSL/" itemprop="url" rel="index"><span itemprop="name">OpenSSL</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -208,7 +217,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>985</span>
+              <span>988</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -241,25 +250,26 @@
 </ul>
 <hr>
 <h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a><strong>过程</strong></h4><ol>
-<li><p>在Microsoft Visual Studio目录下搜索<strong>vcvarsall.bat</strong>并进入所在目录。<br><img src="http://img.blog.csdn.net/20171120204720006?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<li><p>在Microsoft Visual Studio目录下搜索<strong>vcvarsall.bat</strong>并进入所在目录。<br><img src="https://i.loli.net/2021/07/07/hbDj3oUKWFLJfuq.png"></p>
 </li>
 <li><p>在所在目录下打开cmd，运行<code>vcvarsall.bat x86_amd64</code></p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build&gt;vcvarsall.bat x86_amd64</span><br><span class="line">[vcvarsall.bat] Environment initialized for: &#x27;x86_x64&#x27;</span><br></pre></td></tr></table></figure></li>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build&gt;vcvarsall.bat x86_amd64</span><br><span class="line">[vcvarsall.bat] Environment initialized <span class="keyword">for</span>: <span class="string">&#x27;x86_x64&#x27;</span></span><br></pre></td></tr></table></figure></li>
 <li><p>cmd切换到解压完的OpenSSL源码目录运行</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;perl Configure VC-WIN64A</span><br></pre></td></tr></table></figure></li>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;perl Configure VC-WIN64A</span><br></pre></td></tr></table></figure></li>
 <li><p>继续运行</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;ms\do_win64a</span><br></pre></td></tr></table></figure></li>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;ms\do_win64a</span><br></pre></td></tr></table></figure></li>
 <li><p>继续执行，这步在我的电脑上跑了好几分钟</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;nmake -f ms\nt.mak </span><br></pre></td></tr></table></figure></li>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;nmake -f ms\nt.mak </span><br></pre></td></tr></table></figure></li>
 <li><p>继续执行。执行完第六步之后，编译好的OpenSSL就复制到了<code>\usr\local\ssl\lib</code>路径下，我是在桌面编译的，所以在C盘根目录</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;nmake -f ms\nt.mak install</span><br></pre></td></tr></table></figure></li>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\it\Desktop\openssl-1.0.2m&gt;nmake -f ms\nt.mak install</span><br></pre></td></tr></table></figure></li>
 <li><p>将OpenSSL路径<code>C:\usr\local\ssl\bin</code>添加到系统路径path里</p>
 </li>
-<li><p>打开一个新的cmd窗口，运行openssl命令，如图表明成功<br><img src="http://img.blog.csdn.net/20171120204650767?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjQwMjEyNA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<li><p>打开一个新的cmd窗口，运行openssl命令，如图表明成功<br><img src="https://i.loli.net/2021/07/07/UHcXsjCJErxna65.png"></p>
 </li>
 </ol>
 <hr>
 <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a><strong>注意</strong></h4><p>第2步到第3步要在同一个cmd窗口里运行。开始运行第5步不管用，总提示找不到nmake命令，我就直接把nmake.exe（Microsoft Visual Studio目录下搜索到的，同步骤1）直接放到系统路径里了，可以运行，后来发现2、 3只要在同一个cmd窗口就可以了。</p>
+<p>(完)</p>
 
     </div>
 
@@ -299,8 +309,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/ea2eb8cee0be/" rel="prev" title="Effective Java读书整理">
-      <i class="fa fa-chevron-left"></i> Effective Java读书整理
+    <a href="/29c00d69eefc/" rel="prev" title="「Effective Java」读书整理">
+      <i class="fa fa-chevron-left"></i> 「Effective Java」读书整理
     </a></div>
       <div class="post-nav-item">
     <a href="/d60506c80128/" rel="next" title="HelloKotlin - Error:Gradle-failed to create directory">
@@ -385,7 +395,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
