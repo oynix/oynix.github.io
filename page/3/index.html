@@ -161,6 +161,401 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/f07f2aa62201/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/f07f2aa62201/" class="post-title-link" itemprop="url">Program type already present: org.iq80.leveldb.CompressionType</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-07 10:56:07" itemprop="dateCreated datePublished" datetime="2018-08-07T10:56:07+08:00">2018-08-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>626</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天在Android Studio添加了一个新的依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation (&quot;org.ethereum:ethereumj-core:$ethereumj_version&quot;)</span><br></pre></td></tr></table></figure>
+<p>然后<code>Sync</code>可以通过，但是<code>Rebuild</code>报错如标题，往上搜了几个方法都未奏效，最后只好顺着问题找答案。</p>
+<p>报错的内容就是说<code>CompressionType</code>重复了，换句话说，添加的新依赖不添加这个即可。双击<code>Shift</code>全局搜索<code>CompressionType</code>定位，如图：<br><img src="https://i.loli.net/2021/07/07/nOSFvNhZ4BTgCmE.png"></p>
+<p>添加依赖时增加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">implementation (&quot;org.ethereum:ethereumj-core:$ethereumj_version&quot;) &#123;</span><br><span class="line">       exclude group: &#x27;org.iq80.leveldb&#x27;, module: &#x27;leveldb-api&#x27;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>Sync</code>通过，<code>Rebuild</code>又报新错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">More than one file was found with OS independent path &#x27;META-INF/spring.tooling&#x27;</span><br></pre></td></tr></table></figure>
+<p>在<code>android</code>节点增加配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	packagingOptions &#123;</span><br><span class="line">        pickFirst &#x27;META-INF/*&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>继续<code>Sync</code>，通过；<code>Rebuild</code>，通过。</p>
+<p>问题解决。</p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/a8ab36581124/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/a8ab36581124/" class="post-title-link" itemprop="url">[翻译]种子词</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-02 00:45:41" itemprop="dateCreated datePublished" datetime="2018-08-02T00:45:41+08:00">2018-08-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>原文地址：<a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Seed_phrase">https://en.bitcoin.it/wiki/Seed_phrase</a></p>
+</blockquote>
+<h3 id="种子短语"><a href="#种子短语" class="headerlink" title="种子短语"></a>种子短语</h3><p>种子短语、种子恢复短语或备用种子短语是存储恢复比特币钱包所需的所有信息的单词列表。钱包软件通常会生成一个种子短语并指示用户将其写在纸上。如果用户的电脑坏了或者他们的硬盘坏了，他们可以再次下载相同的钱包软件，使用纸质备份来取回他们的比特币。</p>
+<p>任何发现这个短语的人都可以偷比特币，所以比特币必须保存的像珠宝或现金一样安全。例如，它不能被键入任何网站。</p>
+<p>种子短语是备份和存储比特币的好方法，因此几乎所有受好评的钱包都使用它们</p>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>种子短语的一个例子是:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">witch collapse practice feed shame open despair creek road again ice least</span><br></pre></td></tr></table></figure>
+<p>单词的顺序是很重要的。</p>
+<h4 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h4><p>关于种子短语如何工作的一个简单的解释是，钱包软件有一个从字典中提取的单词列表，每个单词被分配给一个数字。种子短语可以转换为一个数字，该数字用作种子整数，以生成钱包中使用的所有密钥对的确定性钱包。</p>
+<p>BIP39标准2048字的英文词库,如果这个词只包含12个随机的单词,可能的组合的数量将是2048 ^ 12 = 2 ^ 132，并且短语有132位安全性。但是，BIP39短语中的一些数据不是随机的，所以12个单词的BIP39种子短语的实际安全性只有128位。这与所有比特币私钥的强度大致相同，因此大多数专家认为它足够安全。</p>
+<p>发明你自己的种子短语并不安全，因为人类不善于产生随机性。最好的方法是让钱包软件生成你写下的短语。</p>
+<h4 id="双重种子短语"><a href="#双重种子短语" class="headerlink" title="双重种子短语"></a>双重种子短语</h4><p>种子短语和所有备份一样，可以存储任意数量的比特币。这是一个令人担忧的想法，可能有足够购买整个建筑的钱，却只是写在一张纸上而没有任何保护。由于这个原因，许多钱包使得用密码加密种子短语成为可能。</p>
+<p>密码可用于创建一个双因素种子短语，其中需要“你拥有的东西”和“你知道的东西”才能解锁比特币。</p>
+<p>它的工作原理是钱包创建一个种子短语并向用户询问密码。然后需要种子短语和额外的单词，才能恢复钱包。Electrum和其他一些钱包把密码短语叫做“种子扩展”，“扩展词”或者“第13 /25个单词”。BIP39标准定义了一种保护种子短语的方法。在Electrum标准中也使用了类似的方案。如果没有密码，则使用空字符串“”。</p>
+<p>警告:忘记这个密码将导致比特币钱包和任何钱包里包含的钱丢失。不要高估你记住密码的能力，尤其是当你可能不经常使用密码的时候。</p>
+<p>警告:种子短语密码不应该与用于加密磁盘上钱包文件的密码混淆。这可能就是为什么许多钱包称它为扩展词而不是密码。</p>
+<h4 id="诱骗的钱包"><a href="#诱骗的钱包" class="headerlink" title="诱骗的钱包"></a>诱骗的钱包</h4><p>这个功能还提供了貌似合理的可否认性，因为每个密码都会生成一个有效的钱包，但只有正确的密码才会让你想要的钱包可用。您可以创建一个具有相同种子短语但不同密码的诱骗钱包，如果身体上被迫，那么只显示第一个密码，并将第二个密码保密。</p>
+<p>另一方面，强迫你的实体可能已经知道诱骗钱包的概念。他们可以继续打你，直到你放弃两三个密码。</p>
+<p>关于这个问题的更长的讨论，请参见存储比特币# 5美元扳手攻击</p>
+<h4 id="长期储存种子短语"><a href="#长期储存种子短语" class="headerlink" title="长期储存种子短语"></a>长期储存种子短语</h4><p>大多数人在纸上写下短语，但也可以用许多其他的方式来存储，比如记忆、雕刻金属、在书页空白处写字、刻石碑或任何其他有创意的方式。</p>
+<p>用铅笔在纸上书写要比用钢笔书写好得多。纸张应无酸味或档案纸，存放在黑暗中，避免高温和潮湿。</p>
+<p>有些人想把他们的短语分开。在一个地方储存6个单词，在另一个地方储存6个单词。这是一个糟糕的想法，不应该这样做，因为如果一组6个单词被发现，那么就更容易对剩下的短语进行暴力攻击。像这样在多个地方存储比特币应该通过多签名钱包来实现。</p>
+<p>另一个坏主意是添加一些对你有意义的随机假词，然后把它们删除，只留下12个单词短语。这个短语来自于一本已知的字典(见下一节)，所以任何人都可以用那本字典来除去假词。</p>
+<p>在同一张纸上写一些解释的词，这可能是个好主意。如果长期储存，你可能会忘记一个短语应该如何处理。可以加以修改的示例解释是:</p>
+<pre><code>这十二个字控制着比特币。保管好这张纸，像现金或珠宝一样保密。本文中的比特币信息用密码加密。它是一个多  签名钱包的一部分，是在2012年1月1日由电子比特币钱包软件制作的。
+</code></pre>
+<h4 id="单词列表"><a href="#单词列表" class="headerlink" title="单词列表"></a>单词列表</h4><p>一般来说，种子短语只适用于创建它的相同的钱包软件。如果储存的时间很长，最好也写上钱包的名字。</p>
+<p>BIP39英语单词表中，每个单词都由前四个字母唯一地识别出来，这在空间有限的情况下是很有用的。</p>
+<h4 id="替代的名字“助记词”"><a href="#替代的名字“助记词”" class="headerlink" title="替代的名字“助记词”"></a>替代的名字“助记词”</h4><p>种子短语有时被称为“助记短语”，特别是在古老的文学作品中。这是一个不好的名字，因为单词助记意味着这个短语应该被记住。把它们叫做种子短语没有那么误导人。</p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/97037d409735/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/97037d409735/" class="post-title-link" itemprop="url">[翻译]比特币确定性钱包</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-01 23:32:02" itemprop="dateCreated datePublished" datetime="2018-08-01T23:32:02+08:00">2018-08-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>原文地址：<a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Deterministic_wallet">https://en.bitcoin.it/wiki/Deterministic_wallet</a></p>
+</blockquote>
+<h3 id="确定性钱包"><a href="#确定性钱包" class="headerlink" title="确定性钱包"></a>确定性钱包</h3><p>确定性钱包是一种系统，从一个被称为种子的单一起点获取密钥。种子允许用户在不需要任何其他信息的情况下轻松备份和恢复钱包，在某些情况下，用户可以在不知道私钥的情况下创建公共地址。种子通常被串行化为人类可读的字词。</p>
+<h4 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h4><p>早期的客户端，如Satoshi客户端，会生成一个新的随机私钥缓冲区，在将来用作接收和更改地址。在短时间内耗尽密钥池缓冲区(通常是100个地址)后，这将使备份失效。确定性钱包可以在动态中产生无限数量的地址，因此不会受到这个问题的影响。由于地址是以一种已知的方式生成的，而不是随机生成的，一些客户端可以在多个设备上使用，而不会造成资金损失。用户可以方便地以人类可读的格式创建种子的单个备份，这种格式将持续钱包的使用寿命，而不必担心这种备份会变得过时。<br>特定类型的确定性钱包(BIP0032, Armory, Coinkite和Coinb)额外允许完全分离私有和公共密钥的创建，以获得更大的安全性和方便性。在这个模型中，服务器可以设置为只知道特定确定性钱包的主公钥。这允许服务器创建尽可能多的公钥来接收资金，但是MPK协议不会允许攻击者从钱包中花钱。它们也可以在Electrum和Armory中使用，以实现完全离线存储和花费，离线计算机知道私钥，而在线的计算机只知道MPK。通过USB存储器，两种计算机之间可以通过USB存储器进行交易，避免将离线计算机暴露给基于网络的攻击。<br>由硬件钱包(TREZOR)实现的确定性钱包将生成的私钥保持离线状态，即使花钱时也不将它们暴露给计算机。</p>
+<h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><h4 id="类型1-确定性钱包"><a href="#类型1-确定性钱包" class="headerlink" title="类型1 确定性钱包"></a>类型1 确定性钱包</h4><p>类型1确定性钱包是一种从已知的起始字符串生成地址的简单方法，因此它不允许高级功能，如主公钥。要生成一个私钥，需要使用SHA256(string + n)，其中n是一个ascii编码的数字，它从1开始，并随着需要额外的键而增加。<br>这种类型的钱包可以由Casascius比特币地址实用程序创建。</p>
+<h4 id="类型2-分层确定性钱包"><a href="#类型2-分层确定性钱包" class="headerlink" title="类型2 分层确定性钱包"></a>类型2 分层确定性钱包</h4><p>这种钱包类型在bip0032中进行了描述，并在TREZOR、Electrum和CarbonWallet中得到了充分的实现。种子是一个随机的128位值，用户可以使用常用的英语单词作为12个单词的种子短语。该种子在10万轮SHA256之后使用，以减缓对弱用户选择字符串的攻击。<br>这种钱包类型的最初描述和工作原理都归功于格雷戈里·麦克斯韦。</p>
+<h4 id="Armory确定性钱包"><a href="#Armory确定性钱包" class="headerlink" title="Armory确定性钱包"></a>Armory确定性钱包</h4><p>Armory有自己基于“根键”和“链码”的2型确定性钱包格式。早期版本的Armory需要备份“根键”和“链码”，而较新的版本则以不可逆转的方式从私钥派生链码。这些新的Armory(0.89+)只需要一个256位的根键。这种旧格式打算逐步淘汰，以支持标准BIP0032格式。</p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/6dcc04b57a51/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/6dcc04b57a51/" class="post-title-link" itemprop="url">[翻译]Bitcoin Address介绍</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-01 22:33:23" itemprop="dateCreated datePublished" datetime="2018-08-01T22:33:23+08:00">2018-08-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>原文地址: <a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Address">https://en.bitcoin.it/wiki/Address</a></p>
+</blockquote>
+<h2 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h2><p>一个比特币地址或是一个简单地址，是一个26-35个字母或数字组成的标识符，以数字1或3开头，这代表了比特币支付的可能目的地。任何比特币的使用者不需要任何话费便可以生成地址。例如使用Bitcoin Core客户端，点击“New Address“就会被分配一个地址。通过一个交易所账号或者在线钱包服务来获得比特币地址也是可能的。目前正被使用中的地址有3种格式：</p>
+<ol>
+<li>P2PKH类型，以数字<code>1</code>开头，例如：<code>1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2</code>.</li>
+<li>P2SH类型，以数字<code>3</code>开头，例如：<code>3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy</code>.</li>
+<li>Bech32类型，以<code>bc1</code>开头，例如：<code>bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq</code>.</li>
+</ol>
+<h4 id="比特币地址是一个一次性的令牌"><a href="#比特币地址是一个一次性的令牌" class="headerlink" title="比特币地址是一个一次性的令牌"></a>比特币地址是一个一次性的令牌</h4><p>就像e-mail地址，你可以通过向一个人比特币地址中的一个地址发送比特币来实现给这个人发送比特币。然而，和e-mail地址不同的是，一个人可以拥有很多比特币地址，每一次交易应该使用一个唯一的地址。大多数比特币软件和网站都会帮助你在每次创建发票或付款请求时生成一个全新的地址。</p>
+<h4 id="地址可以离线创建"><a href="#地址可以离线创建" class="headerlink" title="地址可以离线创建"></a>地址可以离线创建</h4><p>创建地址无需互联网连接，也不需要与比特币网络进行任何联系或注册。可以使用免费的软件工具创建大量离线地址。生成大量地址在几个场景很有用，比如电子商务网站，为每个选择“用比特币支付”选项的客户提供一个唯一的预先生成的地址。较新的“HD钱包”可以生成一个“种子”令牌，可以用来让不受信任的系统(如webservers)生成无限数量的地址，而无需花费接收到的比特币。</p>
+<h4 id="地址通常是区分大小写和准确的"><a href="#地址通常是区分大小写和准确的" class="headerlink" title="地址通常是区分大小写和准确的"></a>地址通常是区分大小写和准确的</h4><p>旧式的比特币地址是大小写敏感的。比特币的地址应该尽可能地使用电脑的剪贴板复制和粘贴。如果你手工键入一个比特币地址，而每个字符都没有被准确地转录(包括大写)，那么不正确的地址很可能会被比特币软件拒绝。你必须检查你的条目，然后再试一次。一个输入错误的地址被接受为有效的概率是1 / 232，也就是大约1 / 42.9亿。新型bech32地址不区分大小写。</p>
+<h4 id="证明你收到了一个地址"><a href="#证明你收到了一个地址" class="headerlink" title="证明你收到了一个地址"></a>证明你收到了一个地址</h4><p>大多数比特币钱包都有一个“签名”信息的功能，这可以证明接收资金的实体已经同意该信息。例如，这可以用于在支付合同之前，以一种加密的可验证的方式确定合同。<br>有些服务还将利用这种功能，只指定一个特定的地址进行身份验证，在这种情况下，该地址永远不应该用于实际的比特币交易。当您登录或使用他们的服务时，您将提供一个签名，证明您与预先商定的地址相同。<br>值得注意的是，这些签名仅仅证明一个人收到了一个地址。由于比特币交易没有“来自”地址，你无法证明你是资金的发送者。<br>目前的消息签名标准仅与“0版本”的比特币地址(以数字1开头)兼容。</p>
+<h4 id="地址验证"><a href="#地址验证" class="headerlink" title="地址验证"></a>地址验证</h4><p>如果希望在应用程序中验证比特币地址，建议使用<a target="_blank" rel="noopener" href="https://bitcointalk.org/index.php?topic=1026.0">这个线程中</a>的方法，而不是只检查字符串长度、允许的字符，或者地址以1或3开头。验证还可以使用<a target="_blank" rel="noopener" href="http://rosettacode.org/wiki/Bitcoin/address_validation">各种语言</a>的开放源代码或使用<a target="_blank" rel="noopener" href="http://lenschulwitz.com/base58">在线验证工具</a>进行。</p>
+<h4 id="多重签名的地址"><a href="#多重签名的地址" class="headerlink" title="多重签名的地址"></a>多重签名的地址</h4><p>可以创建需要多个私钥组合的地址。由于它们利用了较新的特性，所以它们以较新的前缀3而不是旧的1开始。这可以被看作是向两方开出支票——“支付给某人和其他人的订单”——双方必须在支票上签字以获得资金。<br>必须满足的实际需求(所需的私钥数量、相应的公钥等)是由生成此类地址的人预先决定的，一旦创建了地址，就不能在不生成新地址的情况下更改该需求。</p>
+<h4 id="一个地址里有什么"><a href="#一个地址里有什么" class="headerlink" title="一个地址里有什么"></a>一个地址里有什么</h4><p>大多数比特币的地址是34个字符。它们由随机数字、大写字母和小写字母组成，除了大写字母“O”、大写字母“I”、小写字母“l”和数字“0”从未使用来避免视觉上的歧义。<br>一些比特币地址可以短于34个字符(少到26个字符)，但仍然有效。相当大比例的比特币地址只有33个字符，有些甚至可能更短。每个比特币地址代表一个数字。这些较短的地址是有效的，因为它们代表的是恰好以0开头的数字，当这些0被省略时，编码的地址就会变短。<br>比特币地址中有几个字符被用作校验和，因此可以自动查找和拒绝排版错误。校验和还允许比特币软件确认一个33个字符(或更短)的地址实际上是有效的，而不是一个缺少字符的地址。</p>
+<h4 id="测试网络"><a href="#测试网络" class="headerlink" title="测试网络"></a>测试网络</h4><p>比特币Testnet上的地址是用不同的地址版本生成的，这会产生不同的前缀。有关详细信息，请参阅地址前缀和Testnet列表。</p>
+<h3 id="误解"><a href="#误解" class="headerlink" title="误解"></a>误解</h3><h4 id="地址重用"><a href="#地址重用" class="headerlink" title="地址重用"></a>地址重用</h4><p>地址不打算被使用多次，这样做有许多相关的问题。有关地址重用的详细信息，请参阅专门的文章。</p>
+<h4 id="地址余额"><a href="#地址余额" class="headerlink" title="地址余额"></a>地址余额</h4><p>地址不是钱包或账户，也没有余额。他们只收钱，而你在任何时候都不发送“从”地址。各种混乱的服务和软件显示’用一个地址接收比特币’,从随机不相关的交易中减去已发送的比特币作为一个’地址余额’,但这个数字是没有意义的:它并不意味着向这个地址发送的比特币的接收者已经花掉了它们，也不意味着他们仍然持有接收的比特币。<br>这种误解造成比特币损失的一个例子是，人们认为他们的地址包含3btc。他们花了0.5比特币，认为地址现在包含2.5比特币，而实际上它包含零比特币。剩余的2.5比特币被转移到一个没有备份的更改地址，因此丢失。这发生在一些使用纸质钱包的用户的场合。</p>
+<h4 id="“从“地址"><a href="#“从“地址" class="headerlink" title="“从“地址"></a>“从“地址</h4><p>比特币交易没有任何来源——来源——或“来自”地址。有关“来自地址”的详细信息，请参阅专门的文章。</p>
+<h4 id="地址图"><a href="#地址图" class="headerlink" title="地址图"></a>地址图</h4><p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-S43U7xMP-1625627005514)(<a target="_blank" rel="noopener" href="https://en.bitcoin.it/w/images/en/4/48/Address_map.jpg)]">https://en.bitcoin.it/w/images/en/4/48/Address_map.jpg)]</a></p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/d60506c80128/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -699,366 +1094,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/31c771f65733/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/31c771f65733/" class="post-title-link" itemprop="url">几分钟完成发布开源库到jCenter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-10 10:22:53" itemprop="dateCreated datePublished" datetime="2017-10-10T10:22:53+08:00">2017-10-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>在AndroidStudio中导入开源库一般就是一句话的事：<code>compile &#39;xxx.xx.xx:xx&#39;</code>。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行<code>compile &#39;xxx.xxx.xx:xx&#39;</code> 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发布开源库，要通过它的托管商–Bintray（Bintray托管着很多仓库，jCenter只是其中一个）来完成。</p>
-<p>把自己平时经常用到的一些代码写到一起上传到jCenter，以后不管做什么项目一句话就能导入，算来还是一个比较实用的功能。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/31c771f65733/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/8b0716318a1c/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/8b0716318a1c/" class="post-title-link" itemprop="url">Android Drawable 和 xml文件转化关系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-09-04 16:58:53" itemprop="dateCreated datePublished" datetime="2017-09-04T16:58:53+08:00">2017-09-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>543</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>Drawable类既可以在代码中创建也可以在xml文件中设置，以下是各类型的对应关系。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/8b0716318a1c/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/992c82f9c39e/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/992c82f9c39e/" class="post-title-link" itemprop="url">Android改变图片属性之饱和度</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-09-04 14:04:53" itemprop="dateCreated datePublished" datetime="2017-09-04T14:04:53+08:00">2017-09-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>202</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>简单实现改变图片饱和度</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/992c82f9c39e/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/373186e06a55/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/373186e06a55/" class="post-title-link" itemprop="url">Android 自定义样式通知栏的坑RemoteServiceException</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-07-12 14:58:53" itemprop="dateCreated datePublished" datetime="2017-07-12T14:58:53+08:00">2017-07-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>674</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>Android 自定义样式通知栏的坑RemoteServiceException</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Android.app.RemoteServiceException: Bad notification posted from packagecom.my.package:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>是的，就是这个异常。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/373186e06a55/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1128,20 +1163,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1185,12 +1220,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">92k</span>
+    <span title="站点总字数">98k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:23</span>
+    <span title="站点阅读时长">1:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
