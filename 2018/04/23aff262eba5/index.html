@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="周末看完了「巧用Gradle构建Android应用」，故将新认知整理在此以便以后供自己以及有需要的人查看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「巧用Gradle构建Android应用」读书整理">
+<meta property="og:url" content="http://example.com/2018/04/23aff262eba5/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="周末看完了「巧用Gradle构建Android应用」，故将新认知整理在此以便以后供自己以及有需要的人查看。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-23T14:37:30.000Z">
+<meta property="article:modified_time" content="2021-07-07T04:36:10.467Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Gradle">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2018/04/23aff262eba5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>「巧用Gradle构建Android应用」读书整理 | oynix</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/23aff262eba5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「巧用Gradle构建Android应用」读书整理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-23 22:37:30" itemprop="dateCreated datePublished" datetime="2018-04-23T22:37:30+08:00">2018-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>周末看完了「巧用Gradle构建Android应用」，故将新认知整理在此以便以后供自己以及有需要的人查看。</p>
+<span id="more"></span> 
+<p>Gradle</p>
+<ul>
+<li><p>Gradle构建过程实际上是执行DAG(Directed Acyclic Graph，有向无环图)，允许定义自己的task并插入到其中。<br>build.gradle中Android块时Android DSL()的入口。</p>
+</li>
+<li><p>依赖的语法</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//完整语法 (禁用传递依赖)</span></span><br><span class="line">testCompile <span class="attr">group:</span> <span class="string">&#x27;junit&#x27;</span>, <span class="attr">name:</span> <span class="string">&#x27;junit&#x27;</span>, <span class="attr">version:</span> <span class="string">&#x27;4.12&#x27;</span>， <span class="attr">transitive:</span> <span class="literal">false</span> </span><br><span class="line"><span class="comment">//排除依赖</span></span><br><span class="line">androidTestCompile(<span class="string">&#x27;org.splckframeword:spock-core:1.0-groovy-2.4&#x27;</span>) &#123;</span><br><span class="line">	exclude <span class="attr">group:</span> <span class="string">&#x27;org.codehaus.groovy&#x27;</span></span><br><span class="line">	exclude <span class="attr">group:</span> <span class="string">&#x27;junit&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>配置仓库</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">	maven &#123;</span><br><span class="line">	<span class="comment">// 其中的username值和password值可以写在gradle.properties或者在执行gradlew命令时以参数输入</span></span><br><span class="line">	<span class="comment">// ./gradlew -Puser=user_from_pFlag -Ppass=pass_from_pFlag</span></span><br><span class="line">		username <span class="string">&#x27;username&#x27;</span></span><br><span class="line">		password <span class="string">&#x27;password&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">	url <span class="string">&#x27;http://repo.mycompany.com/maven2&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 还可以在ext块中配置</span></span><br><span class="line">ext &#123;</span><br><span class="line">	<span class="keyword">if</span> (!project.hasProperty(<span class="string">&#x27;user&#x27;</span>)) &#123;</span><br><span class="line">		<span class="keyword">def</span> username = <span class="string">&#x27;alice&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (!project.hasProperty(<span class="string">&#x27;pass&#x27;</span>)) &#123;</span><br><span class="line">		<span class="keyword">def</span> password = <span class="string">&#x27;passpass&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>升级Gradle版本</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法一</span></span><br><span class="line">task wrapper(<span class="attr">type:</span> Wrapper) &#123;</span><br><span class="line">	gradleVersion = <span class="number">2.12</span></span><br><span class="line">&#125;</span><br><span class="line">./gradlew wrapper</span><br><span class="line"><span class="comment">// 方法二：直接修改gradle-wrapper.properties文件的distributionUrl属性。</span></span><br></pre></td></tr></table></figure></li>
+<li><p>签名</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	<span class="comment">// ...other section...</span></span><br><span class="line">	signingConfigs &#123;</span><br><span class="line">		release &#123;</span><br><span class="line">			keyAlias <span class="string">&#x27;my_alias&#x27;</span></span><br><span class="line">			keyPassword <span class="string">&#x27;password&#x27;</span></span><br><span class="line">			storeFile file(<span class="string">&#x27;/Users/kousen/keystores/myapp.ketstore&#x27;</span>)</span><br><span class="line">			storePassword <span class="string">&#x27;password&#x27;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 同样，密码可以放到gradle.properties中，或者以gradlew的参数输入</span></span><br></pre></td></tr></table></figure></li>
+<li><p>构建类型</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">buildTypes &#123;</span><br><span class="line"><span class="comment">// 加后缀区分可同时安装在同一设备上</span></span><br><span class="line">	debug &#123;</span><br><span class="line">		applicationIdSuffix <span class="string">&#x27;.debug&#x27;</span></span><br><span class="line">		versionNameSuffix <span class="string">&#x27;-debug&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>产品定制&amp;纬度</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	productFlavors &#123;</span><br><span class="line">		arrogant &#123;</span><br><span class="line">			dimension <span class="string">&#x27;attitude&#x27;</span></span><br><span class="line">			applicationId <span class="string">&#x27;com.oreilly.helloword.arrg&#x27;</span></span><br><span class="line">		&#125;</span><br><span class="line">		friendly &#123;</span><br><span class="line">			dimension <span class="string">&#x27;attitude&#x27;</span></span><br><span class="line">			applicationId <span class="string">&#x27;com.oreilly.helloword.fund&#x27;</span></span><br><span class="line">		&#125;</span><br><span class="line">		stark &#123;</span><br><span class="line">			dimension <span class="string">&#x27;client&#x27;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>自定义任务。Grale的DSL API已经存在很多任务，如Copy、Wrapper和Exec等，这些任务可以简单地设置属性然后使用。比如Copy任务所包含的from和into属性。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复制任务</span></span><br><span class="line">task copyApks(<span class="attr">type:</span> Copy) &#123;</span><br><span class="line">	from(<span class="string">&quot;$buildDir/outputs/apk&quot;</span>) &#123;</span><br><span class="line">		exclude <span class="string">&#x27;**/*unsigned.apk&#x27;</span>, <span class="string">&#x27;**/*unaligned.apk&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">	into <span class="string">&#x27;../apks&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 显示所有可用任务的变种。这个任务中无论在doLast之前还是之后的所有事情都是在配置阶段执行，</span></span><br><span class="line"><span class="comment">// doLast块中的代码在运行阶段执行</span></span><br><span class="line"><span class="comment">// applicationVariants属性只针对com.android.application插件有效</span></span><br><span class="line"><span class="comment">// libraryVariants属性只针对com.android.library插件有效</span></span><br><span class="line">task printVariantNames() &#123;</span><br><span class="line">	doLast &#123;</span><br><span class="line">		android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">			println variant.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 执行安装所有应用的变种的任务</span></span><br><span class="line"><span class="comment">// dependsOn属性显示这是配置阶段的一部分，而不是运行阶段。每一个变种名字都被首字母大写了</span></span><br><span class="line"><span class="comment">// 并且相应的安装任务也被添加到installDebugFlavors任务的一个依赖</span></span><br><span class="line">task installDebugFlavors() &#123;</span><br><span class="line">	android.applicationVariants.all &#123; v -&gt;</span><br><span class="line">		<span class="keyword">if</span> (v.name.endWiths(<span class="string">&#x27;Debug&#x27;</span>)) &#123;</span><br><span class="line">			String name = v.name.capitalize()</span><br><span class="line">			dependsOn <span class="string">&quot;install$name&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>延长ADB超时时长</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 30秒</span></span><br><span class="line">android &#123;</span><br><span class="line">	adbOptions &#123;</span><br><span class="line">		timeOutInMs = <span class="number">30</span> * <span class="number">1000</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>添加自定义任务到构建过程</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基于assembleDebug的依赖意味着在运行copy任务之前所有调试APK都会被生成。</span></span><br><span class="line">task copyApks (<span class="attr">type:</span> Copy, <span class="attr">dependsOn:</span> assembleDebug) &#123;</span><br><span class="line">	from(<span class="string">&quot;$buildDir/outputs/apk&quot;</span>) &#123;</span><br><span class="line">		exclude <span class="string">&#x27;**/*unsigned.apk&#x27;</span>, <span class="string">&#x27;**/*unsigned.apk&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">	into <span class="string">&#x27;../apks&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 如果想要在每次构建的时候都运行copyApks任务，将其作为build任务的一个依赖</span></span><br><span class="line">build.dependsOn copyApks</span><br></pre></td></tr></table></figure></li>
+<li><p>排除任务</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; ./gradlw build -x lint</span><br><span class="line"><span class="comment">// Gradle运行时，其组装了一个task graph，通过gradle获得这个图的饮用，所有对这个图的操纵都需要发生</span></span><br><span class="line"><span class="comment">// 在其构建出来之后，所以需要使用whenReady属性</span></span><br><span class="line">gradle.taskGraph.whenReady &#123; graph -&gt;</span><br><span class="line">	<span class="keyword">if</span> (project.hasProperty(<span class="string">&#x27;nolint&#x27;</span>)) &#123;</span><br><span class="line">		graph.allTask.findAll &#123;</span><br><span class="line">			it.name ==<span class="regexp">~/lint.*/</span>&#125;*.enabled = <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>性能</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties</span></span><br><span class="line"><span class="comment">// 守护进程</span></span><br><span class="line">org.gradle.daemon=<span class="literal">true</span></span><br><span class="line"><span class="comment">// 按需配置设置</span></span><br><span class="line">org.gradle.configureondemand=<span class="literal">true</span></span><br><span class="line"><span class="comment">// 选择JVM设置 Xmx最大内存 Xms初始内存 XX:MaxPermSize永代久空间 </span></span><br><span class="line"><span class="comment">// HeapDumpOnOutOfMemoryError发生时，将堆中情况导出到一个文件中</span></span><br><span class="line">org.gradle.jvmargs=-Xmx2048m -<span class="attr">XX:</span>MaxPermSize=<span class="number">512</span>m -<span class="attr">XX:</span>+HeapDumpOnOutOfMemoryError</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用dex选项</span></span><br><span class="line">dexOptions &#123;</span><br><span class="line">	incremental <span class="literal">true</span></span><br><span class="line">	javaMaxHeapSize <span class="string">&#x27;2g&#x27;</span></span><br><span class="line">	jumboMode = <span class="literal">true</span><span class="comment">//运载dex文件中出现的大量字符串，可能需要配置ProdGuard</span></span><br><span class="line">	preDexLibraries = <span class="literal">true</span></span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>(完)</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/22d73a690578/" rel="prev" title="gradle各个版本资源">
+      <i class="fa fa-chevron-left"></i> gradle各个版本资源
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/c9ea6aa5bbde/" rel="next" title="MySql的modify和change区别">
+      MySql的modify和change区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">114k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:43</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

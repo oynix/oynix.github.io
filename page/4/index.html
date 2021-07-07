@@ -9,6 +9,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -17,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="避免没有计划的行动">
@@ -43,7 +45,7 @@
   };
 </script>
 
-  <title>oynix</title>
+  <title>oynix - 人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</title>
   
 
 
@@ -97,7 +99,7 @@
       <h1 class="site-title">oynix</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">github这个域名也挺好</p>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
   </div>
 
   <div class="site-nav-right">
@@ -114,6 +116,11 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -141,13 +148,9 @@
     </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
   <div class="reading-progress-bar"></div>
 
-  <a href="https://github.com/oynix" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
 
 
     <main class="main">
@@ -161,10 +164,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/22d73a690578/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/12/22d73a690578/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -175,7 +178,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/22d73a690578/" class="post-title-link" itemprop="url">gradle各个版本资源</a>
+            <a href="/2017/12/22d73a690578/" class="post-title-link" itemprop="url">gradle各个版本资源</a>
         </h2>
 
         <div class="post-meta">
@@ -226,7 +229,7 @@
 <p>但是这个网站有时需要翻墙有时下载速度慢，趁着现在翻墙方便一次性将上面的里程碑版本下了下来</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/22d73a690578/#more" rel="contents">
+              <a class="btn" href="/2017/12/22d73a690578/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -250,10 +253,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/11b68604d6b4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/12/11b68604d6b4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -264,7 +267,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/11b68604d6b4/" class="post-title-link" itemprop="url">HelloKotlin - Error:Gradle-failed to create directory</a>
+            <a href="/2017/12/11b68604d6b4/" class="post-title-link" itemprop="url">HelloKotlin - Error:Gradle-failed to create directory</a>
         </h2>
 
         <div class="post-meta">
@@ -315,7 +318,7 @@
 <p>今天在看Kotlin-Docs，于是随手建了一个HelloKotlin的项目准备练练手，于是引发了一连串的问题。在此记录过程。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/11b68604d6b4/#more" rel="contents">
+              <a class="btn" href="/2017/12/11b68604d6b4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -339,10 +342,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/0d432f214850/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/11/0d432f214850/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -353,7 +356,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/0d432f214850/" class="post-title-link" itemprop="url">Windows下编译OpenSSL</a>
+            <a href="/2017/11/0d432f214850/" class="post-title-link" itemprop="url">Windows下编译OpenSSL</a>
         </h2>
 
         <div class="post-meta">
@@ -404,7 +407,7 @@
 <p>今天为了获取FB秘钥，里面有个命令openssl，于是网上找了一下教程，众说纷纭，最后可算成功了，在此记录过程。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/0d432f214850/#more" rel="contents">
+              <a class="btn" href="/2017/11/0d432f214850/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -428,10 +431,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/29c00d69eefc/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/11/29c00d69eefc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -442,7 +445,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/29c00d69eefc/" class="post-title-link" itemprop="url">「Effective Java」读书整理</a>
+            <a href="/2017/11/29c00d69eefc/" class="post-title-link" itemprop="url">「Effective Java」读书整理</a>
         </h2>
 
         <div class="post-meta">
@@ -493,7 +496,7 @@
 <p>书地址 ：链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1kUAwYgv">https://pan.baidu.com/s/1kUAwYgv</a> 密码: ij4j</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/29c00d69eefc/#more" rel="contents">
+              <a class="btn" href="/2017/11/29c00d69eefc/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -517,10 +520,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/5fec38fe91ba/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/10/5fec38fe91ba/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -531,7 +534,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/5fec38fe91ba/" class="post-title-link" itemprop="url">Android YuvImage直接旋转</a>
+            <a href="/2017/10/5fec38fe91ba/" class="post-title-link" itemprop="url">Android YuvImage直接旋转</a>
         </h2>
 
         <div class="post-meta">
@@ -582,7 +585,7 @@
 <p>操作相机的<code>Preview</code>可通过以下三种方式添加回调接口：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/5fec38fe91ba/#more" rel="contents">
+              <a class="btn" href="/2017/10/5fec38fe91ba/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -606,10 +609,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/208c39b1bdad/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/10/208c39b1bdad/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -620,7 +623,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/208c39b1bdad/" class="post-title-link" itemprop="url">ScrollView在SlidingUpPanelLayout中下滑无效问题</a>
+            <a href="/2017/10/208c39b1bdad/" class="post-title-link" itemprop="url">ScrollView在SlidingUpPanelLayout中下滑无效问题</a>
         </h2>
 
         <div class="post-meta">
@@ -670,7 +673,7 @@
           <p>当在<code>ScrollableView</code>(即, 可上下滑动的ViewGroup)中含有<code>ScrollView</code>时，向上滑动<code>ScrollableView</code>至其全部上移展示出来时，继续向上滑动时<code>ScrollView</code>会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是<code>ScrollabldView</code>，这就导致<code>ScrollView</code>无法下滑，解决该问题一种简单有效的实践：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/208c39b1bdad/#more" rel="contents">
+              <a class="btn" href="/2017/10/208c39b1bdad/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -694,10 +697,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/a9bb97b2a678/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/10/a9bb97b2a678/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -708,7 +711,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/a9bb97b2a678/" class="post-title-link" itemprop="url">手把手教你实现RecyclerView的下拉刷新和上拉加载更多</a>
+            <a href="/2017/10/a9bb97b2a678/" class="post-title-link" itemprop="url">手把手教你实现RecyclerView的下拉刷新和上拉加载更多</a>
         </h2>
 
         <div class="post-meta">
@@ -760,7 +763,7 @@
 <p>基于RecyclerView简单封装了这两个操作，下拉刷新支持LinearLayoutManager、GridLayoutManager和StaggeredGridLayoutManager;上拉加载更多只支持前两者。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/a9bb97b2a678/#more" rel="contents">
+              <a class="btn" href="/2017/10/a9bb97b2a678/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -784,10 +787,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/31c771f65733/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/10/31c771f65733/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -798,7 +801,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/31c771f65733/" class="post-title-link" itemprop="url">几分钟完成发布开源库到jCenter</a>
+            <a href="/2017/10/31c771f65733/" class="post-title-link" itemprop="url">几分钟完成发布开源库到jCenter</a>
         </h2>
 
         <div class="post-meta">
@@ -850,7 +853,7 @@
 <p>把自己平时经常用到的一些代码写到一起上传到jCenter，以后不管做什么项目一句话就能导入，算来还是一个比较实用的功能。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/31c771f65733/#more" rel="contents">
+              <a class="btn" href="/2017/10/31c771f65733/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -874,10 +877,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/8b0716318a1c/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/09/8b0716318a1c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -888,7 +891,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/8b0716318a1c/" class="post-title-link" itemprop="url">Android Drawable 和 xml文件转化关系</a>
+            <a href="/2017/09/8b0716318a1c/" class="post-title-link" itemprop="url">Android Drawable 和 xml文件转化关系</a>
         </h2>
 
         <div class="post-meta">
@@ -939,7 +942,7 @@
 <p>Drawable类既可以在代码中创建也可以在xml文件中设置，以下是各类型的对应关系。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/8b0716318a1c/#more" rel="contents">
+              <a class="btn" href="/2017/09/8b0716318a1c/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -963,10 +966,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/992c82f9c39e/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/09/992c82f9c39e/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/fbb.jpg">
       <meta itemprop="name" content="oynix">
       <meta itemprop="description" content="避免没有计划的行动">
     </span>
@@ -977,7 +980,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/992c82f9c39e/" class="post-title-link" itemprop="url">Android改变图片属性之饱和度</a>
+            <a href="/2017/09/992c82f9c39e/" class="post-title-link" itemprop="url">Android改变图片属性之饱和度</a>
         </h2>
 
         <div class="post-meta">
@@ -1028,7 +1031,7 @@
 <p>简单实现改变图片饱和度</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/992c82f9c39e/#more" rel="contents">
+              <a class="btn" href="/2017/09/992c82f9c39e/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1109,6 +1112,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
   <p class="site-author-name" itemprop="name">oynix</p>
   <div class="site-description" itemprop="description">避免没有计划的行动</div>
 </div>
@@ -1137,16 +1142,20 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/oynix" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:oynix@foxmail.com" title="E-Mail → mailto:oynix@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
 
 
 
       </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
 
     </div>
   </aside>
@@ -1181,7 +1190,7 @@
     </span>
     <span title="站点阅读时长">1:43</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
 
 
