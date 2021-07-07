@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="纵观多数App，下拉刷新和上拉加载更多是很常见的功能，但是谷歌官方只有一个SwipeRefreshLayout用来下拉刷新，上拉加载更多还要自己做。 基于RecyclerView简单封装了这两个操作，下拉刷新支持LinearLayoutManager、GridLayoutManager和StaggeredGridLayoutManager;上拉加载更多只支持前两者。">
@@ -335,7 +335,7 @@
 <li>同样<code>SwipeToLoadHelper</code>有个<code>setSwipeToLoadEnabled(boolean)</code>方法，设置为<code>false</code>的时候上拉加载功能就没有了， 等同于普通的<code>RecyclerView</code></li>
 </ul>
 <hr>
-<h4 id="如有问题，欢迎指正"><a href="#如有问题，欢迎指正" class="headerlink" title="如有问题，欢迎指正~"></a><strong>如有问题，欢迎指正~</strong></h4><p>附<a target="_blank" rel="noopener" href="https://github.com/oynix/wraprecyclerview">项目仓库地址</a>，如有需要请自取~</p>
+<h4 id="如有问题，欢迎指正"><a href="#如有问题，欢迎指正" class="headerlink" title="如有问题，欢迎指正~"></a><strong>如有问题，欢迎指正~</strong></h4><p>附<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4L3dyYXByZWN5Y2xlcnZpZXc=">项目仓库地址<i class="fa fa-external-link-alt"></i></span>，如有需要请自取~</p>
 <p>(完)</p>
 
     </div>

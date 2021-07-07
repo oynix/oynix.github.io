@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="环境：MacOS 10.12.6  开始说正题。 Redshift是基于PostgreSQL的二次开发应用，所以，能连接PostgreSQL的工具都可以用来连接Redshift。我选择的是使用最广泛的psycopg2。">
@@ -284,10 +284,10 @@
 <p>然后，在本机上就可以正常使用了。</p>
 <hr>
 <p><strong>但是，Lambda不可以。不同于独立的机器，Lambda需要完整的依赖包才能执行。</strong></p>
-<p>在Github上搜到了<a target="_blank" rel="noopener" href="https://github.com/jkehler/awslambda-psycopg2">awslambda-psycopg2</a>，作者介绍说是专门解决在Lambda上使用<code>psycopg2</code>的。</p>
+<p>在Github上搜到了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2prZWhsZXIvYXdzbGFtYmRhLXBzeWNvcGcy">awslambda-psycopg2<i class="fa fa-external-link-alt"></i></span>，作者介绍说是专门解决在Lambda上使用<code>psycopg2</code>的。</p>
 <p>按照<code>README.md</code>的步骤，先编译PostgreSQL，再用生成的<code>pg_config</code>去编译<code>psycopg2</code>。但执行后总会报一个错误，</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No module named <span class="string">&#x27;psycopg2._psycopg&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>看着<a target="_blank" rel="noopener" href="https://github.com/jkehler/awslambda-psycopg2/issues/47">issue</a>里面几个老外说来说去，也没说出个可行的解决方案。</p>
+<p>看着<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2prZWhsZXIvYXdzbGFtYmRhLXBzeWNvcGcyL2lzc3Vlcy80Nw==">issue<i class="fa fa-external-link-alt"></i></span>里面几个老外说来说去，也没说出个可行的解决方案。</p>
 <p>几番尝试下来，终究是填了坑。</p>
 <p><strong>其实是编译环境的问题，在什么环境下编译生成的依赖包，只能在该环境下使用。Lambda是在Linux机器上执行的，所以必须在Linux上进行编译，生成的依赖包才可以使用。</strong></p>
 <p>就是这么简单。</p>
