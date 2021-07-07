@@ -473,6 +473,448 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/bb99d69df7f6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bb99d69df7f6/" class="post-title-link" itemprop="url">AWS EMR 上运行 Spark + Kinesis: NoSuchMethodError: org.apache.spark.internal.Logging</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-13 23:47:58" itemprop="dateCreated datePublished" datetime="2019-08-13T23:47:58+08:00">2019-08-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>如题，因有需求，这两天在弄这个Spark，用的是AWS的EMR，具体是什么就不解释了。上面这个问题卡了很久，故在此记录一下。</p>
+</blockquote>
+<ul>
+<li>Spark支持多种语言，如Scala、Java、Python、R，我用的是Python。</li>
+</ul>
+<p>官方有个叫WordCount的Example，我没看，直接照着文档撸代码。<a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/streaming-kinesis-integration.html">Spark文档地址</a></p>
+<p>初始化代码很简单，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py</span></span><br><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext</span><br><span class="line"><span class="keyword">from</span> pyspark.streaming <span class="keyword">import</span> StreamingContext</span><br><span class="line"><span class="keyword">from</span> pyspark.streaming.kinesis <span class="keyword">import</span> KinesisUtils, InitialPositionInStream</span><br><span class="line"></span><br><span class="line">aws_access_key_id = <span class="string">&#x27;your-aws-access-key-id&#x27;</span></span><br><span class="line">aws_secret_access_key = <span class="string">&#x27;your-aws-secret-access-key&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    sc = SparkContext(<span class="string">&#x27;local[*]&#x27;</span>, <span class="string">&#x27;first_test0809&#x27;</span>)</span><br><span class="line">    ssc = StreamingContext(sc, <span class="number">1</span>)</span><br><span class="line">    kinesis_stream = KinesisUtils.createStream(</span><br><span class="line">        ssc,</span><br><span class="line">        <span class="string">&#x27;ssc_kinesis&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;kinesistest&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;https://kinesis.us-west-2.amazonaws.com&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;region-name&#x27;</span>,</span><br><span class="line">        InitialPositionInStream.TRIM_HORIZON,</span><br><span class="line">        <span class="number">2</span>,</span><br><span class="line">        awsAccessKeyId=aws_access_key_id,</span><br><span class="line">        awsSecretKey=aws_secret_access_key</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    kinesis_stream.pprint(<span class="number">500</span>)</span><br><span class="line"></span><br><span class="line">    ssc.start()</span><br><span class="line">    ssc.awaitTermination()</span><br></pre></td></tr></table></figure>
+
+<p><code>kinesistest</code>是我创建的一个kinesis streaming，会有源源不断的数据写到这个streaming里，Spark负责处理这个streaming里的数据。</p>
+<p>接下来就是将这个文件部署到EMR上，依然是照着文档来操作。<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/emr/latest/ReleaseGuide/emr-spark-submit-step.html">文档地址</a></p>
+<p>不得不说，AWS的文档既简约又简单，却不明了，在这个文档的指引下，没有一次我是顺利走通的。</p>
+<p>添加Step的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws emr add-steps --cluster-id j-2AXXXXXXGAPLF --steps Type=Spark,Name=&quot;Spark Program&quot;,ActionOnFailure=CONTINUE,Args=[--class,org.apache.spark.examples.SparkPi,/usr/lib/spark/lib/spark-examples.jar,10]</span><br></pre></td></tr></table></figure>
+
+<p>这个命令要分为两部分来看，前部分是AWS自身的命令<code>aws emr add-steps</code>，后部分就是<code>Args</code>这个参数的值。<br>因为部署Spark程序实际上用的是<code>spark-submit</code>命令，而<code>Args</code>的值，都会传给<code>spark-submit</code>。</p>
+<p>前半部分比较简单，<code>cluster-id</code>就是在创建EMR集群后自动生成的id，这里需要注意的是，创建的EMR集群必须要设置共有IP，这样外部机器才能访问到。<code>Type</code>固定为Spark，<code>Name</code>自己随便写，<code>ActionOnFailure</code>一般都传CONTINUE，其他可选值可通过<code>aws emr add-steps help</code>查看。</p>
+<p>后半部分的<code>Args</code>的相关说明在<a target="_blank" rel="noopener" href="https://github.com/apache/spark/blob/branch-1.3/core/src/main/scala/org/apache/spark/deploy/SparkSubmitArguments.scala#L454">这里</a>，说的很详细。</p>
+<p>在部署运行之后，会报一些<code>ClassNotFound</code>的错误，这种错误不要紧，把缺的jar文件当作参数传上去就能解决问题。<a target="_blank" rel="noopener" href="https://mvnrepository.com/">Maven搜索地址1</a> | <a target="_blank" rel="noopener" href="https://search.maven.org/">Maven搜索地址2</a></p>
+<p>上面的main.py用到了两个没有的jar文件，kinesisi和kcl，为了便于观看，使用了另一种格式，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> aws emr add-steps --cluster-id j-2AXXXXXXGAPLF --steps file://./step.json</span></span><br></pre></td></tr></table></figure>
+
+<p>将参数都抽取到一个josn文件中：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;Spark Program&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;Type&quot;</span>: <span class="string">&quot;Spark&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;ActionOnFailure&quot;</span>: <span class="string">&quot;CONTINUE&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;Args&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;--master&quot;</span>,</span><br><span class="line">      <span class="string">&quot;local&quot;</span>,</span><br><span class="line">      <span class="string">&quot;--jars&quot;</span>,</span><br><span class="line">      <span class="string">&quot;local:///home/hadoop/spark-streaming-kinesis-asl_2.11-2.4.3.jar,local:///home/hadoop/amazon-kinesis-client-1.11.1.jar&quot;</span>,</span><br><span class="line">      <span class="string">&quot;local:///home/hadoop/main.py&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>注意，命令中所用到的所有文件，包括jar和py，都需要提前上传到机器上。具体上传方法见<code>aws emr put</code>命令</p>
+<p>至此，所有的工作基本完成，你以为这样就可以跑起来了吗？<br>NO！</p>
+<p>最麻烦的问题，就是Spark版本的问题。之前用的最多、最稳定的就是1.6.5版本的，现在最新版已经2.4.3了，里面变动不小，尤其是<code>Logging</code>这个类，直接内部化了。</p>
+<p>仔细看会发现，上面的kinesis jar文件有两个版本号：2.11-2.4.3，后面的2.4.3是Spark大版本，前面的是什么我没查。在Maven里，这个版本最新的是2.12，所以最开始的时候我直接用了最新的，因为网上一直在强调的都是后面的2.4.3这个版本号，结果就出问题了，如题所写，总是报NoSuchMethodError。</p>
+<p>2.0之前的，Logging的位置是org.apache.spark.Logging，2.0之后变成了org.apache.spark.internal.Logging，但我用的都是最新版，为什么总说找不到呢？想了想，想了又想，试了各种办法，都行不通，这个过程持续了一天多，让人头大。</p>
+<p>后来不知是巧合，还是时候到了，偶然发现cluster机器上spark-core的版本号是2.11-2.4.3，报着尝试的心态从Maven下了2.11-2.4.3的kinesis jar文件，换上去一跑，哎，就这么成了。真是气人。</p>
+<p>所以说呢，有些时候解决问题是很简单的，困难的是发现问题。</p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/0a1eac4519fc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/0a1eac4519fc/" class="post-title-link" itemprop="url">「原码 反码 补码 移码」一探究竟（下）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-18 02:39:41" itemprop="dateCreated datePublished" datetime="2019-01-18T02:39:41+08:00">2019-01-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index"><span itemprop="name">编码</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>抛开复杂的理论，直探事物的本质。</p>
+</blockquote>
+<p>这是这个主题的第三篇文章，前两篇介绍了<strong>这几种码的基本概念</strong>，这篇文章来具体说说「移码」。</p>
+<p><strong>00. 回顾</strong></p>
+<p>先来回顾一下移码是什么，简单说定义就一句话：<strong>将补码符号位取反，即为移码</strong>。乍一看，是不是有点懵，这到底在说什么呢？什么是移码？为什么是这么算？它能干嘛用？莫急，这些问题一个一个都会解决。</p>
+<p>相比于移码，应该使用补码的几率更高一些。因为移码主要用在浮点数的阶码中，用的较少。注意，这里又出来了一个新名词，「阶码」，关于这块的内容比较乱，会单独写一篇文章来说。而现在只需要记住一句话，<strong>移码的出现就是为了消灭负数</strong>。</p>
+<p><strong>01. 如何「消灭」负数</strong></p>
+<p>先拿大家都熟悉的数轴举个例子。<br><img src="https://i.loli.net/2021/07/07/cdtpFeLJPyw9Txl.png"></p>
+<p>如图，数轴上一共有 5 个点，分别为 -2、-1、0、1、2，其中有 2 个负数，所谓消灭负数，就是用 5 个非负数来表示这 5 个点，方法就是<strong>将 0 向左移动两个位置</strong>，如下。<br><img src="https://i.loli.net/2021/07/07/HwXenQjWztJC2rY.png"></p>
+<p>很简单吧，这样一移动负数就被消灭了，而「<strong>移码</strong>」的计算就是这个道理，而<strong>将 0 向左移动 2 个位置就等同于将所有数字加 2</strong>，这个很好理解。很显然，<strong>移动的位数就是表示范围内负数的个数。</strong></p>
+<p><strong>02. 为什么是补码符号位取反？</strong></p>
+<p>先明确一点：<strong>因为移码都是非负数，不需要符号位，所以，所有的二进制位都是用来表示数据的。</strong></p>
+<p>接下来，根据上面得出的结论，我们亲自来算一算移码。为了便于计算，就拿 4 位二进制来举例。在计算机中，4 位二进制能表示的范围为 <strong>[-2^3, 2^3-1] = [-8, 7]<strong>，其中负数的个数为 -1 到 -8，共 <strong>2^3</strong> 个，也就是 8 个，所以需要将 0 向左移动 8 个位置，</strong>即给每个数加上 8</strong>，如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">     补码   +8  移码</span><br><span class="line">-8  [1000]  0 [0000]</span><br><span class="line">-7  [1001]  1 [0001]</span><br><span class="line">-6  [1010]  2 [0010]</span><br><span class="line">-5  [1011]  3 [0011]</span><br><span class="line">-4  [1100]  4 [0100]</span><br><span class="line">-3  [1101]  5 [0101]</span><br><span class="line">-2  [1110]  6 [0110]</span><br><span class="line">-1  [1111]  7 [0111]</span><br><span class="line"> 0  [0000]  8 [1000]</span><br><span class="line"> 1  [0001]  9 [1001]</span><br><span class="line"> 2  [0010] 10 [1010]</span><br><span class="line"> 3  [0011] 11 [1011]</span><br><span class="line"> 4  [0100] 12 [1100]</span><br><span class="line"> 5  [0101] 13 [1101]</span><br><span class="line"> 6  [0110] 14 [1110]</span><br><span class="line"> 7  [0111] 15 [1111]</span><br></pre></td></tr></table></figure>
+
+<p>上面这样对比着看，应该很清晰了。经过计算得出的移码，刚好等于补码符号位取反，所以移码的定义就简化成了一句话：将补码符号位取反，即为移码。</p>
+<p>再说一个有点不好理解的方法，觉得啰嗦略过就好。除去首位的符号位不看，单看剩下的  3 位二进制，-8 到 -1 本身就符合从小到大的规律，而 0 到 7 也是如此，但 [0,7] 要大于  [-1,-8]，强转成无符号数，用符号位的 0 和 1 两个值便可以区分原本的 8 个负数和 8 个非负数，<strong>最终就是将负数转化为了正数，将正数转化为了更大的正数</strong>。</p>
+<p><strong>结束</strong></p>
+<p>至此，关于「<strong>原码 反码 补码 移码</strong>」主题的文章就告一段落了。</p>
+<p>段首写了这么一句话：「<strong>抛开复杂的理论，直探事物的本质</strong>」。我是这么理解这句话的，讲一样东西，只有把没什么基础的人都说明白了，说懂了，也不用过多的摆理论、套公式，这样才算是真的讲透彻了，话虽俗，理不俗。</p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/76011953e8ea/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/76011953e8ea/" class="post-title-link" itemprop="url">「原码 反码 补码 移码」一探究竟（中）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-17 01:40:28" itemprop="dateCreated datePublished" datetime="2019-01-17T01:40:28+08:00">2019-01-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index"><span itemprop="name">编码</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>上文「原码 反码 补码 移码」一探究竟（上）说了基本定义和原码，对于补码，我们只知道是对原码符号位不变，其他位置取反，最后再加 1 得来的，为何如此呢？接下来咱们来揭下「补码」的面具，看看它到底是什么。</p>
+<p><strong>0. 关于 1 + (-1)</strong></p>
+<p>首先，先看一个问题。</p>
+<p>1 的原码为[0000 0001]，-1 的原码为[1000 0001]，所以计算这两个数相加，应该是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 + (-1) </span><br><span class="line"></span><br><span class="line">= [0000 0001]原 + [1000 0001]原 </span><br><span class="line"></span><br><span class="line">= [1000 0010]原 </span><br><span class="line"></span><br><span class="line">= -2</span><br></pre></td></tr></table></figure>
+
+<p>结果竟然是 -2，很明显是错的，这样用原码计算就出问题了。当然，劳动人民的智慧不可估量，总能发现合适的方式来解决各种问题，于是，补码就诞生了，再看用补码计算的过程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1 + (-1) </span><br><span class="line"></span><br><span class="line">= [0000 0001]原 + [1000 0001]原 </span><br><span class="line"></span><br><span class="line">= [0000 00001]补 + [1111 1111]补 </span><br><span class="line"></span><br><span class="line">= [0000 0000]补 </span><br><span class="line"></span><br><span class="line">= [0000 0000]原 </span><br><span class="line"></span><br><span class="line">= 0</span><br></pre></td></tr></table></figure>
+
+<p>结果正确，问题得以解决，而这也是计算机都是以补码的形式来存储整数的原因。</p>
+<p>但是，为什么用补码计算就能得到正确结果呢？为什么补码的计算方式是原码取反再加 1 呢？带着问题，我们继续往下看。</p>
+<p><strong>1. 钟表上的哲学</strong></p>
+<p>钟表，每个人应该都清楚的，上面的数字范围[0,11]，也可以理解为[1, 12]，毕竟上面没有写 0 这个数字，但是不变的是，都可以表示12个小时。</p>
+<p>比方说，现在是  9:00，时针指向9。我要想知道 7 个小时之前是几点，那么我只需要将时针向回拨动 7 个格子即可，结果很显然，时针将会指向 2，表示  2:00；但是，我要想知道 5 个小时后是几点呢？也很简单，将时针向前拨动 5 个格子，结果也很显然，时针也会指向 2，表示 2:00。</p>
+<p>通过不同方式，我们得到了同样的结果，<strong>也就是说在钟表上，9 - 7 = 9 + 5 = 2</strong>。不仅 7 和 5 有这样的规律，8 和 4、9 和 3等都有这样的规律，也就是说，相加等于 12 的两个数都符合这样的规律，即 <strong>X - Y = X + (12 -Y)<strong>，而 12 在这里有个名字，叫做这个钟表的</strong>模</strong>，12 - Y 叫做 Y 的<strong>补数</strong>。</p>
+<p><strong>减去一个数，等于加上这个数的补数，应用这个规律就可以将减法转换为加法了。</strong></p>
+<p>那么问题来了，模长该怎么求？</p>
+<p><strong>2. 通俗的「模」</strong></p>
+<p>通俗的讲，很简单。还是拿钟表举例，上面能表示的数字的总数就是其模长，所以不管是[0, 11]，还是[1, 12]，都为12。</p>
+<p>再来看 8 位二进制，其原码能表示的范围 (注意看，这里说的是原码)，**[1111 1111] ~ [0111 1111]**，即 <strong>[-2^7 - 1, 2^7 - 1]</strong> = **[-127, 127]**，因为我们是要将其全部转变为非负数，即能表示的范围为[0, 127]，所以模长为 128。</p>
+<p>说完了这些，我们再来重新看下 -3 的补码的计算过程。-3 原码为 <strong>[1000 0011]<strong>，而</strong>取反的过程实际上等同于用[0111 1111]减去 -3 原码中的符号位之外的部分</strong>，之后再加 1 即得到补码，所以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-3 补码(未添加符号位)</span><br><span class="line"></span><br><span class="line">= [1000 0011]原 取反 + [0000 0001]</span><br><span class="line"></span><br><span class="line">= [0111 1111] - [0000 0011] + [0000 0001]</span><br><span class="line"> </span><br><span class="line">= [0111 1111] + [0000 0001] - [0000 0011]</span><br><span class="line"> </span><br><span class="line">= [1000 0000] - [0000 0011]</span><br><span class="line"></span><br><span class="line">= 128 - [0000 0011]</span><br><span class="line"></span><br><span class="line">= 模  - [0000 0011] </span><br><span class="line"></span><br><span class="line">= 模  - 3</span><br></pre></td></tr></table></figure>
+
+<p>看到这，是不是一下就明白了？<strong>补码实际上就是模减去原码的值，再加上一个符号位，也就是所说的：符号位不变，取反再加1</strong>。</p>
+<p>所以，在计算机中，整数都是以补码的形式存储的，是为了统一加减法运算。因为计算机之中是没有做减法的逻辑门，减法都会被转化为加法来完成计算。</p>
+<p>而通过溢出，符号位也可以直接参与计算，大大简化了计算过程，看个例子就明白了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">7 + （-3）</span><br><span class="line"></span><br><span class="line">= [0000 0111]原 + [1000 0011]原 </span><br><span class="line"></span><br><span class="line">= [0000 0111]补 + [1111 1101]补 </span><br><span class="line"></span><br><span class="line">= [0000 0100]补 (溢出部分不用处理)</span><br><span class="line"></span><br><span class="line">= [0000 0100]原 </span><br><span class="line"></span><br><span class="line">= 4 </span><br><span class="line"></span><br><span class="line">2 + （-3）</span><br><span class="line"></span><br><span class="line">= [0000 0010]原 + [1000 0011]原 </span><br><span class="line"></span><br><span class="line">= [0000 0010]补 + [1111 1101]补 </span><br><span class="line"></span><br><span class="line">= [1111 1111]补 </span><br><span class="line"></span><br><span class="line">= [1000 0001]原 </span><br><span class="line"></span><br><span class="line">= -1</span><br></pre></td></tr></table></figure>
+
+<p>再看个特例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-1 + (-127) </span><br><span class="line"></span><br><span class="line">= [1000 0001]原 + [1111 1111]原 </span><br><span class="line"></span><br><span class="line">= [1111 1111]补 + [1000 0001]补 </span><br><span class="line"></span><br><span class="line">= [1000 0000]补 </span><br><span class="line"></span><br><span class="line">= -128</span><br></pre></td></tr></table></figure>
+
+<p>用原码能表示的最小负数为 <strong>-127</strong>，补码却能表示的最小负数为 <strong>-128</strong>，但是 <strong>-128</strong> 没有原码和反码表示，由于计算机中使用补码表示整数，所以这没有影响，因此 8 位二进制数，也就是 <strong>byte</strong> 类型能表示的范围是 **[-128, 127]**。</p>
+<p>说到这，对于补码，应该足够清晰了吧！</p>
+<p>（完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/8ebb2c9120f0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/8ebb2c9120f0/" class="post-title-link" itemprop="url">「原码 反码 补码 移码」一探究竟（上）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-14 02:04:11" itemprop="dateCreated datePublished" datetime="2019-01-14T02:04:11+08:00">2019-01-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index"><span itemprop="name">编码</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>967</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>抛开复杂的理论，直探事物的本质。</p>
+</blockquote>
+<p><strong>0. 二进制</strong></p>
+<p>相比于二进制，十进制数字大家都比较熟悉。从右往左依次是个位、十位、百位、千位等，每个位置上的数字范围 [0, 9]。个位上的 1 表示 1，十位上的 1 表示 10，百位上的 1 表示 100，即从右向左的第 n 位就代表 10^(n-1)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">761 = 7*100 + 6*10 + 1*1 = 7*10^2 + 6*10^1 + 1*10^0</span><br></pre></td></tr></table></figure>
+
+<p>而二进制，也是同样的道理，区别就是将 10 的 n-1 次幂变成了 2 的 n-1 次幂：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1101 = 1*2^3 + 1*2^2 + 0*2^1 + 1*2^0 = 8 + 4 + 0 + 1 = 13</span><br></pre></td></tr></table></figure>
+
+<p>有了这些基础概念，接着再来看下面的内容。</p>
+<p><strong>1.</strong> <strong>这些「码」都是什么？</strong></p>
+<p><strong>计算机中的数字一般分为两种，有符号数和无符号数。</strong></p>
+<p><strong>原码</strong>，是一种计算机中对数字的二进制表示的方法。</p>
+<p><strong>有符号数</strong>，即用最高位的二进制位来表示正负，剩下的位来存储数据。</p>
+<p><strong>无符号数</strong>，即所有的二进制位都来表示数据，所以无符号数字无法表示负数，全部大于等于 0。</p>
+<p>光看定义干巴巴的，用长度为 8 位二进制的类型举几个例子。</p>
+<p>有符号数，最高位表示正负，0 表示正数，1 表示负数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   7 : [0000 0111]原</span><br><span class="line">  -3 : [1000 0011]原</span><br><span class="line">-127 : [1111 1111]原</span><br></pre></td></tr></table></figure>
+
+<p>无符号数，没有符号位，全部二进制位用来表示数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  7 : [0000 0111]原 </span><br><span class="line"> 16 : [0001 0000]原</span><br><span class="line">255 : [1111 1111]原</span><br></pre></td></tr></table></figure>
+
+<p>上面就是原码的定义，而反码、补码、移码都是在原码的基础上做了对应的变换。</p>
+<p><strong>反码</strong>：正数的反码就是其原码，负数的反码为，符号位不变，其余位取反，即 0 变 1，1 变 0。</p>
+<p><strong>补码</strong>：正数的补码就是其原码，负数的补码为在其反码的基础上再加 1，而在计算机中，整数都是以补码的形式存储的。</p>
+<p><strong>移码</strong>：将补码符号位取反，即为移码。</p>
+<p><strong>这几种码都是针对有符号数，而无符号数用原码就足够了</strong>，后面会对此说明原因。同样，也举几个例子说明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> 7 : [0000 0111]原 [0000 0111]反 [0000 0111]补 [1000 0111]移</span><br><span class="line">-3 : [1000 0011]原 [1111 1100]反 [1111 1101]补 [0111 1101]移</span><br></pre></td></tr></table></figure>
+
+<p>关于定义，就说这些。既然原码就能表示数字，那为什么又会有这么多类型的码呢？而这些不同的码又是怎么来的呢？计算机中为什么要以补码而不是其他码来存储整数呢？移码又是做什么的呢？鉴于篇幅过长，下篇文章，会对这些问题一一说明。</p>
+<p>(完)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/d60506c80128/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -736,371 +1178,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/5fec38fe91ba/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/5fec38fe91ba/" class="post-title-link" itemprop="url">Android YuvImage直接旋转</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-26 18:58:53" itemprop="dateCreated datePublished" datetime="2017-10-26T18:58:53+08:00">2017-10-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>操作相机的<code>Preview</code>可通过以下三种方式添加回调接口：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Camera.setPreviewCallbackBuffer(PreviewCallback);</span><br><span class="line">Camera.setOneShotPreviewCallback(PreviewCallback);</span><br><span class="line">Camera.setPreviewCallback(PreviewCallback);</span><br></pre></td></tr></table></figure>
-<p><strong>PreviewCallback</strong>接口里面只有一个回调方法:<br><code>void onPreviewFrame(byte[] data, Camera camera);</code></p>
-<p>其中的<code>byte[] data</code>就是<code>Preview</code>的图像数据，格式为<code>YuvImage</code>，而这个图像天生是横着的，一般的旋转操作是:<br>YuvImage的byte[] –&gt; Bitmap的byte[] –&gt; 生成Bitmap –&gt; 旋转Bitmap</p>
-<hr>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/5fec38fe91ba/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/208c39b1bdad/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/208c39b1bdad/" class="post-title-link" itemprop="url">ScrollView在SlidingUpPanelLayout中下滑无效问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-24 20:42:53" itemprop="dateCreated datePublished" datetime="2017-10-24T20:42:53+08:00">2017-10-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>264</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>当在<code>ScrollableView</code>(即, 可上下滑动的ViewGroup)中含有<code>ScrollView</code>时，向上滑动<code>ScrollableView</code>至其全部上移展示出来时，继续向上滑动时<code>ScrollView</code>会响应滑动事件向上滑动，但是此时抬起手后再向下滑动时，首先响应滑动事件的是<code>ScrollabldView</code>，这就导致<code>ScrollView</code>无法下滑，解决该问题一种简单有效的实践：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SlidingUpPanelLayout.setScrollableView(ScrollView)</span><br></pre></td></tr></table></figure>
-
-<p><strong>用<code>ScrollView</code>替换整个滑动的ViewGroup</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/208c39b1bdad/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/a9bb97b2a678/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/a9bb97b2a678/" class="post-title-link" itemprop="url">手把手教你实现RecyclerView的下拉刷新和上拉加载更多</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-12 09:11:53" itemprop="dateCreated datePublished" datetime="2017-10-12T09:11:53+08:00">2017-10-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>纵观多数App，下拉刷新和上拉加载更多是很常见的功能，但是谷歌官方只有一个SwipeRefreshLayout用来下拉刷新，上拉加载更多还要自己做。</p>
-<p>基于RecyclerView简单封装了这两个操作，下拉刷新支持LinearLayoutManager、GridLayoutManager和StaggeredGridLayoutManager;上拉加载更多只支持前两者。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/a9bb97b2a678/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/31c771f65733/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/31c771f65733/" class="post-title-link" itemprop="url">几分钟完成发布开源库到jCenter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-10 10:22:53" itemprop="dateCreated datePublished" datetime="2017-10-10T10:22:53+08:00">2017-10-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>在AndroidStudio中导入开源库一般就是一句话的事：<code>compile &#39;xxx.xx.xx:xx&#39;</code>。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行<code>compile &#39;xxx.xxx.xx:xx&#39;</code> 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发布开源库，要通过它的托管商–Bintray（Bintray托管着很多仓库，jCenter只是其中一个）来完成。</p>
-<p>把自己平时经常用到的一些代码写到一起上传到jCenter，以后不管做什么项目一句话就能导入，算来还是一个比较实用的功能。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/31c771f65733/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1170,20 +1247,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1227,12 +1304,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">83k</span>
+    <span title="站点总字数">90k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:15</span>
+    <span title="站点阅读时长">1:21</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
