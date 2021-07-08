@@ -30,7 +30,7 @@
 <meta property="og:description" content="转载，原文链接:http:&#x2F;&#x2F;www.sunxin.org&#x2F;forum&#x2F;thread&#x2F;20672.html#  为什么Java中继承多数是有害的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-05-22T11:52:03.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:42:37.531Z">
+<meta property="article:modified_time" content="2021-07-08T01:13:34.841Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Java">
@@ -311,7 +311,6 @@
 <p>到现在为止,一直都不错,但是考虑脆弱的基类问题,我们说你想要在<code>stack</code>创建一个变量, 用它在一段周期内跟踪最大的堆栈尺寸。一个可能的实现也许象下面这样: </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Monitorable_stack</span> <span class="keyword">extends</span> <span class="title">Stack</span> </span>&#123; </span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> high_water_mark = <span class="number">0</span>; </span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> current_size; </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">( Object article )</span> </span>&#123; </span><br><span class="line">		<span class="keyword">if</span>( ++current_size &gt; high_water_mark ) </span><br><span class="line">			high_water_mark = current_size; </span><br><span class="line">		<span class="keyword">super</span>.push( article ); </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="function">publish Object <span class="title">pop</span><span class="params">()</span> </span>&#123; </span><br><span class="line">		--current_size; </span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">super</span>.pop(); </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maximum_size_so_far</span><span class="params">()</span> </span>&#123; </span><br><span class="line">		<span class="keyword">return</span> high_water_mark; </span><br><span class="line">	&#125; </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
 <p>这个新类运行的很好,至少是一段时间。不幸的是,这个代码发掘了一个事实,<code>push_many()</code>通过调用<code>push()</code>来运行。首先,这个细节看起来不是一个坏的选择。它简化了代码,并且你能够得到<code>push()</code>的派生类版本,甚至当<code>Monitorable_stack</code>通过Stack的参考来访问的时候,以至于<code>high_water_mark</code>能够正确的更新。 </p>
-<p>(完)</p>
 
     </div>
 

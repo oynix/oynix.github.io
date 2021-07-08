@@ -30,7 +30,7 @@
 <meta property="og:description" content="相同点：都是用来改变column的属性，change和modify执行成功后都会用本次设置的属性替换column原属性，请注意是【替换】； 不同点：重命名只能使用change">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-04-27T05:32:04.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:43:26.933Z">
+<meta property="article:modified_time" content="2021-07-08T01:13:47.875Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="MySql">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>405</span>
+              <span>402</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -272,9 +272,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name change current_column_name new_column_name type extra;</span><br><span class="line">// for example.（如果是改名字需要把column原属性都挂上，因为是替换）</span><br><span class="line">alter table user change id userid int(11) not null auto_increment;</span><br></pre></td></tr></table></figure>
 <p> 2 modify</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name modify column_name type extra;</span><br><span class="line">// for example</span><br><span class="line">alter table user modify id int(11) not null auto_increment;</span><br></pre></td></tr></table></figure>
-
-<p>(完)</p>
-
     </div>
 
     

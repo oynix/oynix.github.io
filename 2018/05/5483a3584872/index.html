@@ -30,7 +30,7 @@
 <meta property="og:description" content="最近项目在使用的netty框架加上了SSL安全设置，SSL可单项验证也可双向验证，我使用的是双向验证，即Client验证Server同时Server也验证Client。以下只说明Client（Android）端的实现方式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-05-18T09:00:11.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:40:47.029Z">
+<meta property="article:modified_time" content="2021-07-08T01:11:28.901Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Netty">
@@ -245,14 +245,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -287,8 +287,7 @@
 <li>和服务器端再要一个文件<code>server.crt</code>。</li>
 <li>准备完成，下面修改java实现<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> SSLContext <span class="title">createSSLContext</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        SSLContext sslContext = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            String keyPassword = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">             <span class="comment">// key store manager</span></span><br><span class="line">            KeyStore keyStore = KeyStore.getInstance(<span class="string">&quot;PKCS12&quot;</span>);</span><br><span class="line">            InputStream keyInput = context.getResources().openRawResource(R.raw.client);</span><br><span class="line">            keyStore.load(keyInput, keyPassword.toCharArray());</span><br><span class="line">            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());</span><br><span class="line">            keyManagerFactory.init(keyStore, keyPassword.toCharArray());</span><br><span class="line">            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());</span><br><span class="line">            keyManagerFactory.init(keyStore, keyPassword.toCharArray());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// trust store manager</span></span><br><span class="line">            CertificateFactory cf = CertificateFactory.getInstance(<span class="string">&quot;X509&quot;</span>);</span><br><span class="line">            InputStream caInput = context.getResources().openRawResource(R.raw.server);</span><br><span class="line">            Certificate ca;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ca = cf.generateCertificate(caInput);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                caInput.close();</span><br><span class="line">            &#125;</span><br><span class="line">            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());</span><br><span class="line">            trustStore.load(<span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">            trustStore.setCertificateEntry(<span class="string">&quot;CA&quot;</span>, ca);</span><br><span class="line">            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());</span><br><span class="line">            trustManagerFactory.init(trustStore);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// assemble</span></span><br><span class="line">            sslContext = SSLContext.getInstance(<span class="string">&quot;TLS&quot;</span>);</span><br><span class="line">            sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), <span class="keyword">null</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sslContext;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>只需要修改<code>trust store</code>的创建方式，其他不需要改动。经过以上修改，程序在所有版本的机器上都可以正常运行了！开心</strong></p>
-<p>(完)</p>
+<p><strong>只需要修改<code>trust store</code>的创建方式，其他不需要改动。经过以上修改，程序在所有版本的机器上都可以正常运行了！棒</strong></p>
 
     </div>
 

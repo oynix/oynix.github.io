@@ -30,7 +30,7 @@
 <meta property="og:description" content="00.前言MacOS 上的 Python不同版本的环境一直是个让人头大的问题，原因在于，系统预先安装了2.7版本，但这是个老版本了，老版本是不能卸载的，一些系统程序都在依赖它。 现在市面上开发的新程序多数在用3.x版本，部分老代码还在用2.x版本，两个大版本还是有些区别的，无法完全兼容，这就让管理多版本共存成了个问题。 当然，也有一些管理工具，如pyenv，但其实python的venv模块已经足够">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-08T17:26:02.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:38:43.758Z">
+<meta property="article:modified_time" content="2021-07-08T01:08:24.911Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="MacOS">
@@ -296,7 +296,7 @@
 <p>如果不是新买的机器，应该都装了brew工具了，要是没装，那就先装一下，一行代码，等着就好了</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ruby -e <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>然后，安装python3，一行代码，还是等着就好了，python3有多个版本，3.6、3.7、3.8以及最新的3.9，不指定版本会默认安装最新，如果有需要，可以指定版本：<span class="exturl" data-url="bWFpbHRvOiYjeDcwOyYjMTIxOyYjMTE2OyYjeDY4OyYjeDZmOyYjMTEwOyYjNjQ7JiM1MTsmIzQ2OyYjMTIwOw==">&#x70;&#121;&#116;&#x68;&#x6f;&#110;&#64;&#51;&#46;&#120;<i class="fa fa-external-link-alt"></i></span>，如果同时存在多个3.x，要注意名字的区分</p>
+<p>然后，安装python3，一行代码，还是等着就好了，python3有多个版本，3.6、3.7、3.8以及最新的3.9，不指定版本会默认安装最新，如果有需要，可以指定版本：<span class="exturl" data-url="bWFpbHRvOiYjMTEyOyYjeDc5OyYjMTE2OyYjMTA0OyYjMTExOyYjeDZlOyYjNjQ7JiN4MzM7JiM0NjsmI3g3ODs=">&#112;&#x79;&#116;&#104;&#111;&#x6e;&#64;&#x33;&#46;&#x78;<i class="fa fa-external-link-alt"></i></span>，如果同时存在多个3.x，要注意名字的区分</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install python3</span><br></pre></td></tr></table></figure>
 
 <p>这里唠叨几句pip，pip是python的包管理工具，前身是easy_install，这两者的关系是，python是可执行文件，pip是python的一个模块，可有也可无，非必需，建议还是用pip，毕竟其他方式管理包很麻烦。如果意外把pip删除了也可以单独安装</p>
@@ -313,17 +313,12 @@
 <li><p>查看pip版本</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip -V</span><br></pre></td></tr></table></figure></li>
 <li><p>用pip安装package时，加上–user参数，会安装到当前用户的库目录中，只对当前用户有效，不加–user会安装到全局目录，对所有用户有效。如果你的电脑只有一个用户，那么二者没有区别</p>
-</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ pip install --user</span><br><span class="line">～/Library/Python/3.9/lib/python/site-packages/</span><br><span class="line"></span><br><span class="line">$ pip install</span><br><span class="line">/usr/<span class="built_in">local</span>/lib/python3.9/site-packages/</span><br></pre></td></tr></table></figure>
-
-<ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ pip install --user</span><br><span class="line">～/Library/Python/3.9/lib/python/site-packages/</span><br><span class="line"></span><br><span class="line">$ pip install</span><br><span class="line">/usr/<span class="built_in">local</span>/lib/python3.9/site-packages/</span><br></pre></td></tr></table></figure></li>
 <li><p>brew安装目录<br>/usr/local/Cellar<br>Homebrew配置目录<br>/usr/lcoal/etc<br>Homebrew命令目录<br>/usr/local/bin</p>
 </li>
 <li><p>brew常用命令<br>brew install FORMULA<br>brew cleanup<br>bew searh FORMULA<br>brew info FORMULA<br>brew upgrade FORMULA<br>brew update</p>
 </li>
 </ul>
-<p>（完）</p>
 
     </div>
 

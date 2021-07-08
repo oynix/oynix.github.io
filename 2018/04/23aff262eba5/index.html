@@ -30,7 +30,7 @@
 <meta property="og:description" content="周末看完了「巧用Gradle构建Android应用」，故将新认知整理在此以便以后供自己以及有需要的人查看。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-04-23T14:37:30.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:36:10.467Z">
+<meta property="article:modified_time" content="2021-07-08T01:06:22.822Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Gradle">
@@ -293,7 +293,6 @@
 <li><p>性能</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties</span></span><br><span class="line"><span class="comment">// 守护进程</span></span><br><span class="line">org.gradle.daemon=<span class="literal">true</span></span><br><span class="line"><span class="comment">// 按需配置设置</span></span><br><span class="line">org.gradle.configureondemand=<span class="literal">true</span></span><br><span class="line"><span class="comment">// 选择JVM设置 Xmx最大内存 Xms初始内存 XX:MaxPermSize永代久空间 </span></span><br><span class="line"><span class="comment">// HeapDumpOnOutOfMemoryError发生时，将堆中情况导出到一个文件中</span></span><br><span class="line">org.gradle.jvmargs=-Xmx2048m -<span class="attr">XX:</span>MaxPermSize=<span class="number">512</span>m -<span class="attr">XX:</span>+HeapDumpOnOutOfMemoryError</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用dex选项</span></span><br><span class="line">dexOptions &#123;</span><br><span class="line">	incremental <span class="literal">true</span></span><br><span class="line">	javaMaxHeapSize <span class="string">&#x27;2g&#x27;</span></span><br><span class="line">	jumboMode = <span class="literal">true</span><span class="comment">//运载dex文件中出现的大量字符串，可能需要配置ProdGuard</span></span><br><span class="line">	preDexLibraries = <span class="literal">true</span></span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
 </ul>
-<p>(完)</p>
 
     </div>
 

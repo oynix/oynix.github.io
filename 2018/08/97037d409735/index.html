@@ -30,7 +30,7 @@
 <meta property="og:description" content="原文地址：https:&#x2F;&#x2F;en.bitcoin.it&#x2F;wiki&#x2F;Deterministic_wallet">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-08-01T15:32:02.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:54:08.971Z">
+<meta property="article:modified_time" content="2021-07-08T01:07:23.467Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="区块链">
 <meta property="article:tag" content="Bitcoin">
@@ -274,7 +274,6 @@
 <h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><h4 id="类型1-确定性钱包"><a href="#类型1-确定性钱包" class="headerlink" title="类型1 确定性钱包"></a>类型1 确定性钱包</h4><p>类型1确定性钱包是一种从已知的起始字符串生成地址的简单方法，因此它不允许高级功能，如主公钥。要生成一个私钥，需要使用SHA256(string + n)，其中n是一个ascii编码的数字，它从1开始，并随着需要额外的键而增加。<br>这种类型的钱包可以由Casascius比特币地址实用程序创建。</p>
 <h4 id="类型2-分层确定性钱包"><a href="#类型2-分层确定性钱包" class="headerlink" title="类型2 分层确定性钱包"></a>类型2 分层确定性钱包</h4><p>这种钱包类型在bip0032中进行了描述，并在TREZOR、Electrum和CarbonWallet中得到了充分的实现。种子是一个随机的128位值，用户可以使用常用的英语单词作为12个单词的种子短语。该种子在10万轮SHA256之后使用，以减缓对弱用户选择字符串的攻击。<br>这种钱包类型的最初描述和工作原理都归功于格雷戈里·麦克斯韦。</p>
 <h4 id="Armory确定性钱包"><a href="#Armory确定性钱包" class="headerlink" title="Armory确定性钱包"></a>Armory确定性钱包</h4><p>Armory有自己基于“根键”和“链码”的2型确定性钱包格式。早期版本的Armory需要备份“根键”和“链码”，而较新的版本则以不可逆转的方式从私钥派生链码。这些新的Armory(0.89+)只需要一个256位的根键。这种旧格式打算逐步淘汰，以支持标准BIP0032格式。</p>
-<p>(完)</p>
 
     </div>
 

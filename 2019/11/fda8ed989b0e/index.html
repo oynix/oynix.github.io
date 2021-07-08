@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/07/07/JsqNMBWZcmKpEXu.png">
 <meta property="article:published_time" content="2019-11-25T09:28:07.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:47:50.759Z">
+<meta property="article:modified_time" content="2021-07-08T01:15:30.096Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="mysql">
@@ -285,7 +285,6 @@
 <li>如果提示密码不合格，查看一下当前密码要求，如下，length表示密码最小长度，mixed_case_count表示大小写字母混合数量，number_count表示数字数量，special_char_count表示特殊字符数量 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like <span class="string">&#x27;validate_password%&#x27;</span>;</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| Variable_name                        | Value  |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| validate_password.check_user_name    | ON     |</span><br><span class="line">| validate_password.dictionary_file    |        |</span><br><span class="line">| validate_password.length             | 6      |</span><br><span class="line">| validate_password.mixed_case_count   | 1      |</span><br><span class="line">| validate_password.number_count       | 1      |</span><br><span class="line">| validate_password.policy             | MEDIUM |</span><br><span class="line">| validate_password.special_char_count | 0      |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">7 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure></li>
 <li>如果想设置个简单好记的密码，修改一下密码检查，exit退出mysql，再连接登陆后生效 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">set</span> global validate_password.mixed_case_count=0;</span><br><span class="line">mysql&gt; <span class="built_in">set</span> global validate_password.special_char_count=0;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<p>(完)</p>
 
     </div>
 

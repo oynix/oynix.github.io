@@ -30,7 +30,7 @@
 <meta property="og:description" content="通过ssh user@server登陆到远程服务器时，经常会遇到一个问题， 1Connection closed by remote host 意思就是服务器断开了这个连接。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-09-18T15:02:15.000Z">
-<meta property="article:modified_time" content="2021-07-07T04:38:11.593Z">
+<meta property="article:modified_time" content="2021-07-08T01:07:13.987Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="ssh">
@@ -245,7 +245,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>436</span>
+              <span>433</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -271,7 +271,6 @@
 <h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 先登录到远程服务器</span><br><span class="line">$ ssh -i ./ssh/authorization.pem &#123;root&#125;@&#123;server&#125;</span><br><span class="line"></span><br><span class="line">// 切换到root</span><br><span class="line">$ sudo su -</span><br><span class="line"></span><br><span class="line">// 修改配置文件</span><br><span class="line"><span class="comment"># vi /etc/ssh/sshd_config</span></span><br><span class="line"></span><br><span class="line">// 将其中的两行</span><br><span class="line"><span class="comment">#ClientAliveInterval 0</span></span><br><span class="line"><span class="comment">#ClientAliveCountMax 3</span></span><br><span class="line">// 修改为</span><br><span class="line">ClientAliveInterval 2</span><br><span class="line">ClientAliveCountMax 3</span><br><span class="line">// :wq 保存，并退出</span><br><span class="line"></span><br><span class="line">// 重启ssh服务</span><br><span class="line"><span class="comment"># /etc/init.d/sshd restart</span></span><br><span class="line">Stopping sshd:                                             [  OK  ]</span><br><span class="line">Starting sshd:                                             [  OK  ]</span><br></pre></td></tr></table></figure>
 
 <p>断开当前ssh连接，重新登录，问题解决。</p>
-<p>(完)</p>
 
     </div>
 
