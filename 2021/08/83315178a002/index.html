@@ -30,7 +30,7 @@
 <meta property="og:description" content="时间做的久了，基础的知识忘的越来越多，正所谓：基础不牢，地动山摇。最近有需要，所以在慢慢重来，今天说一说Activity的几种启动模式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-26T04:25:19.000Z">
-<meta property="article:modified_time" content="2021-08-26T16:43:55.245Z">
+<meta property="article:modified_time" content="2021-08-26T16:49:22.283Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -284,11 +284,11 @@
 <li><p>android:taskAffinity<br>这是<code>AndroidManifest.xml</code>文件中，<code>activity</code>标签的一个属性，字符串类型。<code>affinity</code>，直译过来就是密切关系、类同的意思，在这里就是指定Task的名字。<code>application</code>也有这个属性，当<code>activity</code>不设置这个属性时，默认会使用<code>application</code>这个属性的值；如果<code>application</code>也没有设置这个属性的值，那就默认使用包名。所以，不设置这个属性时，activity启动后都会依附在一个名字为包名的Task中，从<code>dumpsys</code>结果也可以看出来。</p>
 </li>
 </ul>
-<h3 id="模式：stadard"><a href="#模式：stadard" class="headerlink" title="模式：stadard"></a>模式：stadard</h3><p>这个是默认的模式，不主动设置的Activity，都是这个模式。这个模式很好理解，只要设置成这个模式，它从生到死都会存在包名为名称的Task中，即便是设置了<code>taskAffinify</code>也不会生效。每次启动，都会创建新的实例压入Task的栈顶。</p>
+<h3 id="模式：standard"><a href="#模式：standard" class="headerlink" title="模式：standard"></a>模式：standard</h3><p>这个是默认的模式，不主动设置的Activity，都是这个模式。这个模式很好理解，只要设置成这个模式，它从生到死都会存在包名为名称的Task中，即便是设置了<code>taskAffinify</code>也不会生效。每次启动，都会创建新的实例压入Task的栈顶。</p>
 <h3 id="模式：singleTop"><a href="#模式：singleTop" class="headerlink" title="模式：singleTop"></a>模式：singleTop</h3><p>从名字来看，就是单独的顶部。意思就是，在Task栈顶只会有一个实例。启动时，如果发现栈顶就是这个activity的实例，那么就会通过重用这个实例，这个时候会掉用Activity中的<code>onNewIntent</code>方法。这个模式也对<code>taskAffinify</code>属性无效，只会存在于包名的Task中。常用于内容详情，如新闻详情，单独占一个页面，浏览完详情，底部会显示几个其他新闻的链接，点击之后，会再次启动新闻详情，自己跳自己，这样不管跳转了多少次，按一次返回，就可以回到新闻列表页面。</p>
 <h3 id="模式：singleTask"><a href="#模式：singleTask" class="headerlink" title="模式：singleTask"></a>模式：singleTask</h3><p>如果上面解释的几个概念都能明白，那这个属性就很好说了。顾名思义，在Task中只会存在一个实例。这个模式下，<code>taskAnffinity</code>属性会生效，如果不设置，那就是包名。启动Activity时，首先会按照<code>taskAnffinity</code>查找对应的Task，如果没找到，那么就新建一个，然后将Activity实例压入栈；如果找到了该名字的Task，那么会在该Task中查找Activity的实例，若找到，如果不在Task栈顶，那么就将上面的Activity实例全部出栈，使其位于栈顶；如果栈中无此Activity的实例，则新建实例并压入栈。</p>
 <h3 id="模式：singleInstance"><a href="#模式：singleInstance" class="headerlink" title="模式：singleInstance"></a>模式：singleInstance</h3><p>这个也很好理解，凡是以这个模式启动的Activity，都会自己独占一个Task。如果不存在则创建新Task然后实例压入栈，如果存在则<code>onNewIntent</code>复用其中的Activity实例。如果不设置<code>taskAffinity</code>，那么Task的名字就是包名，这时，就会有两个名字都是包名的Task，所以Task的名字是可能会相同的。这里强调一下独占这个词，如果一个以<code>singleTask</code>启动的Activity，找到了它目标名字的Task，但是这个Task里包含<code>singleInstance</code>启动的Activity实例，那么它会将实例压入该栈吗？不会的，因为是独占，所以不允许其他实例。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其中3个都很好理解，<code>standard</code>是默认模式，只要启动就会创建新实例并压入默认Task；<code>singleTop</code>是栈顶存在就复用，不存在就创建；<code>singleInstance</code>是独占一个Task；<code>singleTask</code>是先找到目标名字、且没有被独占的Task，找不到则新建，Task中若存在实例则通过弹出上面的实例使其出于栈顶并<code>onNewIntent</code>复用，已在栈顶则直接复用，若Task栈中不存在实例，则创建并压入栈。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其中3个都很好理解，<code>standard</code>是默认模式，只要启动就会创建新实例并压入默认Task；<code>singleTop</code>是栈顶存在就复用，不存在就创建；<code>singleInstance</code>是独占一个Task；<code>singleTask</code>是先找到目标名字、且没有被独占的Task，找不到则新建，Task中若存在实例则通过弹出上面的实例使其处于栈顶并<code>onNewIntent</code>复用，已在栈顶则直接复用，若Task栈中不存在实例，则创建并压入栈。</p>
 <p>如果能自己把每个模式验证，那么理解的就会深刻些。我便是跑了一个Application，写了几个简单的Activity，通过不断调整<code>AndroidManifest.xml</code>中Activity的<code>launchMode</code>和<code>taskAnffinity</code>，然后配合<code>adb shell dumpsys activity activities</code>命令，从头到尾走了一遍。</p>
 <p>附上Git地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4L2xhdW5jaC1tb2RlLXNhbXBsZQ==">https://github.com/oynix/launch-mode-sample<i class="fa fa-external-link-alt"></i></span></p>
 
@@ -418,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E6%A6%82%E5%BF%B5"><span class="nav-text">几个概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9Astadard"><span class="nav-text">模式：stadard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9AsingleTop"><span class="nav-text">模式：singleTop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9AsingleTask"><span class="nav-text">模式：singleTask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9AsingleInstance"><span class="nav-text">模式：singleInstance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E6%A6%82%E5%BF%B5"><span class="nav-text">几个概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9Astandard"><span class="nav-text">模式：standard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9AsingleTop"><span class="nav-text">模式：singleTop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9AsingleTask"><span class="nav-text">模式：singleTask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%EF%BC%9AsingleInstance"><span class="nav-text">模式：singleInstance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
