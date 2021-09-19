@@ -22,21 +22,23 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="Golang 既可以写 websocket 的 server 端也可以写 websocket 的 client 端，前者网上的资料很多后者甚少，今天遇到写 client 的需求，在此做个总结。  测试地址：火币网 websocket包：golang.org&#x2F;x&#x2F;net&#x2F;websocket">
+  <meta name="description" content="原文地址：https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;7006970844542926855#heading-13">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Golang websocket client读取数据">
-<meta property="og:url" content="https://oynix.github.io/2018/11/f0d738b44296/index.html">
+<meta property="og:title" content="Android Fragment">
+<meta property="og:url" content="https://oynix.github.io/2021/09/5536a870cb20/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="Golang 既可以写 websocket 的 server 端也可以写 websocket 的 client 端，前者网上的资料很多后者甚少，今天遇到写 client 的需求，在此做个总结。  测试地址：火币网 websocket包：golang.org&#x2F;x&#x2F;net&#x2F;websocket">
+<meta property="og:description" content="原文地址：https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;7006970844542926855#heading-13">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-11-20T16:00:35.000Z">
-<meta property="article:modified_time" content="2021-07-08T01:12:58.240Z">
+<meta property="og:image" content="https://i.loli.net/2021/09/19/YHsuRZOc6TSxVJA.png">
+<meta property="article:published_time" content="2021-09-19T12:00:21.000Z">
+<meta property="article:modified_time" content="2021-09-19T13:45:19.012Z">
 <meta property="article:author" content="oynix">
-<meta property="article:tag" content="Goland">
-<meta property="article:tag" content="websocket">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Fragment">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/09/19/YHsuRZOc6TSxVJA.png">
 
-<link rel="canonical" href="https://oynix.github.io/2018/11/f0d738b44296/">
+<link rel="canonical" href="https://oynix.github.io/2021/09/5536a870cb20/">
 
 
 <script id="page-configurations">
@@ -49,7 +51,7 @@
   };
 </script>
 
-  <title>Golang websocket client读取数据 | oynix</title>
+  <title>Android Fragment | oynix</title>
   
 
 
@@ -202,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2018/11/f0d738b44296/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2021/09/5536a870cb20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/fbb.jpg">
@@ -215,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Golang websocket client读取数据
+          Android Fragment
         </h1>
 
         <div class="post-meta">
@@ -225,7 +227,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-11-21 00:00:35" itemprop="dateCreated datePublished" datetime="2018-11-21T00:00:35+08:00">2018-11-21</time>
+              <time title="创建时间：2021-09-19 20:00:21" itemprop="dateCreated datePublished" datetime="2021-09-19T20:00:21+08:00">2021-09-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +235,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -269,21 +271,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Golang 既可以写 websocket 的 server 端也可以写 websocket 的 client 端，前者网上的资料很多后者甚少，今天遇到写 client 的需求，在此做个总结。</p>
+        <p>原文地址：<span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uY24vcG9zdC83MDA2OTcwODQ0NTQyOTI2ODU1I2hlYWRpbmctMTM=">https://juejin.cn/post/7006970844542926855#heading-13<i class="fa fa-external-link-alt"></i></span></p>
+<span id="more"></span>
+
+<p>原作者的slogan是，喜欢写又臭又长的文章。这篇文章确实长的很，洋洋洒洒上万字，就这字数就过滤掉了很大一部分人，但是我喜欢。写的很好，里面内容有旧也有新，担心哪天点开这链接弹出来个404，所以摘抄点出来。</p>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><p>Fragment中有两个生命周期，一个自身的生命周期，另一个是其所包含的View的生命周期，其中的View是可以多次被创建和销毁的，所以在使用ViewModel时，要将数据与View的生命周期相关联。<br><img src="https://i.loli.net/2021/09/19/YHsuRZOc6TSxVJA.png"></p>
+<h3 id="回退栈"><a href="#回退栈" class="headerlink" title="回退栈"></a>回退栈</h3><p>增加/移除/替换Fragment都是基于事务进行的，当提交事务时，将事务添加到了回退栈，那么在将事务从回退栈中弹出时，FragmentManager就会reverse its operation，反向执行事务的操作，也就是恢复成该事务执行之前的状态。按下返回键，如果回退栈不为空，则回退栈就会弹出事务来响应返回按钮事件。当然，也可以不将事务加到回退栈中。相关接口：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FragmentTransaction.addToBackStack</span><br><span class="line">FragmentTransaction.popBackStack</span><br><span class="line">FragmentTransaction.disallowAddToBackStack</span><br></pre></td></tr></table></figure>
+
+<h3 id="registerForActivityResult"><a href="#registerForActivityResult" class="headerlink" title="registerForActivityResult"></a>registerForActivityResult</h3><p><code>startActivityForResult</code>和<code>onActivityResult</code>都已经废弃，<code>registerForActivityResult</code>是官方推荐的从Activity获取数据的方式，新方式变得灵活了不少，如下：</p>
 <ul>
-<li>测试地址：火币网</li>
-<li>websocket包：golang.org/x/net/websocket<span id="more"></span> 
-<h3 id="1-建立连接。"><a href="#1-建立连接。" class="headerlink" title="1. 建立连接。"></a>1. 建立连接。</h3>连接成功建立后，client 和 server 均可以随时往数据通道里写数据同时也可以从中读取数据。</li>
+<li>创建<code>ActivityResultContract&lt;I, O&gt;</code>的实例，声明输入/输出数据，需要实现里面的抽象方法。<code>createIntent</code>方法用来获取跳转的Intent，<code>parseResult</code>用来处理返回的数据</li>
+<li>创建<code>ActivityResultCallback&lt;O&gt;</code>接口实例，用来处理返回的数据，里面只有一个方法<code>onActivityResult</code></li>
+<li>最后调用ComponentActivity中方法<code>registerForActivityResult(contract, callback)</code>把前两步创建的参数传入即可</li>
 </ul>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wsurl = <span class="string">&quot;wss://api.huobi.pro/ws&quot;</span></span><br><span class="line"><span class="keyword">var</span> origin = <span class="string">&quot;http://api.huobi.pro/&quot;</span></span><br><span class="line">ws, err := websocket.Dial(wsurl, <span class="string">&quot;&quot;</span>, origin)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">panic</span>(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-写数据。"><a href="#2-写数据。" class="headerlink" title="2. 写数据。"></a>2. 写数据。</h3><p>在通道已建立的前提下，写数据操作通过一行代码即可完成：</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendMessage</span><span class="params">(data []bytes)</span></span> &#123;</span><br><span class="line">	ws.Write(msg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-1-读数据。"><a href="#3-1-读数据。" class="headerlink" title="3.1 读数据。"></a>3.1 读数据。</h3><p>最简单的方法是调用<code>func (ws *Conn) Read(msg []byte) (n int, err error)</code>方法，定义一个用来接收数据的<code>[]byte</code>数组当作参数传入，但是由于不知道server发来的数据长度，所以一般是定义一个足够大的字节<code>[]byte</code>数组，这样读取一来浪费内存二来处理起来麻烦，不建议使用；</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readMessage</span><span class="params">(ws *websocket.Conn)</span></span> &#123;</span><br><span class="line">	data := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="number">1024</span>*<span class="number">10</span>)</span><br><span class="line">	_, err := ws.Read(data)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-读数据。"><a href="#3-2-读数据。" class="headerlink" title="3.2 读数据。"></a>3.2 读数据。</h3><p>对于都是以json方式传输的数据，websocket包提供了将每条message读取到一个<code>interface&#123;&#125;</code>中的方法，等同于<code>json.Unmarshal</code>。</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readJsonMessage</span><span class="params">(ws *websocket.Conn)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> data interfact&#123;&#125; <span class="comment">// data的类型为接收的JSON类型struct</span></span><br><span class="line">	err := websocket.Message.Receive(ws, data)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-读数据。"><a href="#3-3-读数据。" class="headerlink" title="3.3 读数据。"></a>3.3 读数据。</h3><p>3.2是将接收到的数据直接unmarshal到struct里了，而我的需求比这个要麻烦一点：server发来的数据<code>[]byte</code>数组是压缩过的，所以接收到数据后第一步应该解压缩然后才能unmarshal，所以不能再用3.2的方式，参照3.2的源码，实现方式如下。</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readOriginMessage</span><span class="params">(ws *websocket.Conn)</span></span> &#123;</span><br><span class="line">	again:</span><br><span class="line">		fr, err := ws.NewFrameReader()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Printf(<span class="string">&quot;new frame reader err %v&quot;</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		frame, err := ws.HandleFrame(fr)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Printf(<span class="string">&quot;handle frame err %v&quot;</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> frame == <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">goto</span> again</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		bytes, err := ioutil.ReadAll(frame)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Printf(<span class="string">&quot;read frame data err %v&quot;</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line">		unzipData, err := utils.UnzipByte(bytes)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Printf(<span class="string">&quot;unzip data err %v&quot;</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> message <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">		e := json.Unmarshal(unzipData, &amp;message)</span><br><span class="line">		<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Printf(<span class="string">&quot;unmarshal err %v&quot;</span>, e)</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		log.Printf(<span class="string">&quot;message content= %+v&quot;</span>, message)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Fragment-Result"><a href="#Fragment-Result" class="headerlink" title="Fragment Result"></a>Fragment Result</h3><p>在FragmentManager有这样一组方法，可以进行数据通信：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setFragmentResultListener</span><span class="params">(String requestKey, LifecycleOwner lifecycleOwner, FragmentResultListener listener)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setFragmentResult</span><span class="params">(String requestKey, Bundle result)</span></span></span><br></pre></td></tr></table></figure>
+<p>简单说，就是在观察者模式的基础上，加上了生命周期的管理，不管是Activity还是Fragment，只要能获取到同一个FragmentManager就可以通信。需要注意的是，里面保存key和listener用的是<code>Map&lt;String, FragmentResultListener&gt;</code>，所以一个key只能有一个listener，后面的会把前面的覆盖。</p>
+<h3 id="Fragment中监听返回按键"><a href="#Fragment中监听返回按键" class="headerlink" title="Fragment中监听返回按键"></a>Fragment中监听返回按键</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlaceholderFragment</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> sectionNumber: <span class="built_in">Int</span>) :</span><br><span class="line">    Fragment(R.layout.fragment_placeholder) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> onBackPressedCallback = <span class="keyword">object</span> : OnBackPressedCallback(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleOnBackPressed</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="comment">//TODO       </span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onAttach</span><span class="params">(context: <span class="type">Context</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onAttach(context)</span><br><span class="line">        requireActivity().onBackPressedDispatcher.addCallback(<span class="keyword">this</span>, onBackPressedCallback)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他用途"><a href="#其他用途" class="headerlink" title="其他用途"></a>其他用途</h3><ul>
+<li>Fragment可设置内部的UI View，也可以不设置。当不设置时，可用其来监听生命周期，其中LifeCycle、Glide用的便是这种方式。</li>
+<li>也可以用作方法代理，请求权限，可将请求与处理放到一起处理，而不是像<code>registerForActivityResult</code>分开处理</li>
+</ul>
+
     </div>
 
     
@@ -327,7 +338,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2018/11/f0d738b44296/" title="Golang websocket client读取数据">https://oynix.github.io/2018/11/f0d738b44296/</a>
+    <a href="https://oynix.github.io/2021/09/5536a870cb20/" title="Android Fragment">https://oynix.github.io/2021/09/5536a870cb20/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -338,8 +349,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Goland/" rel="tag"># Goland</a>
-              <a href="/tags/websocket/" rel="tag"># websocket</a>
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/Fragment/" rel="tag"># Fragment</a>
           </div>
 
         
@@ -348,13 +359,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/10/ab916a013a16/" rel="prev" title="Android WebView加载URL不显示图片">
-      <i class="fa fa-chevron-left"></i> Android WebView加载URL不显示图片
+    <a href="/2021/09/044f31f510db/" rel="prev" title="Android之检查知否开了代理">
+      <i class="fa fa-chevron-left"></i> Android之检查知否开了代理
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2018/12/44fb710f68f6/" rel="next" title="Goland调整Terminal窗口字体大小">
-      Goland调整Terminal窗口字体大小 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -414,7 +422,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E3%80%82"><span class="nav-text">1. 建立连接。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%86%99%E6%95%B0%E6%8D%AE%E3%80%82"><span class="nav-text">2. 写数据。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%AF%BB%E6%95%B0%E6%8D%AE%E3%80%82"><span class="nav-text">3.1 读数据。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E8%AF%BB%E6%95%B0%E6%8D%AE%E3%80%82"><span class="nav-text">3.2 读数据。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E8%AF%BB%E6%95%B0%E6%8D%AE%E3%80%82"><span class="nav-text">3.3 读数据。</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E9%80%80%E6%A0%88"><span class="nav-text">回退栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#registerForActivityResult"><span class="nav-text">registerForActivityResult</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fragment-Result"><span class="nav-text">Fragment Result</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fragment%E4%B8%AD%E7%9B%91%E5%90%AC%E8%BF%94%E5%9B%9E%E6%8C%89%E9%94%AE"><span class="nav-text">Fragment中监听返回按键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%94%A8%E9%80%94"><span class="nav-text">其他用途</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -593,7 +601,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'oynix.github.io',
       owner       : 'oynix',
       admin       : ['oynix'],
-      id          : 'a4ec2a4c20e4262593848e54bba3de9c',
+      id          : '1bbe54c12f3fbba05c06f3abc2eb6c0b',
         language: '',
       distractionFreeMode: true
     });
