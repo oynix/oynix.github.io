@@ -30,7 +30,7 @@
 <meta property="og:description" content="Binder简介，摘选自《Android系统源代码情景分析》">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-13T05:43:45.000Z">
-<meta property="article:modified_time" content="2022-02-16T23:46:41.614Z">
+<meta property="article:modified_time" content="2022-02-17T02:24:56.641Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Binder">
@@ -274,7 +274,7 @@
 
 <h3 id="1-整体关系"><a href="#1-整体关系" class="headerlink" title="1. 整体关系"></a>1. 整体关系</h3><p>Linux内核的进程间通信机制：管道Pipe，信号Signal，消息队列Message，共享内存ShareMemory，插口Socket等。</p>
 <p>Android独特的IPC，Binder，基于CS架构，优势：进程间传输数据时，只需要执行一次复制操作，提高效率，节省内存空间。</p>
-<p>提供服务的是Server进程，访问服务的进程是Client进程，<br>一个Server进程可以运行多个组件来（Service组件）给Client进程提供服务，一个Client进程可以运行多个组件（Client组件）来请求服务<br>Server进程和Client进程都维护了一个Binder线程池，用来处理进程间通信请求，可并发操作。</p>
+<p>提供服务的是Server进程，访问服务的进程是Client进程，一个Server进程可以运行多个组件来（Service组件）给Client进程提供服务，一个Client进程可以运行多个组件（Client组件）来请求服务。Server进程和Client进程都维护了一个Binder线程池，用来处理进程间通信请求，可并发操作。</p>
 <p>Server进程和Client进程间的通信依靠运行在内核空间的Binder驱动程序来进行。Binder驱动程序向用户空间暴露了一个设备文件/dev/binder，使得应用程序进程可以间接地通过它来建立通信通道。</p>
 <p>Service组件在启动时，会将自己注册到一个ServiceManager组件中，已便Client组件可以该组件找到它。因此，我们将ServiceManager组件称为Binder进程间通信机制的上下文管理者，同时由于它也需要与普通的Server进程和Client进程通信，我们也将它看作是一个Service组件，只不过它是一个特殊的Service组件。</p>
 <p>Client、Service和ServiceManager运行在用户空间，Binder驱动程序运行在内核空间，其中，ServiceManager和Binder驱动程序由系统负责提供，Client和Service组件由应用程序来实现。</p>
