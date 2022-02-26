@@ -30,7 +30,7 @@
 <meta property="og:description" content="列举一些Android项目中常用的三方依赖库。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-26T15:01:04.000Z">
-<meta property="article:modified_time" content="2022-02-26T15:55:16.115Z">
+<meta property="article:modified_time" content="2022-02-26T16:02:21.483Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -264,11 +264,8 @@
 
 <h3 id="一-EventBus"><a href="#一-EventBus" class="headerlink" title="一. EventBus"></a>一. EventBus</h3><p>算是很常见了，事件总线库，采用发布/订阅模式和单例模式，用于解耦组件通信。这里主要介绍3点：注册、事件和线程。</p>
 <ol>
-<li>注册<br>EventBus是一个单例，采用注解的方式，接收事件的方法需要用@Subscribe注解标记，然后通过单例里的方法register将自己以及需要订阅的事件注册到其中，有事件到来时EventBus便会通过反射调用订阅者。</li>
-</ol>
-<p>在调用register时，有两种方式：JIT和AOT。如果使用了APT(Annotation Processor Tool)，在编译阶段所有被@Subscribe修饰的方法都会被单独处理生成对应的代码，在调用register时直接将订阅者的方法添加到集合中；如果没有使用APT，那么在调用register时，便会通过反射遍历订阅者及其父类的所有方法，找到被@Subscribe修饰的方法，然后将这些方法添加到集合中。</p>
-<p>各自的优缺点，看到JIT和AOT其实就很明显了，时间换空间。使用APT的会更快一些，因为省去了耗时的反射操作，但是可能会把用不到的订阅者也添加到集合中；若不使用APT则是按需添加，但是速度上就慢了一些。</p>
-<ol start="2">
+<li><p>注册<br>EventBus是一个单例，采用注解的方式，接收事件的方法需要用@Subscribe注解标记，然后通过单例里的方法register将自己以及需要订阅的事件注册到其中，有事件到来时EventBus便会通过反射调用订阅者。<br>在调用register时，有两种方式：JIT和AOT。如果使用了APT(Annotation Processor Tool)，在编译阶段所有被@Subscribe修饰的方法都会被单独处理生成对应的代码，在调用register时直接将订阅者的方法添加到集合中；如果没有使用APT，那么在调用register时，便会通过反射遍历订阅者及其父类的所有方法，找到被@Subscribe修饰的方法，然后将这些方法添加到集合中。<br>各自的优缺点，看到JIT和AOT其实就很明显了，时间换空间。使用APT的会更快一些，因为省去了耗时的反射操作，但是可能会把用不到的订阅者也添加到集合中；若不使用APT则是按需添加，但是速度上就慢了一些。</p>
+</li>
 <li><p>事件<br>分为两种：普通事件和粘性事件。普通事件需要先注册后才能接收，而粘性事件在发送时会被保存最后一次的事件，所以如有有人注册订阅粘性事件，那么在调用register时，会使其接收一次上一次的粘性事件。</p>
 </li>
 <li><p>线程<br>在订阅时可在@Subscribe中指定接收线程，在发送事件的线程、在主线程、在后台线程、在异步线程。主线程和后台线程的事件都是顺序被处理的，而异步线程中维护了一个线程池Executors.newCachedThreadPool()，每次接收到新事件都会交给线程池处理，因此无法保证有序性，但是实效性相对更高，有得有失。</p>
