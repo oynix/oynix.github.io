@@ -30,7 +30,7 @@
 <meta property="og:description" content="由于业务特殊，最近的需求都是藏代码，把业务逻辑代码藏到工程里的各个层面，这就离不开JNI开发了，这篇来具体说一说。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-27T14:22:06.000Z">
-<meta property="article:modified_time" content="2022-04-02T01:42:42.312Z">
+<meta property="article:modified_time" content="2022-04-03T18:10:07.862Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="JNI">
@@ -250,14 +250,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>529</span>
+              <span>6.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -323,7 +323,108 @@
 <td>signed 64 bit</td>
 </tr>
 </tbody></table>
-<h3 id="2-常规方式-javah"><a href="#2-常规方式-javah" class="headerlink" title="2. 常规方式 javah"></a>2. 常规方式 javah</h3><h3 id="3-JNI-OnLoad方式"><a href="#3-JNI-OnLoad方式" class="headerlink" title="3. JNI_OnLoad方式"></a>3. JNI_OnLoad方式</h3><h3 id="4-方法签名"><a href="#4-方法签名" class="headerlink" title="4. 方法签名"></a>4. 方法签名</h3><h3 id="5-CMake-txt"><a href="#5-CMake-txt" class="headerlink" title="5. CMake.txt"></a>5. CMake.txt</h3><h3 id="4-几个关键字-JNIEXPORT-JNICALL-extern"><a href="#4-几个关键字-JNIEXPORT-JNICALL-extern" class="headerlink" title="4. 几个关键字 JNIEXPORT JNICALL extern"></a>4. 几个关键字 JNIEXPORT JNICALL extern</h3><h3 id="5-指针"><a href="#5-指针" class="headerlink" title="5. 指针"></a>5. 指针</h3>
+<h3 id="2-javah方式"><a href="#2-javah方式" class="headerlink" title="2. javah方式"></a>2. javah方式</h3><p>在java文件NativeLib.java中，声明一个native修饰的方法，也可以声明多个，然后在这个文件所在目录执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac -h . NativeLib.java</span><br></pre></td></tr></table></figure>
+<p>于是，在这个目录下就会生成NativeLib.class文件，和一个.h的header文件，你会发现里面都是些又臭又长的函数声明，然后在cpp文件中实现header文件里的函数，将其打包成so文件，在程序运行时，jvm便可以根据名字找到native修饰的方法对应的jni中的函数，这是写在jvm介绍里面的，具体的<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLm9yYWNsZS5jb20vamF2YXNlLzYvZG9jcy90ZWNobm90ZXMvZ3VpZGVzL2puaS9zcGVjL2Rlc2lnbi5odG1sI3dwNjE1">这个Oracle文档<i class="fa fa-external-link-alt"></i></span>里有介绍。</p>
+<h3 id="3-JNI-OnLoad方式"><a href="#3-JNI-OnLoad方式" class="headerlink" title="3. JNI_OnLoad方式"></a>3. JNI_OnLoad方式</h3><p>这是个特殊的函数，在调用System.load方法加载so库文件后，最终会调用库文件里的JNI_OnLoad方法，前提是已定义了这个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.load -&gt; Runtime.loadLibrary -&gt; nativeLoad(java_lang_Runtime.cpp) -&gt; </span><br><span class="line">Dalvik_java_lang_Runtime_nativeLoad -&gt; dvmLoadNativeCode(dalvik/vm/Native.cpp) -&gt;</span><br><span class="line">- dlopen(pathName, RTLD_LAZY) (把so mmap到进程空间，并把func等相关信息填充到soinfo中)</span><br><span class="line">- dlsym(handle, <span class="string">&quot;JNI_OnLoad&quot;</span>) (查找JNI_InLoad) 方法，找到则调用</span><br><span class="line">- JNI_OnLoad</span><br></pre></td></tr></table></figure>
+<p>所以，我们可以在这个函数中注册函数，JNI也提供了注册函数的方法RegisterNatives。这种方式需要两步，首先找到目标Class，然后再调用Register方法即可，以下是Android官网<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuYW5kcm9pZC5jb20vdHJhaW5pbmcvYXJ0aWNsZXMvcGVyZi1qbmkjbmF0aXZlLWxpYnJhcmllcw==">示例代码<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">JNIEXPORT </span></span><br><span class="line"><span class="function">jint <span class="title">JNI_OnLoad</span><span class="params">(JavaVM* vm, <span class="keyword">void</span>* reserved)</span> </span>&#123;</span><br><span class="line">    JNIEnv* env;</span><br><span class="line">    <span class="keyword">if</span> (vm-&gt;<span class="built_in">GetEnv</span>(<span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">void</span>**&gt;(&amp;env), JNI_VERSION_1_6) != JNI_OK) &#123;</span><br><span class="line">        <span class="keyword">return</span> JNI_ERR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find your class. JNI_OnLoad is called from the correct class loader context for this to work.</span></span><br><span class="line">    jclass c = env-&gt;<span class="built_in">FindClass</span>(<span class="string">&quot;com/example/app/package/MyClass&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="literal">nullptr</span>) <span class="keyword">return</span> JNI_ERR;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Register your class&#x27; native methods.</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> JNINativeMethod methods[] = &#123;</span><br><span class="line">            &#123;<span class="string">&quot;nativeFoo&quot;</span>, <span class="string">&quot;()V&quot;</span>, <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">void</span>*&gt;(nativeFoo)&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;nativeBar&quot;</span>, <span class="string">&quot;(Ljava/lang/String;I)Z&quot;</span>, <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">void</span>*&gt;(nativeBar)&#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">int</span> rc = env-&gt;<span class="built_in">RegisterNatives</span>(c, methods, <span class="built_in"><span class="keyword">sizeof</span></span>(methods)/<span class="built_in"><span class="keyword">sizeof</span></span>(JNINativeMethod));</span><br><span class="line">    <span class="keyword">if</span> (rc != JNI_OK) <span class="keyword">return</span> rc;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> JNI_VERSION_1_6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，RegisterNatives做的事是把本地函数和一个java类方法关联起来，不管之前是否关联过，一律会把之前的替换掉，也就是多次给一个java类关联本地函数时，只有最后一次关联的是有效的。</p>
+<h3 id="4-两种方式对比"><a href="#4-两种方式对比" class="headerlink" title="4. 两种方式对比"></a>4. 两种方式对比</h3><p>如果没有调用Register方法提前注册，则无法把so中实现的函数在进程中的地址增加到ClassObject中的directMethods中，那么只有到了调用native方法时，才会解析这些又臭又长的javah风格的函数，这个事在dumResolveNativeMethod(dalvik/vm/Native.cpp)中进行，根据native方法签名，在所有打开的so中寻找函数实现，找到后并调用，所以从调用效率上来看，Register更高效。</p>
+<h3 id="5-方法签名"><a href="#5-方法签名" class="headerlink" title="5. 方法签名"></a>5. 方法签名</h3><p>上面提了好几次的方法签名，这来说一说。简单说，方法签名就是由方法返回值类型和参数类型组成的一个字符串：”(参数列表)返回值“，每种类型都有一个唯一的标记，如下</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V</td>
+<td>void</td>
+<td>方法返回值</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td>byte</td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td>char</td>
+<td></td>
+</tr>
+<tr>
+<td>S</td>
+<td>short</td>
+<td></td>
+</tr>
+<tr>
+<td>I</td>
+<td>int</td>
+<td></td>
+</tr>
+<tr>
+<td>J</td>
+<td>long</td>
+<td></td>
+</tr>
+<tr>
+<td>F</td>
+<td>float</td>
+<td></td>
+</tr>
+<tr>
+<td>D</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>[</td>
+<td>数组</td>
+<td>以[开头，配合其他的特殊字符，表示对应数据类型的数组，几个[表示几维数组</td>
+</tr>
+<tr>
+<td>L全类名</td>
+<td>引用类型</td>
+<td>以L开头、;结尾，中间是引用类型的全类名</td>
+</tr>
+</tbody></table>
+<p>如果懒得写，还可以用javap命令，注意这里传入的是class文件，所以要先用javac编译一下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -p -s NativeLib.class</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-CMakeLists-txt"><a href="#6-CMakeLists-txt" class="headerlink" title="6. CMakeLists.txt"></a>6. CMakeLists.txt</h3><p>用Android Studio创建NativeLibrary时，会自动生成CMake文件。根据官网说，NDK构建一共有三种方式：基于Make的ndk-build、CMake和已经弃用的独立工具链，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuYW5kcm9pZC5jb20vbmRrL2d1aWRlcy9idWlsZA==">原文在这<i class="fa fa-external-link-alt"></i></span>。可见AS默认使用的CMake方式，自动生成的CMakeLists.txt文件里写了很详细的介绍，这里直接拿过来看一看</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># For more information about using CMake with Android Studio, read the</span></span><br><span class="line"><span class="comment"># documentation: https://d.android.com/studio/projects/add-native-code.html</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Sets the minimum version of CMake required to build the native library.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.18</span>.<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Declares and names the project.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(<span class="string">&quot;nativelib&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Creates and names a library, sets it as either STATIC</span></span><br><span class="line"><span class="comment"># or SHARED, and provides the relative paths to its source code.</span></span><br><span class="line"><span class="comment"># You can define multiple libraries, and CMake builds them for you.</span></span><br><span class="line"><span class="comment"># Gradle automatically packages shared libraries with your APK.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>( <span class="comment"># Sets the name of the library.</span></span><br><span class="line">             nativelib</span><br><span class="line"></span><br><span class="line">             <span class="comment"># Sets the library as a shared library.</span></span><br><span class="line">             SHARED</span><br><span class="line"></span><br><span class="line">             <span class="comment"># Provides a relative path to your source file(s).</span></span><br><span class="line">             nativelib.cpp )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Searches for a specified prebuilt library and stores the path as a</span></span><br><span class="line"><span class="comment"># variable. Because CMake includes system libraries in the search path by</span></span><br><span class="line"><span class="comment"># default, you only need to specify the name of the public NDK library</span></span><br><span class="line"><span class="comment"># you want to add. CMake verifies that the library exists before</span></span><br><span class="line"><span class="comment"># completing its build.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">find_library</span>( <span class="comment"># Sets the name of the path variable.</span></span><br><span class="line">              log-lib</span><br><span class="line"></span><br><span class="line">              <span class="comment"># Specifies the name of the NDK library that</span></span><br><span class="line">              <span class="comment"># you want CMake to locate.</span></span><br><span class="line">              log )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Specifies libraries CMake should link to your target library. You</span></span><br><span class="line"><span class="comment"># can link multiple libraries, such as libraries you define in this</span></span><br><span class="line"><span class="comment"># build script, prebuilt third-party libraries, or system libraries.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( <span class="comment"># Specifies the target library.</span></span><br><span class="line">                       nativelib</span><br><span class="line"></span><br><span class="line">                       <span class="comment"># Links the target library to the log library</span></span><br><span class="line">                       <span class="comment"># included in the NDK.</span></span><br><span class="line">                       <span class="variable">$&#123;log-lib&#125;</span> )</span><br></pre></td></tr></table></figure>
+<p>find_library就是从ndk里找，具体位置在</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/Library/Android/sdk/ndk/21.4.7075529/platforms/android-30/arch-x86_64/usr/lib64</span><br></pre></td></tr></table></figure>
+<p>名字掐头去尾，所以log库对应的就是这个目录下的liblog.so文件。同时，build.grade里也多了两个块，分别在android里，指定了版本和路径，和android的defaultConfig里，可以添加编译时的配置</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        externalNativeBuild &#123;</span><br><span class="line">            cmake &#123;</span><br><span class="line">                cppFlags <span class="string">&quot;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    externalNativeBuild &#123;</span><br><span class="line">        cmake &#123;</span><br><span class="line">            path <span class="string">&quot;src/main/cpp/CMakeLists.txt&quot;</span></span><br><span class="line">            version <span class="string">&quot;3.18.1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-几个关键字-JNIEXPORT-JNICALL-extern"><a href="#7-几个关键字-JNIEXPORT-JNICALL-extern" class="headerlink" title="7. 几个关键字 JNIEXPORT JNICALL extern"></a>7. 几个关键字 JNIEXPORT JNICALL extern</h3><ul>
+<li><p>JNIEXPORT和JNICALL<br>这是两个宏定义，在不同平台对应不同的定义。JNIEXPORT的作用是保证在本库中声明的函数能够在其他项目中可以调用，一般export的作用都是如此，而JNICALL则是用于定义函数入栈规则和堆栈清理规则，<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NodWxpYW5naGFuL2FydGljbGUvZGV0YWlscy8xMDQwNzI1ODc=">这篇文章有详细说明<i class="fa fa-external-link-alt"></i></span>。</p>
+</li>
+<li><p>extern<br>它有两个作用，一个是用来修饰变量或是函数，这时它的作用就是声明函数或全局变量的作用范围的关键字，其声明的函数和变量可以在本模块或是其他模块中使用。虽然它只是声明，但在编译阶段，找不到定义也不会报错，因为连接器在连接阶段会在生成的目标代码中找到定义。另个作用是和“C”一起连用，此时它的作用是告诉编译器用C的规则编译而不是C++的规则，因为C++支持重载，所以编译后的名字是不同的。例如，void foo(int x, int y);，C编译器编译后在符号库中的名字为_foo，而C++编译后的结果是_foo_int_int之类的名字，具体取决于编译器的类型，所以，如果把一个用C编译的目标代码和一个用C++编译器编译的目标代码进行链接，就会出现连接失败的错误。同时，只有C++编译器认识extern “C”，常用写法为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="comment">// code here</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="8-指针void"><a href="#8-指针void" class="headerlink" title="8. 指针void*"></a>8. 指针void*</h3><p>指针是种常用的形式，提供了很多便利，如<code>int*</code>为int型指针，<code>char*</code>为字符型指针，经常还会遇到一种指针，<code>void*</code>。指针存储的是地址，它本身的大小就是系统寻址的大小，不同类型的指针的所占用的内存大小都是一样的，那为什么还要区分类型呢？从某个角度来看，指针的类型可以理解为它的跳跃能力，比如一个int类型的指针在加1后，会指向紧邻的下一个int，一个int按照占用4个字节来计算的话，那么它的跳跃能力就是4个字节，同理，一个long型的指针在加1后，也会指向紧邻的下一个long，一个long占用8个字节，那么它的跳跃能力就是8个字节。这样来看的话，void类型的指针就是跳跃能力未知的指针，它需要我们手动强转之后，才具有跳跃能力，强转为int型指针后，跳跃能力为4字节，转为long则为8字节。多用于通用函数的参数，比如memcpy，不关心传入是什么类型的指针，我只管把src位置的🈯️数量的字节复制到dst，即可。<code>void*</code>就是个这样的存在。</p>
+<h3 id="9-反射调用"><a href="#9-反射调用" class="headerlink" title="9. 反射调用"></a>9. 反射调用</h3><p>在JNI里调用java的方法，基本都是通过反射的方式。先获取jclass，通过jclass获取jmethod或者jfield，然后再调用方法或字段</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取class，JNI提供两种方式，通过方法名，或者通过jobject</span></span><br><span class="line">jclass jc = env-&gt;<span class="built_in">FindClass</span>(<span class="string">&quot;java/lang/String&quot;</span>);</span><br><span class="line">jclass jc = env-&gt;<span class="built_in">GetObjectClass</span>(jo);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取method</span></span><br><span class="line">jmethodID jm = env-&gt;<span class="built_in">GetMethodID</span>(jc, <span class="string">&quot;method name&quot;</span>, <span class="string">&quot;method signature&quot;</span>);</span><br><span class="line">jmethodID jm = env-&gt;<span class="built_in">GetStaticMethodID</span>(jc, <span class="string">&quot;method name&quot;</span>, <span class="string">&quot;method signature&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取字段</span></span><br><span class="line">jfieldID jf = env-&gt;<span class="built_in">GetFieldID</span>(jc, <span class="string">&quot;field name&quot;</span>, <span class="string">&quot;field signature&quot;</span>);</span><br><span class="line">jfieldID jf = env-&gt;<span class="built_in">GetStaticFieldID</span>(jc, <span class="string">&quot;field name&quot;</span>, <span class="string">&quot;field signature&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法调用 每种返回值类型JNI都有一个对应的方法</span></span><br><span class="line">env-&gt;<span class="built_in">CallVoidMethod</span>(jo, jm);</span><br><span class="line">jobject jo = env-&gt;<span class="built_in">CallObjectMethod</span>(jo, jm, methodArg);</span><br><span class="line"><span class="comment">// 同时，每种类型都有一个静态方法对应的方法</span></span><br><span class="line">env-&gt;<span class="built_in">CallStaticObjectMethod</span>(jc, jm, methodArg);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 字段调用，同方法</span></span><br><span class="line">jint i = env-&gt;<span class="built_in">GetIntField</span>(jo, jf);</span><br><span class="line"><span class="comment">// 静态字段同理</span></span><br><span class="line">jint i = env-&gt;<span class="built_in">GetStaticIntField</span>(jc, jf);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZpcmVyb2xsL2FydGljbGUvZGV0YWlscy81MDEwMjAwOQ==">https://blog.csdn.net/fireroll/article/details/50102009<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2tnZHdiYi9hcnRpY2xlL2RldGFpbHMvNzI4MTAyNTE=">https://blog.csdn.net/kgdwbb/article/details/72810251<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC8xMjI5NTgwYjIzNTY=">https://www.jianshu.com/p/1229580b2356<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC82Y2JkZGExMTE1NzA=">https://www.jianshu.com/p/6cbdda111570<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+
     </div>
 
     
@@ -454,7 +555,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">1. 基础数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%84%E6%96%B9%E5%BC%8F-javah"><span class="nav-text">2. 常规方式 javah</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-JNI-OnLoad%E6%96%B9%E5%BC%8F"><span class="nav-text">3. JNI_OnLoad方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%96%B9%E6%B3%95%E7%AD%BE%E5%90%8D"><span class="nav-text">4. 方法签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-CMake-txt"><span class="nav-text">5. CMake.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E5%AD%97-JNIEXPORT-JNICALL-extern"><span class="nav-text">4. 几个关键字 JNIEXPORT JNICALL extern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%8C%87%E9%92%88"><span class="nav-text">5. 指针</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">1. 基础数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-javah%E6%96%B9%E5%BC%8F"><span class="nav-text">2. javah方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-JNI-OnLoad%E6%96%B9%E5%BC%8F"><span class="nav-text">3. JNI_OnLoad方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="nav-text">4. 两种方式对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%96%B9%E6%B3%95%E7%AD%BE%E5%90%8D"><span class="nav-text">5. 方法签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-CMakeLists-txt"><span class="nav-text">6. CMakeLists.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E5%AD%97-JNIEXPORT-JNICALL-extern"><span class="nav-text">7. 几个关键字 JNIEXPORT JNICALL extern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%8C%87%E9%92%88void"><span class="nav-text">8. 指针void*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%8F%8D%E5%B0%84%E8%B0%83%E7%94%A8"><span class="nav-text">9. 反射调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95"><span class="nav-text">附录</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -534,12 +635,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">231k</span>
+    <span title="站点总字数">237k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:30</span>
+    <span title="站点阅读时长">3:36</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>

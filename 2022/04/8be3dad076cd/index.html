@@ -30,7 +30,7 @@
 <meta property="og:description" content="平常经常写一些shell脚本，来执行一些自动化任务，比如打包、连接等，记录下常用到的语法和命令。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-03T03:40:41.000Z">
-<meta property="article:modified_time" content="2022-04-03T12:39:12.695Z">
+<meta property="article:modified_time" content="2022-04-03T12:39:44.934Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
@@ -297,7 +297,7 @@
 <p>有时还会需要在本地和远程之间传递文件命令，从本地到远程如下（远程到本地就反过来），注意server-ip后面的冒号，</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scp [options] /<span class="built_in">local</span>/<span class="built_in">source</span>/file/path user@server-ip:/path/to/destination</span><br><span class="line">-C 要大写，压缩</span><br><span class="line">-P 要大写，端口号，默认22</span><br><span class="line">-r recursive递归</span><br><span class="line">-p 保留访问修改时间</span><br></pre></td></tr></table></figure>
 
-<h3 id="5-编译shell脚本"><a href="#5-编译shell脚本" class="headerlink" title="5. 编译shell脚本"></a>5. 编译shell脚本</h3><p>有时写完一个shell脚本，需要给别人使用内，但是又不想让别人看到里面的代码，可能因为里面有重要数据，也可能没有为什么，就是不想，这时可以把shell脚本编译成可执行文件，这样一来，既可以执行，但又无法查看了。一共有两种方式，一是系统自带的gzexe，二是使用shc命令，</p>
+<h3 id="5-编译shell脚本"><a href="#5-编译shell脚本" class="headerlink" title="5. 编译shell脚本"></a>5. 编译shell脚本</h3><p>有时写完一个shell脚本，需要给别人使用，但是又不想让别人看到里面的代码，可能因为里面有重要数据，也可能没有为什么，就是不想，这时可以把shell脚本编译成可执行文件，这样一来，既可以执行，但又无法查看了。一共有两种方式，一是系统自带的gzexe，二是使用shc命令，</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzexe command.sh</span><br></pre></td></tr></table></figure>
 <p>这会在目录下生成两个文件，一个是command.sh，另个是command.sh~，前者是压缩之后的，带～的是原文件，打开压缩之后的文件，可以发现里面有不少内容还是可以看懂的，尽管多数都不沾边了。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shc -f command.sh</span><br></pre></td></tr></table></figure>
@@ -509,12 +509,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">231k</span>
+    <span title="站点总字数">237k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:30</span>
+    <span title="站点阅读时长">3:36</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
