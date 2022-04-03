@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="JNI的基础数据类型，以及类型间的相互转换。">
+  <meta name="description" content="由于业务特殊，最近的需求都是藏代码，把业务逻辑代码藏到工程里的各个层面，这就离不开JNI开发了，这篇来具体说一说。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JNI基础数据类型">
+<meta property="og:title" content="JNI使用总结">
 <meta property="og:url" content="https://oynix.github.io/2022/03/4cd01e062b9d/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="JNI的基础数据类型，以及类型间的相互转换。">
+<meta property="og:description" content="由于业务特殊，最近的需求都是藏代码，把业务逻辑代码藏到工程里的各个层面，这就离不开JNI开发了，这篇来具体说一说。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-27T14:22:06.000Z">
-<meta property="article:modified_time" content="2022-03-27T14:55:30.434Z">
+<meta property="article:modified_time" content="2022-04-02T01:42:42.312Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="JNI">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>JNI基础数据类型 | oynix</title>
+  <title>JNI使用总结 | oynix</title>
   
 
 
@@ -130,7 +130,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">67</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">68</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -140,7 +140,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">74</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">75</span></a>
 
   </li>
         <li class="menu-item menu-item-message">
@@ -215,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          JNI基础数据类型
+          JNI使用总结
         </h1>
 
         <div class="post-meta">
@@ -250,7 +250,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>359</span>
+              <span>529</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -269,10 +269,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>JNI的基础数据类型，以及类型间的相互转换。</p>
+        <p>由于业务特殊，最近的需求都是藏代码，把业务逻辑代码藏到工程里的各个层面，这就离不开JNI开发了，这篇来具体说一说。</p>
 <span id="more"></span>
 
-<p>JNI（Java Native Interface），是Android开发中在原生Java层调用本地C/C++方法的一种方式。JNI库一般是以扩展名为so（shared object）的文件存在，通过<code>System.load</code>就可以将其加载到应用进程中。既然可以互相调用，那么就来说一说二者在数据结构上的对应关系。</p>
+<p>JNI（Java Native Interface），是Android开发中在原生java层调用c/c++ native方法的一种方式，也可以在native层调用java层的方法。JNI库一般是以扩展名为so（shared object）的文件存在，通过<code>System.load</code>就可以将其加载到应用进程中，之后java层和native层便可以相互调用。</p>
+<h3 id="1-基础数据类型"><a href="#1-基础数据类型" class="headerlink" title="1. 基础数据类型"></a>1. 基础数据类型</h3><p>既然可以互相调用，那么二者在数据结构上的就有着对应关系，具体如下：</p>
 <table>
 <thead>
 <tr>
@@ -322,7 +323,7 @@
 <td>signed 64 bit</td>
 </tr>
 </tbody></table>
-
+<h3 id="2-常规方式-javah"><a href="#2-常规方式-javah" class="headerlink" title="2. 常规方式 javah"></a>2. 常规方式 javah</h3><h3 id="3-JNI-OnLoad方式"><a href="#3-JNI-OnLoad方式" class="headerlink" title="3. JNI_OnLoad方式"></a>3. JNI_OnLoad方式</h3><h3 id="4-方法签名"><a href="#4-方法签名" class="headerlink" title="4. 方法签名"></a>4. 方法签名</h3><h3 id="5-CMake-txt"><a href="#5-CMake-txt" class="headerlink" title="5. CMake.txt"></a>5. CMake.txt</h3><h3 id="4-几个关键字-JNIEXPORT-JNICALL-extern"><a href="#4-几个关键字-JNIEXPORT-JNICALL-extern" class="headerlink" title="4. 几个关键字 JNIEXPORT JNICALL extern"></a>4. 几个关键字 JNIEXPORT JNICALL extern</h3><h3 id="5-指针"><a href="#5-指针" class="headerlink" title="5. 指针"></a>5. 指针</h3>
     </div>
 
     
@@ -366,7 +367,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2022/03/4cd01e062b9d/" title="JNI基础数据类型">https://oynix.github.io/2022/03/4cd01e062b9d/</a>
+    <a href="https://oynix.github.io/2022/03/4cd01e062b9d/" title="JNI使用总结">https://oynix.github.io/2022/03/4cd01e062b9d/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -390,7 +391,10 @@
     <a href="/2022/03/324ae03bb52e/" rel="prev" title="Android基础之Service">
       <i class="fa fa-chevron-left"></i> Android基础之Service
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/8be3dad076cd/" rel="next" title="shell常用语法">
+      shell常用语法 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -450,6 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">1. 基础数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%84%E6%96%B9%E5%BC%8F-javah"><span class="nav-text">2. 常规方式 javah</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-JNI-OnLoad%E6%96%B9%E5%BC%8F"><span class="nav-text">3. JNI_OnLoad方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%96%B9%E6%B3%95%E7%AD%BE%E5%90%8D"><span class="nav-text">4. 方法签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-CMake-txt"><span class="nav-text">5. CMake.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E5%AD%97-JNIEXPORT-JNICALL-extern"><span class="nav-text">4. 几个关键字 JNIEXPORT JNICALL extern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%8C%87%E9%92%88"><span class="nav-text">5. 指针</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -465,7 +470,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -478,7 +483,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -529,12 +534,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">228k</span>
+    <span title="站点总字数">231k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:28</span>
+    <span title="站点阅读时长">3:30</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
