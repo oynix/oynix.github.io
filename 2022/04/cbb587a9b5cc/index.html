@@ -30,7 +30,7 @@
 <meta property="og:description" content="之前有提到，最近因需求特殊，所以需要把代码藏起来，想着想着就盯上了资源图。为了把代码藏到png里，所以专门研究了png的文件格式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-04T03:21:50.000Z">
-<meta property="article:modified_time" content="2022-04-04T08:04:55.262Z">
+<meta property="article:modified_time" content="2022-04-04T08:09:20.825Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -460,7 +460,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zlib</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    data = [<span class="number">0x49</span>, <span class="number">0x48</span>, <span class="number">0x44</span>, <span class="number">0x52</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x02</span>, <span class="number">0xD0</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x05</span>, <span class="number">0x00</span>, <span class="number">0x08</span>, <span class="number">0x06</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>]</span><br><span class="line">    crc = zlib.crc32(<span class="built_in">bytearray</span>(data))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">hex</span>(crc))</span><br></pre></td></tr></table></figure>
 <p>运行结果：0x6ece653d。可见，截止至此，一切看起来都是正常的。</p>
 <h3 id="7-关键chunk块，IDAT、IEND"><a href="#7-关键chunk块，IDAT、IEND" class="headerlink" title="7. 关键chunk块，IDAT、IEND"></a>7. 关键chunk块，IDAT、IEND</h3><p>这两个的chunk块和IHDR是一样的，如果能明白上面的IHDR，这两个就也能明白。这里单独说一句IEND，因为这个chunk块没有chunk data部分，所以，所有png的IEND块都是一样的，一样的length，一样的type，以及一样的crc。</p>
-<h3 id="8-插入代码"><a href="#8-插入代码" class="headerlink" title="8. 插入代码"></a>8. 插入代码</h3><p>好了，有了上面的基础知识准备，开始干点正事。png中，像素的数据存在连续的IDAT chunk中，一长串的IDAT数据，根据IHDR中width和height参数，再解析出来。</p>
+<h3 id="8-插入代码"><a href="#8-插入代码" class="headerlink" title="8. 插入代码"></a>8. 插入代码</h3><p>好了，有了上面的基础知识准备，开始干点正事。</p>
+<p>png中，像素的数据存在连续的IDAT chunk中，一长串的IDAT数据，根据IHDR中width和height参数，再解析出来。</p>
 <p>我开始的想法，是把代码藏在辅助chunk中，那么多可选的辅助类型，照片的地理位置、镜头、光圈等信息，都是存放在这些辅助chunk里，随便选几个，把数据插入到data部分，然后再计算一下crc不就完美了吗？冷静下来后，觉得此法尚有不妥之处，你想啊，一个png图片，辅助信息占了好大一个比例，但是这个辅助信息又不是正常的文本，或是数字，除了自己知道怎么解析，别人都看不懂，让人易生疑心：你这里面是不是藏了什么不能见人的东西？这浑身是嘴也说不清楚。</p>
 <p>有个同事是把代码直接拼在了文件的末尾，因为width和height没变，中间的IDAT也没变，所以完全不影响png文件的读取，遇到IEDN就停了，即便你后面还有数据也不妨事。当代码很少时，难以看出端倪，但是代码一旦很多，画风就会很诡异：一个几十像素乘几十像素的图片，文件大小却足足有上百kB，这就好比，你E盘存储进度条都变红了，点进去一看，发现里面只有一集蜡笔小新的动画，还是渣画质，大小为20MB，你可以说这里一切正常，但要是有人信了，就当你没说。这个时候，只要一打开png文件，就会看到后面跟着的那条长长的尾巴。</p>
 <p>思索再三，我还是决定把代码伪装成IDAT块，插入到最后一个IDAT和IEND之间，且，如果代码很大，就切成片段，插入到多个png图片中，以保证起码看上去显得很和谐。比如IHDR中width是720，height是1280，所以IDAT中，只有720x1280=921,600个像素会被显示出来，后面的IDAT是不会影响png解析的。但是为了以防万一，在插入之前，是需要把代码加密的，一般是和一个数字做异或操作，等到解析时，从png中取出代码，再与同一个数字做异或操作即可，这样一来，即便是被一些小机灵鬼发现端倪，找到隐藏的秘密，也不至于造成代码泄漏。</p>
