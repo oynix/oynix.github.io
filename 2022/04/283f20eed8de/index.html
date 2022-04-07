@@ -30,7 +30,7 @@
 <meta property="og:description" content="之前生成签名时，都是在Android Studio里点，点几下一个签名就出来了，作为一个开发者，学会使用keytool工具，手动进行一些签名相关的操作，如生成、查看、导出等，还是很能提供很多方便的。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-03T18:20:38.000Z">
-<meta property="article:modified_time" content="2022-04-03T19:22:16.073Z">
+<meta property="article:modified_time" content="2022-04-07T05:51:45.264Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Java">
@@ -271,15 +271,18 @@
       
         <p>之前生成签名时，都是在Android Studio里点，点几下一个签名就出来了，作为一个开发者，学会使用keytool工具，手动进行一些签名相关的操作，如生成、查看、导出等，还是很能提供很多方便的。</p>
 <span id="more"></span>
+
 <p>java key store的管理方式为，签名一个应用需要一个key，一个key存在于一个keystore中，一个keystore中可以存在多个key。keystore拥有密码，同时，key也拥有密码。二者之间的关系可以这样理解，keystore相当于一个大房子，key则相当于房子里的一个房间，房子里可以有多个房间，进入房子需要钥匙，也就是密码，再想进入到某个房间，也需要这个房间的钥匙，也就是密码。不过，话说回来，一般常用的方式，都是一对一的形式，也就是一个keystore只存储一个key，这个key只用来签名一个应用，没有将keystore中的store的价值体现出来。</p>
 <h3 id="1-支持的命令"><a href="#1-支持的命令" class="headerlink" title="1. 支持的命令"></a>1. 支持的命令</h3><p>keytool提供了很多的命令，通过help可以查看，其中，常用的只有生成、查看、导入导出，其他的就不说了</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ keytool <span class="built_in">help</span></span><br><span class="line">Illegal option:  <span class="built_in">help</span></span><br><span class="line">Key and Certificate Management Tool</span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line"></span><br><span class="line"> -certreq            Generates a certificate request</span><br><span class="line"> -changealias        Changes an entry<span class="string">&#x27;s alias</span></span><br><span class="line"><span class="string"> -delete             Deletes an entry</span></span><br><span class="line"><span class="string"> -exportcert         Exports certificate</span></span><br><span class="line"><span class="string"> -genkeypair         Generates a key pair</span></span><br><span class="line"><span class="string"> -genseckey          Generates a secret key</span></span><br><span class="line"><span class="string"> -gencert            Generates certificate from a certificate request</span></span><br><span class="line"><span class="string"> -importcert         Imports a certificate or a certificate chain</span></span><br><span class="line"><span class="string"> -importpass         Imports a password</span></span><br><span class="line"><span class="string"> -importkeystore     Imports one or all entries from another keystore</span></span><br><span class="line"><span class="string"> -keypasswd          Changes the key password of an entry</span></span><br><span class="line"><span class="string"> -list               Lists entries in a keystore</span></span><br><span class="line"><span class="string"> -printcert          Prints the content of a certificate</span></span><br><span class="line"><span class="string"> -printcertreq       Prints the content of a certificate request</span></span><br><span class="line"><span class="string"> -printcrl           Prints the content of a CRL file</span></span><br><span class="line"><span class="string"> -storepasswd        Changes the store password of a keystore</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Use &quot;keytool -command_name -help&quot; for usage of command_name</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-生成"><a href="#2-生成" class="headerlink" title="2. 生成"></a>2. 生成</h3><p>使用genkeypair命令</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkeypair -<span class="built_in">alias</span> key0 -keystore test.jks -storepass 1234 -keyalg RSA -validity 2000 -keysize 2048 -dname <span class="string">&quot;CN=abc,OU=def&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkeypair -<span class="built_in">alias</span> key0 -keypass 123456 -keystore test.jks -storepass 1234 -keyalg RSA -validity 2000 -keysize 2048 -dname <span class="string">&quot;CN=abc,OU=def&quot;</span></span><br></pre></td></tr></table></figure>
+
 <p>参数说明</p>
 <ul>
 <li>alias：给key起个名字，一个keystore中key的名字不允许重复</li>
+<li>keypass: 给key设置一个密码</li>
 <li>keystore：生成的key要存放的目标keystore，如果不存在则会创建</li>
 <li>storepass：keystore的密码，访问keystore就需要密码</li>
 <li>keyalg：生成使用的算法，默认是DSA，常用RSA</li>
@@ -289,6 +292,7 @@
 </ul>
 <h3 id="3-查看"><a href="#3-查看" class="headerlink" title="3. 查看"></a>3. 查看</h3><p>使用list命令，这个命令会把keystore中所包含的所有key都展示出来</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -list -keystore test.jks -storepass 123456 -v</span><br></pre></td></tr></table></figure>
+
 <p>参数说明</p>
 <ul>
 <li>keystore：要查看的keystore</li>
@@ -298,6 +302,7 @@
 </ul>
 <h3 id="4-导出"><a href="#4-导出" class="headerlink" title="4. 导出"></a>4. 导出</h3><p>使用exportcert命令，导出的是一个证书文件，也就是key</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -exportcert -<span class="built_in">alias</span> key0 -keystore test.jks -storepass 123456 -file key0.crt</span><br></pre></td></tr></table></figure>
+
 <p>参数说明</p>
 <ul>
 <li>alias：要导出的key的名字</li>
@@ -307,6 +312,7 @@
 </ul>
 <h3 id="5-导入"><a href="#5-导入" class="headerlink" title="5. 导入"></a>5. 导入</h3><p>使用importcert命令，将一个crt文件，也就是key，导入到keystore中</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -importcert -<span class="built_in">alias</span> key0 -keypass 123456 -file key.crt -keystore test.jks -storepass 123456</span><br></pre></td></tr></table></figure>
+
 <p>参数说明</p>
 <ul>
 <li>alias：给导入的key起个名字，不能和已存在的重复</li>
