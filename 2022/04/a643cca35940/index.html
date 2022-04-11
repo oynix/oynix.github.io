@@ -30,7 +30,7 @@
 <meta property="og:description" content="说一说二分法，上次看到了，一直没做总结，跻身于待办事项里有些日子了，今天看它不顺眼，给它解决掉">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-11T14:14:51.000Z">
-<meta property="article:modified_time" content="2022-04-11T15:28:09.771Z">
+<meta property="article:modified_time" content="2022-04-11T15:30:05.524Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="二分法">
 <meta property="article:tag" content="算法">
@@ -271,7 +271,7 @@
       
         <p>说一说二分法，上次看到了，一直没做总结，跻身于待办事项里有些日子了，今天看它不顺眼，给它解决掉</p>
 <span id="more"></span>
-<p>二分法，用来查找目标值，前提是有序数组。顾名思义，就是定义两个指针，一个指向最低位置，另个指向最高位置，每次取中以求减少循环次数，时间复杂度是O(logn)。二分法查找时，会有3种情况，一个是找到目标值即返回，一个是找到最左值得，还有一个自然是找到最右值。后两者存在于数组中存在多个目标值的情况。</p>
+<p>二分法，用来查找目标值，前提是有序数组。顾名思义，就是定义两个指针，一个指向最低位置，另个指向最高位置，每次取中以求减少循环次数，时间复杂度是O(logn)。二分法查找时，会有3种情况，一个是找到目标值即返回，一个是找到最左值，还有一个自然是找到最右值。后两者存在于数组中存在多个目标值的情况。</p>
 <p>接下来的几段代码中，都用下面这个数组，长度是14</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> arr = intArrayOf(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">12</span>, <span class="number">21</span>, <span class="number">21</span>, <span class="number">21</span>, <span class="number">23</span>, <span class="number">45</span>, <span class="number">54</span>, <span class="number">54</span>, <span class="number">98</span>)</span><br></pre></td></tr></table></figure>
 
