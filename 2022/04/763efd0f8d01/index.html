@@ -22,24 +22,20 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="一. 先到官网查询最新的版本，官网地址注意选择自己Linux对应的版本，查询方式：">
+  <meta name="description" content="mod，即module，golang的模块管理工具。Node.js有npm，Python有pip，Golang现在也有了go mod。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="yum 安装最新版本 mysql">
-<meta property="og:url" content="https://oynix.github.io/2019/11/fda8ed989b0e/index.html">
+<meta property="og:title" content="go mod命令">
+<meta property="og:url" content="https://oynix.github.io/2022/04/763efd0f8d01/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="一. 先到官网查询最新的版本，官网地址注意选择自己Linux对应的版本，查询方式：">
+<meta property="og:description" content="mod，即module，golang的模块管理工具。Node.js有npm，Python有pip，Golang现在也有了go mod。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/07/07/JsqNMBWZcmKpEXu.png">
-<meta property="article:published_time" content="2019-11-25T09:28:07.000Z">
-<meta property="article:modified_time" content="2021-07-08T01:15:30.096Z">
+<meta property="article:published_time" content="2022-04-13T10:45:26.000Z">
+<meta property="article:modified_time" content="2022-04-13T14:52:52.293Z">
 <meta property="article:author" content="oynix">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="mysql">
-<meta property="article:tag" content="yum">
+<meta property="article:tag" content="Golang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/07/07/JsqNMBWZcmKpEXu.png">
 
-<link rel="canonical" href="https://oynix.github.io/2019/11/fda8ed989b0e/">
+<link rel="canonical" href="https://oynix.github.io/2022/04/763efd0f8d01/">
 
 
 <script id="page-configurations">
@@ -52,7 +48,7 @@
   };
 </script>
 
-  <title>yum 安装最新版本 mysql | oynix</title>
+  <title>go mod命令 | oynix</title>
   
 
 
@@ -205,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2019/11/fda8ed989b0e/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2022/04/763efd0f8d01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/fbb.jpg">
@@ -218,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          yum 安装最新版本 mysql
+          go mod命令
         </h1>
 
         <div class="post-meta">
@@ -228,7 +224,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-11-25 17:28:07" itemprop="dateCreated datePublished" datetime="2019-11-25T17:28:07+08:00">2019-11-25</time>
+              <time title="创建时间：2022-04-13 18:45:26" itemprop="dateCreated datePublished" datetime="2022-04-13T18:45:26+08:00">2022-04-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,7 +232,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                  <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
                 </span>
             </span>
 
@@ -253,14 +249,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -272,24 +268,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<h4 id="一-先到官网查询最新的版本，官网地址"><a href="#一-先到官网查询最新的版本，官网地址" class="headerlink" title="一. 先到官网查询最新的版本，官网地址"></a>一. 先到官网查询最新的版本，<span class="exturl" data-url="aHR0cHM6Ly9kZXYubXlzcWwuY29tL2Rvd25sb2Fkcy9yZXBvL3l1bS8=">官网地址<i class="fa fa-external-link-alt"></i></span></h4><p>注意选择自己Linux对应的版本，查询方式：</p>
-<span id="more"></span> 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat /etc/*-release</span></span><br><span class="line">NAME=&quot;Red Hat Enterprise Linux Server&quot;</span><br><span class="line">VERSION=&quot;7.7 (Maipo)&quot;</span><br><span class="line">......</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> uname -m</span></span><br><span class="line">x86_64</span><br></pre></td></tr></table></figure>
-<p>根据以上信息，选择所需版本的 rpm 名称，如图<br><img src="https://i.loli.net/2021/07/07/JsqNMBWZcmKpEXu.png"></p>
-<h4 id="二-安装、启动"><a href="#二-安装、启动" class="headerlink" title="二. 安装、启动"></a>二. 安装、启动</h4><ol>
-<li>下载 rpm 文件。可以在网页上点 Download，然后在传送到服务器，也可以直接在服务器上下载，如下，替换链接后面部分即可： <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm</span><br></pre></td></tr></table></figure></li>
-<li>导入 yum repo。 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo rpm -ivh mysql80-community-release-el7-3.noarch.rpm</span><br></pre></td></tr></table></figure></li>
-<li>安装 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install mysql-server</span><br></pre></td></tr></table></figure></li>
-<li>启动 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl start mysqld.service</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h4 id="三-连接、密码"><a href="#三-连接、密码" class="headerlink" title="三. 连接、密码"></a>三. 连接、密码</h4><ol>
-<li>连接 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u root -p</span><br></pre></td></tr></table></figure></li>
-<li>如果需要密码，去 <code>/var/log/mysqld.log</code>里面找，格式类似如下，<code>5Vgr6&gt;Go.Azi</code>即是 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2019-11-25T08:46:57.138469Z 5 [Note] [MY-010454] [Server] A temporary password is generated <span class="keyword">for</span> root@localhost: 5Vgr6&gt;Go.Azi</span><br></pre></td></tr></table></figure></li>
-<li>登陆成功之后，如果提示用<code>ALTER USER</code>修改密码，如下 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter user <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> identified by <span class="string">&#x27;new_password&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
-<li>如果提示密码不合格，查看一下当前密码要求，如下，length表示密码最小长度，mixed_case_count表示大小写字母混合数量，number_count表示数字数量，special_char_count表示特殊字符数量 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like <span class="string">&#x27;validate_password%&#x27;</span>;</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| Variable_name                        | Value  |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| validate_password.check_user_name    | ON     |</span><br><span class="line">| validate_password.dictionary_file    |        |</span><br><span class="line">| validate_password.length             | 6      |</span><br><span class="line">| validate_password.mixed_case_count   | 1      |</span><br><span class="line">| validate_password.number_count       | 1      |</span><br><span class="line">| validate_password.policy             | MEDIUM |</span><br><span class="line">| validate_password.special_char_count | 0      |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">7 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure></li>
-<li>如果想设置个简单好记的密码，修改一下密码检查，exit退出mysql，再连接登陆后生效 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">set</span> global validate_password.mixed_case_count=0;</span><br><span class="line">mysql&gt; <span class="built_in">set</span> global validate_password.special_char_count=0;</span><br></pre></td></tr></table></figure></li>
-</ol>
+        <p>mod，即module，golang的模块管理工具。Node.js有npm，Python有pip，Golang现在也有了go mod。</p>
+<span id="more"></span>
+<p>起因是，许久不写go了，前几天拿到一个go写的项目，发现里面依赖管理已经不是早前的方式，而多了一张新面孔，<code>go.mod</code>文件，趁此机会了解学习一下。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjA5OTMwMi9hcnRpY2xlL2RldGFpbHMvMTEyNDMxODk5">原文在这<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>如果配置过golang开发环境，应该还记得GOPATH这个环境变量，指向一个目录，这个目录下有三个子目录，bin、pkg和src，我们写的代码都在src里，除此之外，所依赖的模块也在src目录下，我们在依赖别人的同时，也可以成为别人的依赖，这是官方给的建议，可能他们觉得一家人就是要整整齐齐的，这是最早期的包管理机制。如果我们开发了10个项目工程，那么这10个项目的所有依赖都在这里面，你中有我，我中有你，随着项目增多，这个目录会越来越大。</p>
+<p>但是，每个依赖模块都是有着不同版本，多个工程会存在依赖不同版本的情况，共享GOPATH下的项目，就变得难以操作，于是就衍生出了vendor。每个工程下都有个叫vendor的子目录，直接翻译就是供货商的意思，项目所有的依赖都放到各自的vendor子目录中，互不干涉，互不影响。我的印象中，就是这种管理机制，使用godep命令来管理依赖，这个是当时最实行的方式，毕竟go module还没问世呢。</p>
+<p>随着时间发展，技术的进步，go module出来了，它比vendor多了依赖版本记录管理的功能，同时也提升了其他一些vendor体验不好的功能，比如依赖包升级，这些都写在了go.mod文件里，这个文件就和Node.js里的package.json、Python里的requirements.txt功能是一样的。此外，go mod还提供了一个特性，就是项目工程可以不再放在GOPATH/src下了，这样就可以不被其他项目所依赖。</p>
+<h3 id="go-mod-使用"><a href="#go-mod-使用" class="headerlink" title="go mod 使用"></a>go mod 使用</h3><p>执行一下go mod，就可以看到命令的说明了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go mod</span></span><br><span class="line">Go mod provides access to operations on modules.</span><br><span class="line"></span><br><span class="line">Note that support for modules is built into all the go commands,</span><br><span class="line">not just &#x27;go mod&#x27;. For example, day-to-day adding, removing, upgrading,</span><br><span class="line">and downgrading of dependencies should be done using &#x27;go get&#x27;.</span><br><span class="line">See &#x27;go help modules&#x27; for an overview of module functionality.</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br><span class="line"></span><br><span class="line">Use &quot;go help mod &lt;command&gt;&quot; for more information about a command.</span><br></pre></td></tr></table></figure>
+<p>常用的有这几个</p>
+<ul>
+<li>go mod init：初始化，一般创建新工程后使用</li>
+<li>go mod tidy：更新项目依赖，没有的下载，没用的删除</li>
+<li>go mod vendor：创建vendor目录，并将依赖复制至此目录</li>
+</ul>
+<p>添加新依赖，其中branch指定版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/repo/package@branch</span><br></pre></td></tr></table></figure>
+
+<h3 id="GO111MODULE-说明"><a href="#GO111MODULE-说明" class="headerlink" title="GO111MODULE 说明"></a>GO111MODULE 说明</h3><p>这是个环境变量，有3个可选值：off、on和auto，用来控制go modules功能，看这个名字就知道，是在1.11版本添加的</p>
+<ul>
+<li>off：关闭，编译时仍旧是用老方式，也就是GOPATH/src，或者vendor中的依赖</li>
+<li>on：开启，编译时不会在GOPATH/src下找依赖，而是使用项目中的go.mod文件，依赖包放在pkg/mod下，多项目共享缓存的modules，项目名后面跟着@符号以及版本号</li>
+<li>auto：默认值，在1.13之后，如果工程下存在go.mod文件，则自动开启。1.11中，工程需要在src之外的目录才会开启，以确保兼容</li>
+</ul>
+<h3 id="go-build-mod-说明"><a href="#go-build-mod-说明" class="headerlink" title="go build -mod 说明"></a>go build -mod 说明</h3><p>上面有提到，GOPATH/pkg下是生成的中间包.a文件，编译时它的优先级最高，也就是最先被查找，如果找到目标依赖的中间包，则不会再去编译源文件从而再生成.a中间包。</p>
+<p>mod有3个值，readonly、vendor和mod。</p>
+<ul>
+<li>readonly：所需依赖不在go.mod中时，或checksum不在go.mod中时，则报错。</li>
+<li>vendor：将使用vendor下的package，而不是pkg/mod下的，不会检查go.mod中的版本</li>
+<li>mod：这个mod就是pkg/mod，也就是用会使用pkg/mod中的package，不存在则下载对应版本的package</li>
+</ul>
+<h3 id="附录：go-build-和-go-install"><a href="#附录：go-build-和-go-install" class="headerlink" title="附录：go build 和 go install"></a>附录：go build 和 go install</h3><p>go build是用来编译、在项目目录下生成可执行的文件，每一个package main都会在相同位置生成一个可执行文件，但不会生成包文件，也就是pkg下的文件。</p>
+<p>go install则是用来生成库和工具。没有package main的包，编译后的文件会放到pkg对应的名称下，扩展名.a，如果有package main，就会生成可执行文件，并放到GOPATH/bin下。</p>
+<p>所以，二者的相同点是都会生成可执行文件，不同点是生成位置不同，同时instal还会生成中间包文件.a。</p>
 
     </div>
 
@@ -334,7 +346,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2019/11/fda8ed989b0e/" title="yum 安装最新版本 mysql">https://oynix.github.io/2019/11/fda8ed989b0e/</a>
+    <a href="https://oynix.github.io/2022/04/763efd0f8d01/" title="go mod命令">https://oynix.github.io/2022/04/763efd0f8d01/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -345,9 +357,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/mysql/" rel="tag"># mysql</a>
-              <a href="/tags/yum/" rel="tag"># yum</a>
+              <a href="/tags/Golang/" rel="tag"># Golang</a>
           </div>
 
         
@@ -356,13 +366,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/11/6e1530768100/" rel="prev" title="nginx路由匹配">
-      <i class="fa fa-chevron-left"></i> nginx路由匹配
+    <a href="/2022/04/0467bc32461c/" rel="prev" title="leetcode76 最小覆盖字串问题">
+      <i class="fa fa-chevron-left"></i> leetcode76 最小覆盖字串问题
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/11/4ae565dbddd3/" rel="next" title="RHEL(Red Hat Enterprise Linux) 安装 zip、unzip">
-      RHEL(Red Hat Enterprise Linux) 安装 zip、unzip <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -422,7 +429,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-%E5%85%88%E5%88%B0%E5%AE%98%E7%BD%91%E6%9F%A5%E8%AF%A2%E6%9C%80%E6%96%B0%E7%9A%84%E7%89%88%E6%9C%AC%EF%BC%8C%E5%AE%98%E7%BD%91%E5%9C%B0%E5%9D%80"><span class="nav-text">一. 先到官网查询最新的版本，官网地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-%E5%AE%89%E8%A3%85%E3%80%81%E5%90%AF%E5%8A%A8"><span class="nav-text">二. 安装、启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89-%E8%BF%9E%E6%8E%A5%E3%80%81%E5%AF%86%E7%A0%81"><span class="nav-text">三. 连接、密码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod-%E4%BD%BF%E7%94%A8"><span class="nav-text">go mod 使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO111MODULE-%E8%AF%B4%E6%98%8E"><span class="nav-text">GO111MODULE 说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-build-mod-%E8%AF%B4%E6%98%8E"><span class="nav-text">go build -mod 说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9Ago-build-%E5%92%8C-go-install"><span class="nav-text">附录：go build 和 go install</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -601,7 +608,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'oynix.github.io',
       owner       : 'oynix',
       admin       : ['oynix'],
-      id          : '3c3745810b50f780f8eeeddac5c732ca',
+      id          : '038f1a2e673815ce2fe1bac91e743350',
         language: '',
       distractionFreeMode: true
     });
