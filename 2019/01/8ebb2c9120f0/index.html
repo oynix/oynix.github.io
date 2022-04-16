@@ -50,13 +50,13 @@
 
   <title>「原码 反码 补码 移码」一探究竟（上） | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -288,10 +288,10 @@
 <p><strong>0. 二进制</strong></p>
 <p>相比于二进制，十进制数字大家都比较熟悉。从右往左依次是个位、十位、百位、千位等，每个位置上的数字范围 [0, 9]。个位上的 1 表示 1，十位上的 1 表示 10，百位上的 1 表示 100，即从右向左的第 n 位就代表 10^(n-1)：</p>
 <span id="more"></span> 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">761 = 7*100 + 6*10 + 1*1 = 7*10^2 + 6*10^1 + 1*10^0</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">761</span> = <span class="number">7</span>*<span class="number">100</span> + <span class="number">6</span>*<span class="number">10</span> + <span class="number">1</span>*<span class="number">1</span> = <span class="number">7</span>*<span class="number">10</span>^<span class="number">2</span> + <span class="number">6</span>*<span class="number">10</span>^<span class="number">1</span> + <span class="number">1</span>*<span class="number">10</span>^<span class="number">0</span></span><br></pre></td></tr></table></figure>
 
 <p>而二进制，也是同样的道理，区别就是将 10 的 n-1 次幂变成了 2 的 n-1 次幂：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1101 = 1*2^3 + 1*2^2 + 0*2^1 + 1*2^0 = 8 + 4 + 0 + 1 = 13</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">1101</span> = <span class="number">1</span>*<span class="number">2</span>^<span class="number">3</span> + <span class="number">1</span>*<span class="number">2</span>^<span class="number">2</span> + <span class="number">0</span>*<span class="number">2</span>^<span class="number">1</span> + <span class="number">1</span>*<span class="number">2</span>^<span class="number">0</span> = <span class="number">8</span> + <span class="number">4</span> + <span class="number">0</span> + <span class="number">1</span> = <span class="number">13</span></span><br></pre></td></tr></table></figure>
 
 <p>有了这些基础概念，接着再来看下面的内容。</p>
 <p><strong>1.</strong> <strong>这些「码」都是什么？</strong></p>
@@ -301,17 +301,17 @@
 <p><strong>无符号数</strong>，即所有的二进制位都来表示数据，所以无符号数字无法表示负数，全部大于等于 0。</p>
 <p>光看定义干巴巴的，用长度为 8 位二进制的类型举几个例子。</p>
 <p>有符号数，最高位表示正负，0 表示正数，1 表示负数。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   7 : [0000 0111]原</span><br><span class="line">  -3 : [1000 0011]原</span><br><span class="line">-127 : [1111 1111]原</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   <span class="attr">7 :</span> [<span class="number">0000 </span><span class="number">0111</span>]<span class="string">原</span></span><br><span class="line">  <span class="number">-3</span> <span class="string">:</span> [<span class="number">1000 </span><span class="number">0011</span>]<span class="string">原</span></span><br><span class="line"><span class="number">-127</span> <span class="string">:</span> [<span class="number">1111 </span><span class="number">1111</span>]<span class="string">原</span></span><br></pre></td></tr></table></figure>
 
 <p>无符号数，没有符号位，全部二进制位用来表示数据。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  7 : [0000 0111]原 </span><br><span class="line"> 16 : [0001 0000]原</span><br><span class="line">255 : [1111 1111]原</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  <span class="attr">7 :</span> [<span class="number">0000 </span><span class="number">0111</span>]<span class="string">原</span> </span><br><span class="line"> <span class="attr">16 :</span> [<span class="number">0001 </span><span class="number">0000</span>]<span class="string">原</span></span><br><span class="line"><span class="attr">255 :</span> [<span class="number">1111 </span><span class="number">1111</span>]<span class="string">原</span></span><br></pre></td></tr></table></figure>
 
 <p>上面就是原码的定义，而反码、补码、移码都是在原码的基础上做了对应的变换。</p>
 <p><strong>反码</strong>：正数的反码就是其原码，负数的反码为，符号位不变，其余位取反，即 0 变 1，1 变 0。</p>
 <p><strong>补码</strong>：正数的补码就是其原码，负数的补码为在其反码的基础上再加 1，而在计算机中，整数都是以补码的形式存储的。</p>
 <p><strong>移码</strong>：将补码符号位取反，即为移码。</p>
 <p><strong>这几种码都是针对有符号数，而无符号数用原码就足够了</strong>，后面会对此说明原因。同样，也举几个例子说明。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> 7 : [0000 0111]原 [0000 0111]反 [0000 0111]补 [1000 0111]移</span><br><span class="line">-3 : [1000 0011]原 [1111 1100]反 [1111 1101]补 [0111 1101]移</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="attr">7 :</span> [<span class="number">0000 </span><span class="number">0111</span>]<span class="string">原</span> [<span class="number">0000 </span><span class="number">0111</span>]<span class="string">反</span> [<span class="number">0000 </span><span class="number">0111</span>]<span class="string">补</span> [<span class="number">1000 </span><span class="number">0111</span>]<span class="string">移</span></span><br><span class="line"><span class="number">-3</span> <span class="string">:</span> [<span class="number">1000 </span><span class="number">0011</span>]<span class="string">原</span> [<span class="number">1111 </span><span class="number">1100</span>]<span class="string">反</span> [<span class="number">1111 </span><span class="number">1101</span>]<span class="string">补</span> [<span class="number">0111 </span><span class="number">1101</span>]<span class="string">移</span></span><br></pre></td></tr></table></figure>
 
 <p>关于定义，就说这些。既然原码就能表示数字，那为什么又会有这么多类型的码呢？而这些不同的码又是怎么来的呢？计算机中为什么要以补码而不是其他码来存储整数呢？移码又是做什么的呢？鉴于篇幅过长，下篇文章，会对这些问题一一说明。</p>
 

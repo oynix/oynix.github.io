@@ -57,13 +57,13 @@
 
   <title>HelloKotlin - Error:Gradle-failed to create directory | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -304,7 +304,7 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</span><br><span class="line">	System.<span class="keyword">out</span>.print(<span class="string">&quot;Hello Kotlin&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>fun</strong>单词前有个彩色的Kotlin Logo，直接点击就可以运行HelloKotlin（按道理这样就可以正常跑起来了，我是这么以为的），<strong>但是，报了下面这个错误</strong>：<br><img src="https://i.loli.net/2021/07/07/g7Jp9tOwETl6diU.png"></p>
 <p>在网上搜索<strong>Error:Gradle:failed to create directory</strong>一番后，找到了解决办法，原来是新版AndroidStudio自带的Aapt2引起的，直接禁用就好：在<strong>gradle.properties</strong>添加如下配置即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.enableAapt2=false</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">android.enableAapt2</span>=<span class="literal">false</span></span><br></pre></td></tr></table></figure>
 
 <p>再次点击<strong>fun</strong>前面的彩色Kotlin Logo，我以为可以运行了，<strong>但是，又报了下面这个错误</strong>：<br><img src="https://i.loli.net/2021/07/07/uxXfnlNcjMZeOmP.png"></p>
 <p><strong>IDE说找不到HelloKt.class，然而勤劳的我却凭借双手找到了，措不及防</strong><br><img src="https://i.loli.net/2021/07/07/b4U69Lmts1A2qBn.png"><br><br><br>这下我就有点不知所措了。。。<br>网上也没查出什么相关参考，又试了几种不同的写法，依然不行，最后不知怎么突然想到修改Gradle版本试试看，事实证明此路可行！<br>AndroidStudio 3.0.1创建新项目默认的Gradle版本时4.1，Android Plugin Version是3.0.1。我把HelloKotlin项目向下降了一个版本，即Gradle-3.4，Android Plugin - 2.3.3，去掉DSL method google()<br><img src="https://i.loli.net/2021/07/07/7LJtogyjH4Od3GV.png"></p>

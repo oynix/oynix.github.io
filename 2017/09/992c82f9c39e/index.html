@@ -51,13 +51,13 @@
 
   <title>Android改变图片属性之饱和度 | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -286,7 +286,7 @@
         <hr>
 <p>简单实现改变图片饱和度</p>
 <span id="more"></span>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ImageView image = (ImageView) findViewById(R.id.image);</span><br><span class="line">ColorMatrix matrix = new ColorMatrix();</span><br><span class="line">matrix.setSaturation(0f);</span><br><span class="line">image.setColorFilter(new ColorMatrixColorFilter(matrix));</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ImageView image = (ImageView) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">image</span>)</span>;</span><br><span class="line">ColorMatrix matrix = <span class="keyword">new</span> <span class="constructor">ColorMatrix()</span>;</span><br><span class="line">matrix.set<span class="constructor">Saturation(0f)</span>;</span><br><span class="line">image.set<span class="constructor">ColorFilter(<span class="params">new</span> ColorMatrixColorFilter(<span class="params">matrix</span>)</span>);</span><br></pre></td></tr></table></figure>
 
 <p><strong>通过设置Matrix的参数来实现.</strong></p>
 

@@ -50,13 +50,13 @@
 
   <title>Golang 项目结构 | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -294,7 +294,7 @@
 <li><p>项目路径<br> 为了便于管理和引用其他 package，一般放在 <code>/&#123;GOPATH&#125;/src</code> 下。在该目录下，创建一个公司域名的文件夹，在此文件夹下创建项目命名的文件夹，如<code>/&#123;GOPATH&#125;/src/domain.com/project_name/</code>。</p>
 </li>
 <li><p>项目结构</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">project_name/</span><br><span class="line">  |__bin/</span><br><span class="line">  |__build/</span><br><span class="line">  |__config/</span><br><span class="line">  |__cmd/</span><br><span class="line">  |  |__service_1/</span><br><span class="line">  |     |__service_1.go</span><br><span class="line">  |  |__service_2/</span><br><span class="line">  |     |__service_2.go</span><br><span class="line">  |__docs/</span><br><span class="line">  |__Godep/</span><br><span class="line">  |__pkg/</span><br><span class="line">  |    |__lib/</span><br><span class="line">  |    |__...</span><br><span class="line">  |    |__...</span><br><span class="line">  |__resource/</span><br><span class="line">  |__vendor/</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">project_name/</span><br><span class="line">  |<span class="string">__bin/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__build/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__config/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__cmd/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">  </span>|<span class="string">__service_1/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">     </span>|<span class="string">__service_1.go</span></span><br><span class="line"><span class="string">  </span>|<span class="string">  </span>|<span class="string">__service_2/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">     </span>|<span class="string">__service_2.go</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__docs/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__Godep/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__pkg/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">    </span>|<span class="string">__lib/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">    </span>|<span class="string">__...</span></span><br><span class="line"><span class="string">  </span>|<span class="string">    </span>|<span class="string">__...</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__resource/</span></span><br><span class="line"><span class="string">  </span>|<span class="string">__vendor/</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <ul>
 <li>bin/：编译后的二进制文件</li>

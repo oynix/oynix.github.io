@@ -50,13 +50,13 @@
 
   <title>「Effective Java」读书整理 | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -630,18 +630,18 @@
 <h4 id="78-考虑用序列化代理代替序列化实例"><a href="#78-考虑用序列化代理代替序列化实例" class="headerlink" title="78. 考虑用序列化代理代替序列化实例"></a><strong>78. 考虑用序列化代理代替序列化实例</strong></h4><p>序列化代理模式相当简单：</p>
 <ol>
 <li><p>为可序列化的类设计一个私有的静态嵌套类，精确地表示外围类的实例的逻辑状态。这个嵌套类被称作序列化代理，它应该有一个单独的构造器，其参数类型就是那个外围类。这个构造器只从它的参数中复制数据：它不需要进行任何一致性检查或者保护性拷贝。从设计的角度来看，序列化代理的默认序列化形式是外围类最好的序列化形式。外围类及其序列代理都必须声明实现Serializable接口。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private static class SerializationProxy implements Serializable &#123;</span><br><span class="line">	private final Date start;</span><br><span class="line">	private final Date end;</span><br><span class="line"></span><br><span class="line">	SerializationProxy(Period p) &#123;</span><br><span class="line">		this.start = p.start;</span><br><span class="line">		this.end = p.end;</span><br><span class="line">	&#125;</span><br><span class="line">	private static final long serialVerionUID = 302480420480234L;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SerializationProxy</span> <span class="title">implements</span> <span class="title">Serializable</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Date start;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Date end;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">SerializationProxy</span>(Period p) &#123;</span><br><span class="line">		<span class="keyword">this</span>.start = p.start;</span><br><span class="line">		<span class="keyword">this</span>.end = p.end;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVerionUID = <span class="number">302480420480234L</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li><p> 接下来，将下面的writeReplace方法添加到外围类中。通过序列化代理，这个方法可以被逐字复制到任何类中：</p>
 </li>
 </ol>
-<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private Object writeReplace() &#123;</span><br><span class="line">	return new SerializationProxy(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">Object</span> <span class="function"><span class="title">writeReplace</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> SerializationProxy(<span class="built_in">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre>
 <p>这个方法的存在导致序列化系统产生一个SerializationProxy实例,代替外围类的实例。换句话说，writeReplace方法在序列化之前，将外围类的实例转变成了它的序列化代理。所以序列化系统永远不会产生外围类的序列化实例，为了避免攻击者伪造，只要在外围类中添加这个readObject方法即可：</p>
-<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private void readObject(ObjectInputStream s) throws InvalidationException &#123;</span><br><span class="line">	throw new InvalidationException(&quot;Proxy required&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream s)</span> <span class="keyword">throws</span> InvalidationException </span>&#123;</span><br><span class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> InvalidationException(<span class="string">&quot;Proxy required&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre>
 <ol start="3">
 <li><p>最后，在SerializationProxy类中提供一个readResolve方法，它返回一个逻辑上相当于外围类的实例。这个方法使序列化系统在反序列化时将序列化代理转变回外围类的实例。<br>这个readResolve方法仅仅利用它的公有API创建外围类的一个实例，这正是该模式的魅力之所在。它极大地消除了序列化机制中语言本身之外的特征，因为反序列化实例是利用与任何其他实例相同的构造器、静态工厂和方法而创建的。这样就不必单独确保被反序列化的实例一定要遵守类的约束条件。如果该类的静态工厂或者构造器建立了这些约束条件，并且它的实例方法在维持着这些约束条件，你就可以确信序列化也会维持这些约束条件。<br>上述Period.SerializationProxy的readResolve方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private Object readResolve() &#123;</span><br><span class="line">	return new Period(start, end);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object read<span class="constructor">Resolve()</span> &#123;</span><br><span class="line">	return <span class="keyword">new</span> <span class="constructor">Period(<span class="params">start</span>, <span class="params">end</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 <hr>
 <ul>

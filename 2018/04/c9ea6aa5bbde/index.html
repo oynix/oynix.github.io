@@ -50,13 +50,13 @@
 
   <title>MySql的modify和change区别 | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -288,9 +288,9 @@
 格式（mysql默认不区分大小写）</li>
 </ul>
 <p> 1 change</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name change current_column_name new_column_name type extra;</span><br><span class="line">// for example.（如果是改名字需要把column原属性都挂上，因为是替换）</span><br><span class="line">alter table user change id userid int(11) not null auto_increment;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name change current_column_name new_column_name type extra;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> <span class="keyword">for</span> example.（如果是改名字需要把<span class="keyword">column</span>原属性都挂上，因为是替换）</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> change id userid <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="keyword">null</span> auto_increment;</span><br></pre></td></tr></table></figure>
 <p> 2 modify</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name modify column_name type extra;</span><br><span class="line">// for example</span><br><span class="line">alter table user modify id int(11) not null auto_increment;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="built_in">table_name</span> modify <span class="built_in">column_name</span> <span class="keyword">type</span> extra;</span><br><span class="line">// <span class="keyword">for</span> example</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> modify id <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="keyword">null</span> auto_increment;</span><br></pre></td></tr></table></figure>
     </div>
 
     

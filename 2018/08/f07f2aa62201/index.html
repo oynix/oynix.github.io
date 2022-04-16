@@ -53,13 +53,13 @@
 
   <title>Program type already present: org.iq80.leveldb.CompressionType | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -289,15 +289,15 @@
 <p>添加新依赖时遇到一个报错。</p>
 <span id="more"></span> 
 <p>今天在Android Studio添加了一个新的依赖：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation (&quot;org.ethereum:ethereumj-core:$ethereumj_version&quot;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation (<span class="string">&quot;org.ethereum:ethereumj-core:<span class="variable">$ethereumj_version</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>然后<code>Sync</code>可以通过，但是<code>Rebuild</code>报错如标题，往上搜了几个方法都未奏效，最后只好顺着问题找答案。</p>
 <p>报错的内容就是说<code>CompressionType</code>重复了，换句话说，添加的新依赖不添加这个即可。双击<code>Shift</code>全局搜索<code>CompressionType</code>定位，如图：<br><img src="https://i.loli.net/2021/07/07/nOSFvNhZ4BTgCmE.png"></p>
 <p>添加依赖时增加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">implementation (&quot;org.ethereum:ethereumj-core:$ethereumj_version&quot;) &#123;</span><br><span class="line">       exclude group: &#x27;org.iq80.leveldb&#x27;, module: &#x27;leveldb-api&#x27;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">implementation</span> (<span class="string">&quot;org.ethereum:ethereumj-core:$ethereumj_version&quot;</span>) &#123;</span><br><span class="line">       exclude group: <span class="string">&#x27;org.iq80.leveldb&#x27;</span>, <span class="keyword">module</span>: <span class="string">&#x27;leveldb-api&#x27;</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p><code>Sync</code>通过，<code>Rebuild</code>又报新错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">More than one file was found with OS independent path &#x27;META-INF/spring.tooling&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">More</span> than <span class="keyword">one</span> <span class="keyword">file</span> was found with OS independent path &#x27;<span class="keyword">META</span>-<span class="keyword">INF</span>/spring.tooling&#x27;</span><br></pre></td></tr></table></figure>
 <p>在<code>android</code>节点增加配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	packagingOptions &#123;</span><br><span class="line">        pickFirst &#x27;META-INF/*&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">android</span> &#123;</span><br><span class="line">	<span class="section">packagingOptions</span> &#123;</span><br><span class="line">        <span class="attribute">pickFirst</span> <span class="string">&#x27;META-INF/*&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>继续<code>Sync</code>，通过；<code>Rebuild</code>，通过。</p>
 <p>问题解决。</p>
 

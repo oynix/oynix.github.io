@@ -51,13 +51,13 @@
 
   <title>Android 自定义样式通知栏的坑RemoteServiceException | oynix</title>
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=3451681153"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '3451681153');
+        gtag('config', 'G-FDBNTK34GB');
       }
     </script>
 
@@ -285,22 +285,22 @@
       
         <hr>
 <p>Android 自定义样式通知栏的坑RemoteServiceException</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Android.app.RemoteServiceException: Bad notification posted from packagecom.my.package:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Android<span class="selector-class">.app</span><span class="selector-class">.RemoteServiceException</span>: Bad notification posted from packagecom<span class="selector-class">.my</span><span class="selector-class">.package</span>:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>是的，就是这个异常。</p>
 <span id="more"></span>
 <hr>
 <p>没有使用系统提供的三个方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setContentText（）</span><br><span class="line">setContentTitle（）</span><br><span class="line">setSmallIcon（）</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>ContentText（）</span><br><span class="line"><span class="keyword">set</span>ContentTitle（）</span><br><span class="line"><span class="keyword">set</span>SmallIcon（）</span><br></pre></td></tr></table></figure>
 <p>而用的是<code>RemoteViews</code>，然后就掉坑里了。</p>
 <p><strong>原因是这样的，请往下看~</strong></p>
 <ol>
 <li><p>布局中的控件只有<strong>7种</strong>，除此之外，均会报错！</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AnalogClock，Button，Chronometer，ImageButton，mageView，ProgressBar，TextView</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AnalogClock，<span class="selector-tag">Button</span>，Chronometer，ImageButton，mageView，ProgressBar，TextView</span><br></pre></td></tr></table></figure></li>
 <li><p>另外还有一个问题，就是控件长宽的设定，必须为<code>0dp</code>，<code>wrap_content</code>或者<code>match_parent</code>，除此之外，也均会报错！</p>
 </li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (layoutWidth != 0 &amp;&amp; layoutWidth != ViewGroup.LayoutParams.MATCH_PARENT</span><br><span class="line">            &amp;&amp; layoutWidth != ViewGroup.LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;Only supports 0, WRAP_CONTENT and MATCH_PARENT&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (layoutWidth != <span class="number">0</span> &amp;&amp; layoutWidth != ViewGroup.LayoutParams.MATCH_PARENT</span><br><span class="line">            &amp;&amp; layoutWidth != ViewGroup.LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">        throw new IllegalArgumentException(<span class="string">&quot;Only supports 0, WRAP_CONTENT and MATCH_PARENT&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p><strong>这就是原因，内部会检测。但不知为何，我接收到的都是文章开头提到的那个异常，让人苦恼。</strong></p>
 
     </div>
