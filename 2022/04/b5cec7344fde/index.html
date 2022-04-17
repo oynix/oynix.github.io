@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="ConstraintLayout，约束布局，是现在Androi里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。">
+  <meta name="description" content="ConstraintLayout，约束布局，是现在Android里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android之ConstraintLayout">
 <meta property="og:url" content="https://oynix.github.io/2022/04/b5cec7344fde/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="ConstraintLayout，约束布局，是现在Androi里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。">
+<meta property="og:description" content="ConstraintLayout，约束布局，是现在Android里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-17T09:22:55.000Z">
-<meta property="article:modified_time" content="2022-04-17T11:09:20.947Z">
+<meta property="article:modified_time" content="2022-04-17T11:17:13.158Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="ConstraintLayout">
@@ -283,10 +283,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>ConstraintLayout，约束布局，是现在Androi里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。</p>
+        <p>ConstraintLayout，约束布局，是现在Android里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。</p>
 <span id="more"></span>
 <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>约束布局的出现，主要为了减少视图的层级深度，即减少嵌套。显而易见的是，层级深度越浅，绘制效率越高。之前常用的布局，有LinearLayout线性布局，RelativeLayout相对布局，FrameLayout层级布局，有时为了实现UI给出的页面效果，一个页面内ViewGroup套ViewGroup，ViewGroup里面再套个View，散发着正宗的俄罗斯套娃血统，效率低，代码量也大，</p>
-<h3 id="2-边界"><a href="#2-边界" class="headerlink" title="2. 边界"></a>2. 边界</h3><p>约束布局下的元素，都是本着和谁对齐的基本理念来设定位置，比如水平方向和谁的边界对齐、垂直方向又要和谁的边界对齐，两个方向都确定了，那么这个元素的位置自然就确定了，这其实就是在确定元素四条边的位置，确定了四条边界的位置，那么这个元素的位置和大小也便都确定了。</p>
+<h3 id="2-边界"><a href="#2-边界" class="headerlink" title="2. 边界"></a>2. 边界</h3><p>约束布局下的元素，都是本着和谁对齐的基本理念来设定位置，比如水平方向和谁的边界对齐、垂直方向又要和谁的边界对齐，两个方向都确定了，那么这个元素的位置自然就确定了，这其实就是在确定元素四条边界的位置，确定了四条边界的位置，那么这个元素的位置和大小也便都确定了。</p>
 <p>水平方向有两个边，左边和右边，即Start和End，垂直方向也有两个边，上边和下边，即Top和Bottom。</p>
 <p>每个方向，可以只指定一个边界，也可以两个边界的位置都指定。一个方向上，如果只限定一条边界的位置时，那么这个元素就会靠此边界对齐，比如水平方向只限定了右边界的位置，那么这个元素水平方向上就会紧贴着右边界，垂直方向也是一样的道理，同时，如果一个方向限定了两个边界的位置，那么这个元素就会在这两个边界间居中，比如限定一个元素上边界和父布局对齐，下边界也和父布局对齐，那么此元素在视觉上的效果就是，垂直方向处于父布局中间。</p>
 <h3 id="3-宽度，高度"><a href="#3-宽度，高度" class="headerlink" title="3. 宽度，高度"></a>3. 宽度，高度</h3><p>从上面的介绍可以看出，因为约束布局里的子元素设定的四条边界的位置，所以在设定宽度和高度时，没有match_parent这个值，只有0dp和wrap_content，但是在布局文件里写match_parent是不会报错的，只是系统在计算的时候会把parent_match替换成0dp。0dp的意思是，元素会充满该方向的边界约束，wrap_content为按需填充。</p>
@@ -306,7 +306,7 @@
 <li>距离模式，begin和end设定一个就好，两个都设定时begin生效end无效<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">androidx.constraintlayout.widget.Guideline</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_width</span>=<span class="string">&quot;0dp&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_height</span>=<span class="string">&quot;0dp&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:orientation</span>=<span class="string">&quot;horizontal&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">app:layout_constraintGuide_begin</span>=<span class="string">&quot;30dp&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">app:layout_constraintGuide_end</span>=<span class="string">&quot;30dp&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="6-位置百分比"><a href="#6-位置百分比" class="headerlink" title="6. 位置百分比"></a>6. 位置百分比</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:src</span>=<span class="string">&quot;@drawable/home_bg&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintHorizontal_bias</span>=<span class="string">&quot;0.0&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintStart_toStartOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintVertical_bias</span>=<span class="string">&quot;1.0&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<p>还是上面那个例子，但是多了两个属性，一个是Horizotal_bias，一个是Vertical_bias，这两个属性的默认值都是0.5。</p>
+<p>上面有说到，当指定了一个方向的两个边界时，这个控件就会在边界间居中对齐，这其实是默认值。还是上面那个例子，但是多了两个属性，一个是Horizotal_bias，一个是Vertical_bias，这两个属性的默认值都是0.5，意味着居中对齐。</p>
 <p>当给一个方向设定了两条边界的时候，并且该空间在这个方向还没有填充满，也就是有可以移动的空间，比如这个例子，图片的横向是填充父布局的，宽度设定为wrap_content，图片的实际宽度只有屏幕宽度的一半，所以剩下的宽度就是可以动的空间，那么就可以通过Horizontal_bias来设定它在水平方向的位置，默认值0.5是居中，0是居最左，1是居最右，垂直方向同理。</p>
 <p>当不存在可以动空间时，这个属性就不会生效，比如只设定了一个边界，或者设定了两个边界，但是填充满了。</p>
 <h3 id="7-宽高比"><a href="#7-宽高比" class="headerlink" title="7. 宽高比"></a>7. 宽高比</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintDimensionRatio=&quot;h,9:7&quot;</span><br></pre></td></tr></table></figure>
