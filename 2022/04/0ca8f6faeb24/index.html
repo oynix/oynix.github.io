@@ -30,7 +30,7 @@
 <meta property="og:description" content="MacOS的系统清理，一直是个两极分化严重的话题。一边是硬盘小的人，内心极度热爱，一边是硬盘大的人，表示漠不关心。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-17T08:27:12.000Z">
-<meta property="article:modified_time" content="2022-04-17T09:13:39.669Z">
+<meta property="article:modified_time" content="2022-04-17T09:14:33.499Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="MacOS">
 <meta name="twitter:card" content="summary">
@@ -303,7 +303,7 @@
 <p>今天偶然发现了一个命令行工具，ncdu，这个在上面的这个du命令上，提供了一个可视化的操作窗口，大大提高了效率，优化了体验，节省了时间，安装只需一行命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew install ncdu</span></span><br></pre></td></tr></table></figure>
 <p>执行完，可能失败报错，反正我就是，报错信息里写的是没有编译好的，需要自己编译，还把方式写了出来</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew install --build-from-source nudu</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew install --build-from-source ncdu</span></span><br></pre></td></tr></table></figure>
 <p>不出意外，等一会就好了，总共一百多K的样子</p>
 <p>使用的时候，输入ncdu并执行，然后就会把当前目录的所有文件和文件夹的大小列出来，移动选中光标使用键盘上的上下左右，或者用HJKL，和Vim倒是一样的方式，按d，就是删除，删除之前会弹出一个确认弹窗，这个弹窗可以关掉，但是最好不要关，以免会有手滑的时候，要知道命令删除的文件是没有垃圾桶的，所以要再确认一次，因为这一删，那就是一辈子。</p>
 <ul>
