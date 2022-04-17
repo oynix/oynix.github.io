@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="TCP，Transmission Control Protocol，传输控制协议，是众多网络协议中较为重要的一个协议，网上多是写三次握手和四次挥手的，一搜就能看到一片又一片，多数都是CV战士的杰作，CV战士绝不认输，所以这篇文章来全面的说说TCP。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP介绍">
+<meta property="og:url" content="https://oynix.github.io/2022/04/1657b987f4f2/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="TCP，Transmission Control Protocol，传输控制协议，是众多网络协议中较为重要的一个协议，网上多是写三次握手和四次挥手的，一搜就能看到一片又一片，多数都是CV战士的杰作，CV战士绝不认输，所以这篇文章来全面的说说TCP。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-17T13:28:01.000Z">
+<meta property="article:modified_time" content="2022-04-17T21:11:55.104Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="TCP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.github.io/2022/04/1657b987f4f2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>TCP介绍 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">81</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">96</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2022/04/1657b987f4f2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TCP介绍
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-17 21:28:01" itemprop="dateCreated datePublished" datetime="2022-04-17T21:28:01+08:00">2022-04-17</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>TCP，Transmission Control Protocol，传输控制协议，是众多网络协议中较为重要的一个协议，网上多是写三次握手和四次挥手的，一搜就能看到一片又一片，多数都是CV战士的杰作，CV战士绝不认输，所以这篇文章来全面的说说TCP。</p>
+<span id="more"></span>
+
+<h3 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h3><p>如果抛开复杂的协议，只看网络的话，网络传输的就是二进制数据流，也就是一串，或者一长串0011、0101的数据。网络的目的是为了通信、为了交流，这些数据流的通信方式就是，发送方也接收方约定好每个位置的0或1代表着什么，这样接受方收到数据时，就知道发送方想要表达的意思了。但是，一个发送方不可能只给一个接收方发送数据，接收方也不能只接收一个发送方，而且发送方也不总是发送方，也有可能接收数据，因此，为了方便发送和接收，不出现五花八门的约定，大家便统一了数据的格式，这就是协议（protocol）。同时，为了更好的适应不同的情形所产生的需求，各种各样的协议应用而生，数据格式只是协议中的一部分，除此之外，每种协议还规定了各自的发送、接收的特点等等诸多细节，而TCP，就是这众多协议中的一员。</p>
+<h3 id="2-简介"><a href="#2-简介" class="headerlink" title="2. 简介"></a>2. 简介</h3><p>数据在TCP层成为流（Stream），数据分组成为分段（Segment）。数据在IP层成为Datagram，数据分组称为分片（Fragment）。UDP中分组成为Message。</p>
+<h3 id="3-运作方式"><a href="#3-运作方式" class="headerlink" title="3. 运作方式"></a>3. 运作方式</h3><p>TCP协议的运行划分为三个阶段：连接创建(connection establishment)、数据传送（data transfer）和连接终止（connection termination）。操作系统将TCP连接抽象为套接字表示的本地端点（local end-point），作为编程接口给程序使用。在TCP连接的生命期内，本地端点要经历一系列的状态改变。</p>
+<h4 id="3-1-创建通路"><a href="#3-1-创建通路" class="headerlink" title="3.1 创建通路"></a>3.1 创建通路</h4><p>TCP用三次握手创建一个连接，通常是服务器打开一个套接字socket进行监听listen，等待被动打开，客户端连接服务器，主动打开。服务器执行listen之后，会创建两个队列：</p>
+<ul>
+<li>SYN队列：存放完成两次握手的连接，长度由listen的参数backlog指定</li>
+<li>ACCEPT队列：存放完成三次握手的连接，长度由listen的参数backlog指定</li>
+</ul>
+<p>三次握手过程，下面就直接写Client和Server，不写客户端和服务端</p>
+<ol>
+<li>Client通过执行connect向Server发送一个SYN包，消息序列号seq为随机数A，请求主动打开</li>
+<li>Server收到一个合法的SYN包后，将该包放入SYN队列中，返回一个SYN/ACK，ACK为A+1，消息序列号seq为随机数B</li>
+<li>Client收到SYN/ACK包后，发送一个ACK为B+1的包，消息序列号seq为A+1。然后Client的connect函数返回成功。当Server收到这个ACK包后，把请求帧从SYN队列移出，放到ACCEPT中，如果accept函数处于阻塞状态，可以被唤醒来从ACCEPT中取出ACK包，重新创建一个新的用于双向通信的sockfd，并返回</li>
+</ol>
+<p>seq以一个随机数ISN开始，随机是为了克制TCP序号预测攻击，标识每端发出的字节和顺序，按传输字节数量顺序递增，即在上一个包的seq上加上当前包数据的长度，就是当前包的seq，是一个32位的无符号数，当它增大到2^32-1时，便会回绕到0。ack表达的是，这个序号的包及其之前的包我都收到了。</p>
+<p>三次握手的目的是为了防止已失效的连接请求报文段传送到了服务器，因而产生错误，也为了解决网络中存在延迟的重复分组。例如，Client发出的第一个SYN包没有丢失，而是在某个网络节点长时间的滞留了，以致延误到Client连接释放后的某个时间才到达Server。本来这是一个已失效的报文段，但Server收到后并不知已失效，而是当作Client的连接请求来处理，于是向Client发出确认报文段，同意创建连接。假设不采用三次握手，那么只要Server发出确认，新的连接就在Server创建了。由于Client并没有发出创建连接的请求，因此不会处理Server发过来的确认包，也就不会向Server发送数据。但是在Server端新的传输连接已经创建，并一直等待Client发来数据，这样便会一直占用Server的资源，造成浪费。采用三次握手可以防止这种情况的发生。</p>
+<p>就像你去医院看病一样，你（Client）在大厅挂了一个号（SYN），等到医生（Server）拿到病人的号后，他需要对着等候区喊一声（ACK/SYN）：253号病人在不在？你大声的回一声（ACK）：在！这个时候医生才能给你看病。如果等医生喊的时候，你已经提前有事走了，那么就不用再在你身上花时间了，毕竟医生很忙。两次握手就像是医生拿到病人的号后喊了一声：253号病人该你了，就开始准备相关的资料等你来，但是你已经离开了，医生并不知情，就只能一直等，等一个等不来的人。而四次握手、五次握手，就相当于，在你回答了一声：在，之后医生又问：253号病人在不在？你说：在，医生又问：253号病人在不在？你接着说：在。可以是可以，但没必要。</p>
+<h4 id="3-2-握手异常情况"><a href="#3-2-握手异常情况" class="headerlink" title="3.2 握手异常情况"></a>3.2 握手异常情况</h4><ol>
+<li><p>客户端第一个SYN包丢了<br>这种情况下，服务器不知道客户端曾经发过包，在TCP协议总，某端的一组请求-应答中，在一定时间范围内，只要没有收到应答的ACK包，无论是请求包对方没有收到，还是对方的应答包自己没有收到，均认为是包丢了，都会触发超时重传机制。所以此时会进入重传SYN包，根据协议，会尝试三次，间隔分别为5.8s，24s，48s，共76s左右，而大多数伯克利系统建立一个连接的最长时间，限制为75s。也就是说，第一个SYN包丢了，会重传，最长重试时间是75s。</p>
+</li>
+<li><p>服务器收到SYN，回复的SYN/ACK包丢了<br>这种情况，从客户端来看，会认为是SYN丢了没发过去，处理方式就是上面1中所说的。对于服务器而言，发送完SYN/ACK后，在超时时间内没有收到ACK包，也会触发重传，此时服务器处于SYN_RECD状态，依次等待3s，6s，12s后，重新发送SYN/ACK包。<br>这个重传次数，不同的操作系统有不同的配置，Linux中默认重试次数是5次，重试间隔从1s开始倍增，1s，2s，4s，8s，16s，共31s。第5次发送完会等待32s才认为第5次也超时了，所以，一共需要31s+32s=63s，TCP才会断开这个连接。使用TCP的三个参数来调整行为：tcp_synack_retries减少重试次数；tcp_max_syn_backlog 增加SYN连接数量；tcp_abort_on_overflow 决定超出能力时的行为。<br>同时由于客户端没有收到SYN/ACK，也会重传，当客户端重传的SYN被收到后，服务器会立即重新发送SYN/ACK包。</p>
+</li>
+<li><p>客户端最后一次回复的ACK包丢了<br>发送完ACK后，客户端进入ESTABLISHED状态，服务器因为收不到ACK会走重传机制。客户端进入ESTABLISHED状态后，则认为连接已建立，会立即发送数据，但是服务器因为没有收到最后一个ACK，依然处于SYN_RCVD状态。那么，现在的问题是，处于SYN_RCVD的服务器，收到客户端的数据包后如何处理呢？有些资料写，此时服务器会直接回复RST包，表示服务器错误（我都还没建立连接，数据咋都发过来了），并进入CLOSE状态。但是，试想一下，服务器还在通过三次握手确定对方是否真实存在，此时对方的数据已经发过来了，那肯定是存在的。<br>实际情况是，处于ESTABLISHED状态下的客户端，开始发送数据时，会带上ACK，所以即便是一个单独发ACK的包丢了，服务器在收到这个最新的包时，也能通过里面的ACK，正常进入ESTABLISHED状态。</p>
+</li>
+<li><p>客户端故意不发最后的ACK<br>上面几种异常，都是客观因素导致，比如网络环境差等，而这种情况，就是故意而为之了。服务器发送完SYN/ACK后，收不到客户端的ACK，它会认为自己发出去的包丢了，就会走异常2的逻辑，进入重传，根据上面所说我们可以知道，此时这个连接处在服务器在listen时创建的SYN队列中。如果短时间内有大量这样的请求，SYN队列就会被占满，此时再来新的SYN请求，服务器就会自动丢弃，这就是所谓的SYN FLOOD攻击。针对这种情况，现在主要有两种应对方案，<br>一个是syn cookie方案，在收到SYN包后，服务器根据一定的算法，以数据包的源地址、端口号等信息作为参数计算出一个cookie值作为SYN/ACK包的序列号发给客户端，但并不立即分配资源，等到收到ACK包，重新根据数据包的源地址、端口计算该包的确认号是否正确，正确则建立连接，否则丢弃。<br>另一个方案是SYN Proxy防火墙，服务器防火墙会对收到的每一个SYN包进行代理和回应，并保持连接状态，等到发送方将ACK返回后，再重新构造SYN包发送到服务器，建立真正的TCP连接。</p>
+</li>
+</ol>
+<h4 id="3-3-资源使用"><a href="#3-3-资源使用" class="headerlink" title="3.3 资源使用"></a>3.3 资源使用</h4><p>主机收到一个TCP包时，用两端的IP地址和端口号来标识这个TCP包属于哪个session，使用一张表来存储所有的session，表中的每条称作Transmission Control Block（TCB），tcb结构定义包括连接使用的源端口、目的端口、目的ip、序号、应答序号、对方窗口的大小、己方窗口的大小、tcp状态、tcp输入/输出队列，应用层输出队列、tcp的重传有关变量等。对于不能确认的包、接收但还没读取的数据，都会占用系统资源。</p>
+<h4 id="3-4-数据传输"><a href="#3-4-数据传输" class="headerlink" title="3.4 数据传输"></a>3.4 数据传输</h4><p>在TCP的数据传送状态中，很多重要的机制保证了TCP的可靠性和强壮型，它们包括：使用序号，对收到的TCP报文段进行排序以及检测重复的数据，使用校验和检测报文段的错误，即无错传输，使用确认和计时器来检测和纠正丢包或延时，流控制，拥塞控制，丢包重传等。</p>
+<h4 id="3-5-重传机制"><a href="#3-5-重传机制" class="headerlink" title="3.5 重传机制"></a>3.5 重传机制</h4><p>TCP为了实现可靠的传输，实现了重传机制，最基本的重传机制，就是超时重传，即在发送数据报文时，设定一个定时器，到达超时时间后还没有收到应答报文，就会重发该报文，那么这个时间设置多少合适呢？如果比较小，那很有可能数据没有丢失只是慢，就触发重传了，如果设置较大，那就会造成等待过长。一个数据包发出去来回的时间，即数据包的一次往返时间，叫做RTT（Round-Trip Time）。超时重传时间RTO（Retransmission Timeout），一般情况下略大于RTT，意思是在一个来回的时间内还没收到应答，发送发就重发。</p>
+<p>但是，实际情况是，RTO就是在RTT的基础上计算出来的，毕竟由于网络不是稳定不变的，所以RTT也是一直在变的，这个公式，叫做Jacobson/Karels算法，主要利用平滑移动的思想，具体不展开了。</p>
+<p>除了超时重传，还有快速重传机制，毕竟超时重传中每次都要等待RTO后才会触发重传，相比于此，快速重传则是基于接收端反馈的ACK来触发重传，接收方每次的应答包里ACK告知的是最大的有序报文段，当出现某个包丢失时，ACK就会卡在丢失包的前一个包，当发送方连着收到三个重复冗余的ACK后，也就是连着收到四个一样的ACK，就知道这个ACK后面的包丢失了，此时便会触发快速重传，重发丢失报文，而不用等待RTO。但这种方式会有个问题，因为发送方是连着发送多个包给接收方，发送方在收到3个冗余的ACK后，只知道接收方收到的最大有序报文是ACK，但不知道ACK之后有哪些收到了、哪些没收到，那么重传的时候，是只发送ACK后紧邻着的包，还是把ACK后面的所有的包都发一遍呢？</p>
+<p>于是，又有了一种重传方式，带选择的快速重传SACK（Selective)，它的机制就是，在快速重传的基础上，接收端返回最近收到的报文的序列号范围，这样发送方就知道接收方哪些数据没收到，很清楚就能知道需要重传哪些数据了，SACK标记是加在TCP头部的选项字段里面的。</p>
+<p>除此之外，还有一种，D-SACK，Duplicate SACK，即重复SACK，在SACK的基础上做了一些扩展，主要用来告诉发送方，有哪些数据自己重复接受了。目的是帮助发送方判断，是否发生了包失序、ACK丢失、包重复或伪重传，让TCP可以更好的做网络控流。</p>
+<h4 id="3-5-滑动窗口"><a href="#3-5-滑动窗口" class="headerlink" title="3.5 滑动窗口"></a>3.5 滑动窗口</h4><p>TCP发送一个数据，需要收到确认应答后，才会发送下一个数据，这样有个缺点，就是效率比较低。为了解决这个问题，TCP引入了窗口，它是操作系统开辟的一个缓存空间，窗口的大小表示无需等待确认应答，而可以继续发送的数据的最大值。</p>
+<p>TCP头部有个字段叫win，16位，它告诉对方本端的TCP缓冲区还能容纳多少字节的数据，这样对方就可以控制发送数据的速度，从而达到流量控制的目的。直白讲就是，一个包一个包发送太慢，那就多发几个，但是发的太多了，接收方可能处理不了，多出来的就被丢弃了，这样就白发了，所以，接收方在每次返回ACK的时候，顺带告诉发送方自己这边还剩下的窗口大小，这样发送方就可以根据这个窗口大小来决定发送多少数据了。</p>
+<h4 id="3-6-拥塞控制"><a href="#3-6-拥塞控制" class="headerlink" title="3.6 拥塞控制"></a>3.6 拥塞控制</h4><p>拥塞控制是作用于网络的，防止过多的数据注入到网络中，避免出现网络负载过大的情况，它的目标是最大化利用网络上瓶颈链路的带宽。它和流量控制的区别是，流量控制是作用于接收方，根据接收方的实际接受能力控制发送的流量，防止数据段丢失。</p>
+<p>发送方维护一个拥塞窗口（congestion window）的变量，用来估算在一段时间内这条链路可以承载和运输的数据的数量。它的大小代表着网络的拥塞程度，并且是动态变化的，为了达到最大的传输效率，最简单的方法就是不断增加传输的数据量，一直到出现丢包，实际上，拥塞控制主要有这几种算法：慢启动、拥塞避免、拥塞发生和快速恢复。</p>
+<p>慢启动，在TCP建立连接之后，一开始不要发送大量的数据，而是先探测一下网络的拥塞程度，由小到大逐渐增加拥塞窗口的大小，如果没有出现丢包，每收到一个ACK，就将拥塞窗口cwnd大小加1，单位MSS（max segment size）。每轮次发送窗口增加一倍，呈指数增长，如果出现丢包，拥塞窗口就减半，进入拥塞避免阶段。</p>
+<ul>
+<li>TCP连接完成，初始化cwnd=1，表示可以传一个MSS单位大小的数据</li>
+<li>每当收到一个ACK，cwnd就加一</li>
+<li>每当过了一个RTT，因为每个ACK都会加1，所以cwnd就会增加一倍，呈指数增长</li>
+</ul>
+<p>但是，为了防止swnd增长过大引起网络阻塞，还需要设置一个慢启动阈值（slow start threshold）状态变量，当cwnd到达该阈值后，进入拥塞避免算法。一般来说，慢启动阈值是65535字节，cwnd到达阈值后</p>
+<ul>
+<li>每收到一个ACK，cwnd = cwnd + 1 / cwnd</li>
+<li>当每过一个RTT时，cwnd = cwnd + 1，呈线性增长</li>
+</ul>
+<p>当网络拥塞发生丢包时，会出现两种情况</p>
+<ul>
+<li>RTO超时重传</li>
+<li>快速重传<br>如果是RTO超时重传，就会使用拥塞发生算法</li>
+<li>慢启动阈值 = cwnd / 2</li>
+<li>cwnd = 1</li>
+<li>进入新的慢启动过程<br>如果是快速重传</li>
+<li>拥塞窗口cwnd = cwnd / 2</li>
+<li>慢启动阈值= cwnd</li>
+<li>进入快速恢复算法<br>快速重传和快速恢复一般同时使用，快速恢复算法认为，还有3个冗余ACK收到，说明网络也没那么糟糕，所以没有别要想RTO超时那么反应强烈</li>
+<li>cwnd = 慢启动阈值 + 3</li>
+<li>重传重复的那几个ACK（即丢失的那几个数据包）</li>
+<li>如果再收到重复的ACK，那么cwnd = cwnd + 1</li>
+<li>如果收到新的ACK后，cwnd = 慢启动阈值，表明恢复过程结束，再次进入拥塞避免算法，即线性增长</li>
+</ul>
+<h4 id="3-7-Nagle算法和延迟确认"><a href="#3-7-Nagle算法和延迟确认" class="headerlink" title="3.7 Nagle算法和延迟确认"></a>3.7 Nagle算法和延迟确认</h4><p>TCP/IP协议中，无论发送多少数据，总是要在数据钱带上协议头，同时，接收方收到数据，也需要发送ACK确认，为了尽可能利用网络带宽，TCP总是希望尽可能发送足够大的数据，Nagle算法便是为了发送尽可能大的数据块，避免网络中充斥着许多小数据块。基本定义是：任意时刻，最多只能有一个未被确认的小段，小段指的是小于MSS尺寸的数据块，未被确认指的是一个数据块发出去后，没有收到对方发送的ACK确认包。</p>
+<p>延迟确认是指，在接收方收到数据包后，如果暂时没有数据要发给对端，它可以等一段时间再发送确认包（Linux默认是40ms），如果在这段时间内刚好有数据要传给对端，ACK就随着数据包一起传输，如果超时后没有数据要发送，就单独发送ACK，避免对方以为丢包。有些场景不能延迟发送确认，比如出现乱包，要及时发送ACK告知</p>
+<p>一般二者不能同时使用，一个是延迟发送数据包，一个是延迟发送确认，二者一起会造成更大的延迟，产生性能问题。</p>
+<h4 id="3-8-保活定时器"><a href="#3-8-保活定时器" class="headerlink" title="3.8 保活定时器"></a>3.8 保活定时器</h4><p>根据TCPI/IP协议的描述，TCP连接建立后，如果双方都没有通信。连接可以一直保存下去，例如中间路由器崩溃或者中间的某条线路断开，只要两端的主机没有被重启，连接就一直被保持着。TCP是面向连接的，不是说两个主机之间一直存在一个连接，而是在各自的主机上面分配了一些资源，如内存，以及上面提到的session表，来存储对端的一些信息，连接断开，对于端点则是意味着清理掉这些连接信息，释放掉所占用的资源。所以，如果连接中客户端突然掉线，服务器就需要能够感知这种变化，然而，TCP规范中并未规定连接的保活功能。</p>
+<p>尽管TCP协议中未做要求，但是在很多TCP协议的实现中，却提供了保活定时器。保活定时器一般配置的时间是2个小时，即服务器每2个小时就会想客户端发送探查消息，如果收到客户端的反馈消息，则在等2个小时再发，如果等不到反馈，则再等75s再发一次，这样连续发送10次，如果10次都没有收到反馈，就认为客户端异常断开了，此时，TCP层的程序就会向上层应用程序发送一条连接超时的反馈。</p>
+<p>由于TCP的很多实现中，保活定时器的时间比较长（一般大于2个小时），在实际的服务器开发中，很难利用该时间来判断客户端是否断开连接，因此，服务器程序多是在上层自己提供保活功能，常见的有，心跳连接，或者ping/pong消息等。</p>
+<h3 id="4-终结通路"><a href="#4-终结通路" class="headerlink" title="4. 终结通路"></a>4. 终结通路</h3><p>连接终止使用了四次挥手过程。</p>
+<ul>
+<li>由客户端发起FIN请求，发出FIN后，客户端从ESTABLISHED进入FIN-WAIT-1状态，wait1，就是在等服务器的ACK</li>
+<li>服务器收到客户端的FIN后，回复ACK，并从ESTABLISHED进入CLOSED-WAIT状态，开始做一些断开连接前的准备工作。客户端收到ACK后，wait1结束，进入到FIN-WAIT-2状态，wait2是在等服务器的FIN</li>
+<li>服务器完成断开准备后，发送FIN/ACK给客户端，请求断开连接，服务器进入LAST-ACK状态，也就是等待最后一个ACK</li>
+<li>客户端收到FIN/ACK后，回复ACK，然后进入TIME_WAIT状态，等待2MSL（max segment lifetime）的等待，之后进入CLOSED状态。服务器收到ACK后进入CLOSED状态</li>
+</ul>
+<p>需要四次挥手的原因在于，双方都需要发送FIN表示可以断开，同时接收对方发的ACK，来保证自己和对端状态正确。而客户端想要断开的时候，服务器不一定准备好，所以服务器回复的ACK和自己要发的FIN没法合并，要先发ACK，等到自己准备好之后再发FIN/ACK，这样一来就是四次了。而握手只需要三次是因为，服务器的ACK和SYN可以合并，这样便减少一次。</p>
+<p>为什么服务器不需要等2MSL，而客户端需要等呢？状态同步是通信的首要基础，服务器给客户端发送了FIN，当它收到客户端发来的ACK时，对于服务器来说，他们双方都知道了服务器要关闭这件事，状态同步了，那么服务器就可以CLOSED。那么对于客户端来说呢，它在发出ACK之后，并不知道服务器是否成功接收，所以有两种可能</p>
+<ul>
+<li>服务器没收到自己发的ACK，那么服务器在等待超时后，会重传FIN</li>
+<li>服务器收到了自己发的ACK，那么服务器会关闭，不会再发任何消息<br>不管哪种情况，客户端都要等，要取两种情况等待时间的最大值，以应对最坏的情况发生，这个最坏的情况是：</li>
+<li>去向ACK消息最大存活时间MSL + 来向FIN消息的最大存活时间MSL<br>也就是客户端需要等待的2MSL。</li>
+</ul>
+<p>如果不等，客户端释放的端口可能会重连刚断开的服务器端口，这样依然存活在网络里的老的TCP报文段可能与新TCP连接报文段冲突，造成数据冲突，为避免此种情况，则需要耐心等待网络中老的TCP连接的活跃报文段全部超时无效。</p>
+<h4 id="4-1-四次挥手异常情况"><a href="#4-1-四次挥手异常情况" class="headerlink" title="4.1 四次挥手异常情况"></a>4.1 四次挥手异常情况</h4><ol>
+<li><p>客户端的FIN包丢了<br>这个和前面的SYN包丢失类似，客户端会触发超时重传。对于服务器来说，客户端发来的FIN没有收到，就没有任何感知。会在一段时间后，断开连接。</p>
+</li>
+<li><p>服务器第一次回复ACK包丢了<br>此时客户端没有收到ACK，会触发超时重传FIN，服务器收到后，会立即再重传。而此时，服务器已经处于CLOSED-WAIT状态，开始做断开连接前的准备工作，准备好之后，会发送FIN/ACK，这个消息是带了之前ACK的响应号的。只要这个消息没丢，客户端可以凭借FIN/ACK包中的响应号，直接从FIN-WAIT-1状态进入TIME-WAIT状态，开始2MSL的等待。</p>
+</li>
+<li><p>服务器发的FIN/ACK丢了<br>服务器会在超时后触发重传，此时客户端有两种情况，要么处于FIN-WAIT-1状态（之前的ACK也丢了，wait1是在等ACK，还没等到），要么处于FIN-WAIT-2状态（收到了ACK，在等FIN），收到服务器的重传来的FIN后，发送ACK给服务器，然后开始2MSL的等待。</p>
+</li>
+<li><p>客户端最后的ACK丢了<br>客户端回复ACK后，会进入2MSL的TIME-WAIT等待，服务器因为没有收到ACK，会重试一段时间，直到超时服务器主动断开。在服务器重试的期间内，客户端可能释放了端口，此时如有新的客户端连接服务器，就会收到服务器发的重试消息FIN，这时客户端会回复RST，服务器收到RST后，会复位状态。</p>
+</li>
+<li><p>客户端收到ACK后，服务器掉线了<br>客户端收到ACK后，进入了FIN-WAIT-2状态，等待FIN，如果服务器不在了，那么这个FIN将永远等不到。在TCP协议中，是没有对这个状态的处理机制的，但是操作系统会接管这个状态，例如在Linux下，可以通过tcp_fin_timeout参数，来对这个状态设定一个超时时间。需要注意的是，当超过tcp_fin_timeout的限制后，客户端的状态不是切换到TIME_WAIT，而是直接进入到CLOSED状态</p>
+</li>
+<li><p>客户端收到ACK后，客户端掉线<br>客户端掉线后，服务器发的FIN/ACK就得不到应答，会不断的走超时重传机制，在超过一定时间后，服务器主动断开。如果在重试期间，有新的客户端接入这个连接，发送SYN给服务器，表示想要建立连接，此时这个SYN会被服务器忽略，并直接回复FIN/ACK，新客户端收到FIN/ACK后不会认的，就会给服务器发送RST，服务器收到RST，会复位状态</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2022/04/1657b987f4f2/" title="TCP介绍">https://oynix.github.io/2022/04/1657b987f4f2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TCP/" rel="tag"># TCP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/5f12538f9d0e/" rel="prev" title="正则环视">
+      <i class="fa fa-chevron-left"></i> 正则环视
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-text">1. 引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%90%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="nav-text">3. 运作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%88%9B%E5%BB%BA%E9%80%9A%E8%B7%AF"><span class="nav-text">3.1 创建通路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%8F%A1%E6%89%8B%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5"><span class="nav-text">3.2 握手异常情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8"><span class="nav-text">3.3 资源使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-text">3.4 数据传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6"><span class="nav-text">3.5 重传机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="nav-text">3.5 滑动窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-text">3.6 拥塞控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-Nagle%E7%AE%97%E6%B3%95%E5%92%8C%E5%BB%B6%E8%BF%9F%E7%A1%AE%E8%AE%A4"><span class="nav-text">3.7 Nagle算法和延迟确认</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-8-%E4%BF%9D%E6%B4%BB%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-text">3.8 保活定时器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BB%88%E7%BB%93%E9%80%9A%E8%B7%AF"><span class="nav-text">4. 终结通路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5"><span class="nav-text">4.1 四次挥手异常情况</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">297k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:30</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '861b3e1369575b6638b0570ec0d70b82',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
