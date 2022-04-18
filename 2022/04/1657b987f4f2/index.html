@@ -29,11 +29,13 @@
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="TCP，Transmission Control Protocol，传输控制协议，是众多网络协议中较为重要的一个协议，网上多是写三次握手和四次挥手的，一搜就能看到一片又一片，多数都是CV战士的杰作，CV战士绝不认输，所以这篇文章来全面的说说TCP。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/04/18/KzldYFkO8nfXUQ2.png">
 <meta property="article:published_time" content="2022-04-17T13:28:01.000Z">
-<meta property="article:modified_time" content="2022-04-17T21:11:55.104Z">
+<meta property="article:modified_time" content="2022-04-18T02:25:13.178Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="TCP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/04/18/KzldYFkO8nfXUQ2.png">
 
 <link rel="canonical" href="https://oynix.github.io/2022/04/1657b987f4f2/">
 
@@ -254,14 +256,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>9.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -276,9 +278,10 @@
         <p>TCP，Transmission Control Protocol，传输控制协议，是众多网络协议中较为重要的一个协议，网上多是写三次握手和四次挥手的，一搜就能看到一片又一片，多数都是CV战士的杰作，CV战士绝不认输，所以这篇文章来全面的说说TCP。</p>
 <span id="more"></span>
 
-<h3 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h3><p>如果抛开复杂的协议，只看网络的话，网络传输的就是二进制数据流，也就是一串，或者一长串0011、0101的数据。网络的目的是为了通信、为了交流，这些数据流的通信方式就是，发送方也接收方约定好每个位置的0或1代表着什么，这样接受方收到数据时，就知道发送方想要表达的意思了。但是，一个发送方不可能只给一个接收方发送数据，接收方也不能只接收一个发送方，而且发送方也不总是发送方，也有可能接收数据，因此，为了方便发送和接收，不出现五花八门的约定，大家便统一了数据的格式，这就是协议（protocol）。同时，为了更好的适应不同的情形所产生的需求，各种各样的协议应用而生，数据格式只是协议中的一部分，除此之外，每种协议还规定了各自的发送、接收的特点等等诸多细节，而TCP，就是这众多协议中的一员。</p>
+<h3 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h3><p>如果抛开复杂的协议，只看网络的话，网络传输的就是二进制数据流，也就是一串，或者一长串0011、0101的数据。网络的目的是为了通信、为了交流，这些数据流的通信方式就是，发送方和接收方约定好每个位置的0或1代表着什么，这样接收方收到数据时，就知道发送方想要表达的意思了。但是，一个发送方不可能只给一个接收方发送数据，接收方也不能只接收一个发送方，而且发送方也不总是发送方，也有可能接收数据，因此，为了方便发送和接收，不出现五花八门的约定，大家便统一了数据的格式，这就是协议（protocol）。同时，为了更好的适应不同的情形所产生的需求，各种各样的协议应用而生，数据格式只是协议中的一部分，除此之外，每种协议还规定了各自的发送、接收的特点等等诸多细节，而TCP，就是这众多协议中的一员，这是一个相当复杂的协议。</p>
 <h3 id="2-简介"><a href="#2-简介" class="headerlink" title="2. 简介"></a>2. 简介</h3><p>数据在TCP层成为流（Stream），数据分组成为分段（Segment）。数据在IP层成为Datagram，数据分组称为分片（Fragment）。UDP中分组成为Message。</p>
 <h3 id="3-运作方式"><a href="#3-运作方式" class="headerlink" title="3. 运作方式"></a>3. 运作方式</h3><p>TCP协议的运行划分为三个阶段：连接创建(connection establishment)、数据传送（data transfer）和连接终止（connection termination）。操作系统将TCP连接抽象为套接字表示的本地端点（local end-point），作为编程接口给程序使用。在TCP连接的生命期内，本地端点要经历一系列的状态改变。</p>
+<p>TCP在每一个要发送的数据包前面，都会添加一个数据头，这个数据头的长度是20个字节，长大概这个样子<br><img src="https://s2.loli.net/2022/04/18/KzldYFkO8nfXUQ2.png"><br>一行代表32个bit，也就是4个字节。前4个字节分别存储源端口和目标端口，序列号seq和确认号ack各占4个字节，接下来的4个字节存储标识位和窗口大小，最后4个字节存储校验和和紧急指针。</p>
 <h4 id="3-1-创建通路"><a href="#3-1-创建通路" class="headerlink" title="3.1 创建通路"></a>3.1 创建通路</h4><p>TCP用三次握手创建一个连接，通常是服务器打开一个套接字socket进行监听listen，等待被动打开，客户端连接服务器，主动打开。服务器执行listen之后，会创建两个队列：</p>
 <ul>
 <li>SYN队列：存放完成两次握手的连接，长度由listen的参数backlog指定</li>
@@ -290,9 +293,13 @@
 <li>Server收到一个合法的SYN包后，将该包放入SYN队列中，返回一个SYN/ACK，ACK为A+1，消息序列号seq为随机数B</li>
 <li>Client收到SYN/ACK包后，发送一个ACK为B+1的包，消息序列号seq为A+1。然后Client的connect函数返回成功。当Server收到这个ACK包后，把请求帧从SYN队列移出，放到ACCEPT中，如果accept函数处于阻塞状态，可以被唤醒来从ACCEPT中取出ACK包，重新创建一个新的用于双向通信的sockfd，并返回</li>
 </ol>
-<p>seq以一个随机数ISN开始，随机是为了克制TCP序号预测攻击，标识每端发出的字节和顺序，按传输字节数量顺序递增，即在上一个包的seq上加上当前包数据的长度，就是当前包的seq，是一个32位的无符号数，当它增大到2^32-1时，便会回绕到0。ack表达的是，这个序号的包及其之前的包我都收到了。</p>
 <p>三次握手的目的是为了防止已失效的连接请求报文段传送到了服务器，因而产生错误，也为了解决网络中存在延迟的重复分组。例如，Client发出的第一个SYN包没有丢失，而是在某个网络节点长时间的滞留了，以致延误到Client连接释放后的某个时间才到达Server。本来这是一个已失效的报文段，但Server收到后并不知已失效，而是当作Client的连接请求来处理，于是向Client发出确认报文段，同意创建连接。假设不采用三次握手，那么只要Server发出确认，新的连接就在Server创建了。由于Client并没有发出创建连接的请求，因此不会处理Server发过来的确认包，也就不会向Server发送数据。但是在Server端新的传输连接已经创建，并一直等待Client发来数据，这样便会一直占用Server的资源，造成浪费。采用三次握手可以防止这种情况的发生。</p>
 <p>就像你去医院看病一样，你（Client）在大厅挂了一个号（SYN），等到医生（Server）拿到病人的号后，他需要对着等候区喊一声（ACK/SYN）：253号病人在不在？你大声的回一声（ACK）：在！这个时候医生才能给你看病。如果等医生喊的时候，你已经提前有事走了，那么就不用再在你身上花时间了，毕竟医生很忙。两次握手就像是医生拿到病人的号后喊了一声：253号病人该你了，就开始准备相关的资料等你来，但是你已经离开了，医生并不知情，就只能一直等，等一个等不来的人。而四次握手、五次握手，就相当于，在你回答了一声：在，之后医生又问：253号病人在不在？你说：在，医生又问：253号病人在不在？你接着说：在。可以是可以，但没必要。</p>
+<h4 id="插播：seq和ack"><a href="#插播：seq和ack" class="headerlink" title="插播：seq和ack"></a>插播：seq和ack</h4><p>这里插播seq和ack的说明，seq以一个随机数开始，叫做ISN（之所以随机是为了克制TCP序号预测攻击），它是一个32位的无符号数。每个数据包在头信息中都会带着seq和ack，seq表示自己成功发送的数据量，而ack表示自己成功接收的有序字节的最大字节量。这里要用seq和ack减去ISN，这个时候才表示真实数据数量，这个在WireShark里叫做相对seq，relative sequence number。</p>
+<p>这里强调有序是因为存在丢包的情况，比如发送方发了1，2，3，4，5个包，但是包3在路上丢了，所以接收方回复包4和包5的ack都是2。</p>
+<p>seq表示自己成功发送的数据，所以每个包中都是有实际用处的。但是ack并不是在每个包中都会用到，比如建立连接时的第一个包，这个时候连接还未建立，所以谈客户端收到多少来自服务器的数据是没有意义的，因此在标识位用了一个bit来标识ack是否有效。</p>
+<p>ack表示自己成功接收的数据量，每次收到对方的seq后，如果可以正确处理（这里要考虑异常情况，比如上面的丢包情况，这时候则不能正确处理，要等着丢失的包），则更新ack，表示已经成功接收这么多的数据，然后将ack确认回复给发送方。</p>
+<p>seq表示自己成功发送的数据量，每次收到对方的ack后，就会更新自己的seq，表示这么多字节的数据已经成功发送。</p>
 <h4 id="3-2-握手异常情况"><a href="#3-2-握手异常情况" class="headerlink" title="3.2 握手异常情况"></a>3.2 握手异常情况</h4><ol>
 <li><p>客户端第一个SYN包丢了<br>这种情况下，服务器不知道客户端曾经发过包，在TCP协议总，某端的一组请求-应答中，在一定时间范围内，只要没有收到应答的ACK包，无论是请求包对方没有收到，还是对方的应答包自己没有收到，均认为是包丢了，都会触发超时重传机制。所以此时会进入重传SYN包，根据协议，会尝试三次，间隔分别为5.8s，24s，48s，共76s左右，而大多数伯克利系统建立一个连接的最长时间，限制为75s。也就是说，第一个SYN包丢了，会重传，最长重试时间是75s。</p>
 </li>
@@ -346,7 +353,7 @@
 <h4 id="3-8-保活定时器"><a href="#3-8-保活定时器" class="headerlink" title="3.8 保活定时器"></a>3.8 保活定时器</h4><p>根据TCPI/IP协议的描述，TCP连接建立后，如果双方都没有通信。连接可以一直保存下去，例如中间路由器崩溃或者中间的某条线路断开，只要两端的主机没有被重启，连接就一直被保持着。TCP是面向连接的，不是说两个主机之间一直存在一个连接，而是在各自的主机上面分配了一些资源，如内存，以及上面提到的session表，来存储对端的一些信息，连接断开，对于端点则是意味着清理掉这些连接信息，释放掉所占用的资源。所以，如果连接中客户端突然掉线，服务器就需要能够感知这种变化，然而，TCP规范中并未规定连接的保活功能。</p>
 <p>尽管TCP协议中未做要求，但是在很多TCP协议的实现中，却提供了保活定时器。保活定时器一般配置的时间是2个小时，即服务器每2个小时就会想客户端发送探查消息，如果收到客户端的反馈消息，则在等2个小时再发，如果等不到反馈，则再等75s再发一次，这样连续发送10次，如果10次都没有收到反馈，就认为客户端异常断开了，此时，TCP层的程序就会向上层应用程序发送一条连接超时的反馈。</p>
 <p>由于TCP的很多实现中，保活定时器的时间比较长（一般大于2个小时），在实际的服务器开发中，很难利用该时间来判断客户端是否断开连接，因此，服务器程序多是在上层自己提供保活功能，常见的有，心跳连接，或者ping/pong消息等。</p>
-<h3 id="4-终结通路"><a href="#4-终结通路" class="headerlink" title="4. 终结通路"></a>4. 终结通路</h3><p>连接终止使用了四次挥手过程。</p>
+<h4 id="3-9-终结通路"><a href="#3-9-终结通路" class="headerlink" title="3.9. 终结通路"></a>3.9. 终结通路</h4><p>连接终止使用了四次挥手过程。</p>
 <ul>
 <li>由客户端发起FIN请求，发出FIN后，客户端从ESTABLISHED进入FIN-WAIT-1状态，wait1，就是在等服务器的ACK</li>
 <li>服务器收到客户端的FIN后，回复ACK，并从ESTABLISHED进入CLOSED-WAIT状态，开始做一些断开连接前的准备工作。客户端收到ACK后，wait1结束，进入到FIN-WAIT-2状态，wait2是在等服务器的FIN</li>
@@ -361,7 +368,7 @@
 <li>去向ACK消息最大存活时间MSL + 来向FIN消息的最大存活时间MSL<br>也就是客户端需要等待的2MSL。</li>
 </ul>
 <p>如果不等，客户端释放的端口可能会重连刚断开的服务器端口，这样依然存活在网络里的老的TCP报文段可能与新TCP连接报文段冲突，造成数据冲突，为避免此种情况，则需要耐心等待网络中老的TCP连接的活跃报文段全部超时无效。</p>
-<h4 id="4-1-四次挥手异常情况"><a href="#4-1-四次挥手异常情况" class="headerlink" title="4.1 四次挥手异常情况"></a>4.1 四次挥手异常情况</h4><ol>
+<h4 id="3-10-四次挥手异常情况"><a href="#3-10-四次挥手异常情况" class="headerlink" title="3.10 四次挥手异常情况"></a>3.10 四次挥手异常情况</h4><ol>
 <li><p>客户端的FIN包丢了<br>这个和前面的SYN包丢失类似，客户端会触发超时重传。对于服务器来说，客户端发来的FIN没有收到，就没有任何感知。会在一段时间后，断开连接。</p>
 </li>
 <li><p>服务器第一次回复ACK包丢了<br>此时客户端没有收到ACK，会触发超时重传FIN，服务器收到后，会立即再重传。而此时，服务器已经处于CLOSED-WAIT状态，开始做断开连接前的准备工作，准备好之后，会发送FIN/ACK，这个消息是带了之前ACK的响应号的。只要这个消息没丢，客户端可以凭借FIN/ACK包中的响应号，直接从FIN-WAIT-1状态进入TIME-WAIT状态，开始2MSL的等待。</p>
@@ -502,7 +509,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-text">1. 引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%90%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="nav-text">3. 运作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%88%9B%E5%BB%BA%E9%80%9A%E8%B7%AF"><span class="nav-text">3.1 创建通路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%8F%A1%E6%89%8B%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5"><span class="nav-text">3.2 握手异常情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8"><span class="nav-text">3.3 资源使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-text">3.4 数据传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6"><span class="nav-text">3.5 重传机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="nav-text">3.5 滑动窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-text">3.6 拥塞控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-Nagle%E7%AE%97%E6%B3%95%E5%92%8C%E5%BB%B6%E8%BF%9F%E7%A1%AE%E8%AE%A4"><span class="nav-text">3.7 Nagle算法和延迟确认</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-8-%E4%BF%9D%E6%B4%BB%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-text">3.8 保活定时器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BB%88%E7%BB%93%E9%80%9A%E8%B7%AF"><span class="nav-text">4. 终结通路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5"><span class="nav-text">4.1 四次挥手异常情况</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-text">1. 引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%90%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="nav-text">3. 运作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%88%9B%E5%BB%BA%E9%80%9A%E8%B7%AF"><span class="nav-text">3.1 创建通路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E6%92%AD%EF%BC%9Aseq%E5%92%8Cack"><span class="nav-text">插播：seq和ack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%8F%A1%E6%89%8B%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5"><span class="nav-text">3.2 握手异常情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8"><span class="nav-text">3.3 资源使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-text">3.4 数据传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6"><span class="nav-text">3.5 重传机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="nav-text">3.5 滑动窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-text">3.6 拥塞控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-Nagle%E7%AE%97%E6%B3%95%E5%92%8C%E5%BB%B6%E8%BF%9F%E7%A1%AE%E8%AE%A4"><span class="nav-text">3.7 Nagle算法和延迟确认</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-8-%E4%BF%9D%E6%B4%BB%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-text">3.8 保活定时器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-9-%E7%BB%88%E7%BB%93%E9%80%9A%E8%B7%AF"><span class="nav-text">3.9. 终结通路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-10-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5"><span class="nav-text">3.10 四次挥手异常情况</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
