@@ -22,16 +22,19 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="避免没有计划的行动">
+  <meta name="description" content="Java中有Class，而Kotlin则有它的KClass，说说二者的区别和联系。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kotlin的Class">
+<meta property="og:title" content="Kotlin的KClass，Java的Class">
 <meta property="og:url" content="https://oynix.github.io/2022/04/e73b1ac0e745/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="避免没有计划的行动">
+<meta property="og:description" content="Java中有Class，而Kotlin则有它的KClass，说说二者的区别和联系。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-18T04:46:33.000Z">
-<meta property="article:modified_time" content="2022-04-18T04:46:33.560Z">
+<meta property="article:modified_time" content="2022-04-18T16:32:21.385Z">
 <meta property="article:author" content="oynix">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Kotlin">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://oynix.github.io/2022/04/e73b1ac0e745/">
@@ -47,7 +50,7 @@
   };
 </script>
 
-  <title>Kotlin的Class | oynix</title>
+  <title>Kotlin的KClass，Java的Class | oynix</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
@@ -227,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Kotlin的Class
+          Kotlin的KClass，Java的Class
         </h1>
 
         <div class="post-meta">
@@ -238,6 +241,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2022-04-18 12:46:33" itemprop="dateCreated datePublished" datetime="2022-04-18T12:46:33+08:00">2022-04-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
             </span>
 
           
@@ -253,14 +265,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -272,7 +284,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>Java中有Class，而Kotlin则有它的KClass，说说二者的区别和联系。</p>
+<span id="more"></span>
+
+<h3 id="1-Java-Class"><a href="#1-Java-Class" class="headerlink" title="1. Java Class"></a>1. Java Class</h3><p>Java中的Class是一个final修饰的类，只有一个私有的构造方法，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Class</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * Private constructor. Only the Java Virtual Machine creates Class objects.</span></span><br><span class="line"><span class="comment">     * This constructor is not used and prevents the default constructor being</span></span><br><span class="line"><span class="comment">     * generated.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Class</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据方法说明可以知道，这个构造方法是给JVM调用的，JVM在加载类的时候会创建对应的Class实例，存放在方法区，一个类只会有一个Class实例，所以下面这个例子中，c1和c2是一样的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">Person p = <span class="keyword">new</span> Person();</span><br><span class="line">Class c1 = p.getClass();</span><br><span class="line">Class c2 = Person.class;</span><br></pre></td></tr></table></figure>
+<p>Class类中的方法和成员变量相当之多，但基本都关于Class本身的数据相关，比如获取成员函数、获取成员变量，等等。</p>
+<h3 id="2-Kotlin-KClass"><a href="#2-Kotlin-KClass" class="headerlink" title="2. Kotlin KClass"></a>2. Kotlin KClass</h3><p>与Java Class不同的是，KClass是一个接口，根据接口说明，<code>::class</code>可以获取到KClass的实例，这个接口中同样也是声明了一些和类有关的变量，比如类的名字，类的成员等等</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Represents a class and provides introspection capabilities.</span></span><br><span class="line"><span class="comment"> * Instances of this class are obtainable by the `::class` syntax.</span></span><br><span class="line"><span class="comment"> * See the [Kotlin language documentation](https://kotlinlang.org/docs/reference/reflection.html#class-references)</span></span><br><span class="line"><span class="comment"> * for more information.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> T the type of the class.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>KClass有一个实现类，名字是ClassReference，根据名字可以看出，这个类就是参考的Class，通过将Class实例作为构造参数传入，相关字段均通过class实例获取</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassReference</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> jClass: Class&lt;*&gt;) : KClass</span><br></pre></td></tr></table></figure>
+<p>通过Kotlin可扩展的语言自身特性，为KClass扩展了几个属性，这些属性在JvmClassMapping.kt中</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T&gt; KClass&lt;T&gt;.java: Class&lt;T&gt;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T : Any&gt; Class&lt;T&gt;.kotlin: KClass&lt;T&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">inline</span> <span class="keyword">val</span> &lt;T : Any&gt; T.javaClass: Class&lt;T&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T : Any&gt; KClass&lt;T&gt;.javaPrimitiveType: Class&lt;T&gt;?</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T : Any&gt; KClass&lt;T&gt;.javaObjectType: Class&lt;T&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Deprecated(<span class="meta-string">&quot;Use &#x27;java&#x27; property to get Java class corresponding to this Kotlin class or cast this instance to Any if you really want to get the runtime Java class of this implementation of KClass.&quot;</span>, ReplaceWith(<span class="meta-string">&quot;(this as Any).javaClass&quot;</span>)</span>, level = DeprecationLevel.ERROR)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">inline</span> <span class="keyword">val</span> &lt;T : Any&gt; KClass&lt;T&gt;.javaClass: Class&lt;KClass&lt;T&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>前两个属性还挺有趣，真是你中有我，我中有你，.完java再.kotlin，能这么一直循环玩下去。后两个属性的区别是，如果本身不是原始类型，那么javaPrimitiveType会返回null。</p>
+<p>最后一个javaClass，已经弃用了，上面写了，让使用java属性，那就不管它就好了</p>
+<h3 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h3><p>Java的Class我们是很熟识的了，容易造成混乱的，就是它和KClass的关联，二者可以互相获取</p>
+<ul>
+<li>获取KClass，按照文档里写的，直接取class属性，在实例和在类上调用，获得的结果是一样的<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 直接获取</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">val</span> kc1 = Person::<span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="keyword">val</span> kc2 = Person()::<span class="class"><span class="keyword">class</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 从Class获取</span></span><br><span class="line"><span class="keyword">val</span> kClass = Person().javaClass.kotlin</span><br></pre></td></tr></table></figure></li>
+<li>获取Class，主要通过扩展属性<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 从实例获取</span></span><br><span class="line"><span class="keyword">val</span> jClass = Person().javaClass</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 从KClass获取</span></span><br><span class="line"><span class="keyword">val</span> jClass = Person::<span class="keyword">class</span>.java</span><br></pre></td></tr></table></figure></li>
+</ul>
+
     </div>
 
     
@@ -316,7 +349,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2022/04/e73b1ac0e745/" title="Kotlin的Class">https://oynix.github.io/2022/04/e73b1ac0e745/</a>
+    <a href="https://oynix.github.io/2022/04/e73b1ac0e745/" title="Kotlin的KClass，Java的Class">https://oynix.github.io/2022/04/e73b1ac0e745/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -326,6 +359,11 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
 
         
 
@@ -396,6 +434,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-Class"><span class="nav-text">1. Java Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Kotlin-KClass"><span class="nav-text">2. Kotlin KClass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%80%BB%E7%BB%93"><span class="nav-text">3. 总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -475,12 +514,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">297k</span>
+    <span title="站点总字数">300k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:30</span>
+    <span title="站点阅读时长">4:32</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
