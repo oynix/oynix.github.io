@@ -30,7 +30,7 @@
 <meta property="og:description" content="Java中有Class，而Kotlin则有它的KClass，说说二者的区别和联系。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-18T04:46:33.000Z">
-<meta property="article:modified_time" content="2022-04-18T16:32:21.385Z">
+<meta property="article:modified_time" content="2022-04-19T01:26:13.652Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Kotlin">
@@ -298,7 +298,7 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassReference</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> jClass: Class&lt;*&gt;) : KClass</span><br></pre></td></tr></table></figure>
 <p>通过Kotlin可扩展的语言自身特性，为KClass扩展了几个属性，这些属性在JvmClassMapping.kt中</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T&gt; KClass&lt;T&gt;.java: Class&lt;T&gt;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T : Any&gt; Class&lt;T&gt;.kotlin: KClass&lt;T&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">inline</span> <span class="keyword">val</span> &lt;T : Any&gt; T.javaClass: Class&lt;T&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T : Any&gt; KClass&lt;T&gt;.javaPrimitiveType: Class&lt;T&gt;?</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">val</span> &lt;T : Any&gt; KClass&lt;T&gt;.javaObjectType: Class&lt;T&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Deprecated(<span class="meta-string">&quot;Use &#x27;java&#x27; property to get Java class corresponding to this Kotlin class or cast this instance to Any if you really want to get the runtime Java class of this implementation of KClass.&quot;</span>, ReplaceWith(<span class="meta-string">&quot;(this as Any).javaClass&quot;</span>)</span>, level = DeprecationLevel.ERROR)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">inline</span> <span class="keyword">val</span> &lt;T : Any&gt; KClass&lt;T&gt;.javaClass: Class&lt;KClass&lt;T&gt;&gt;</span><br></pre></td></tr></table></figure>
-<p>前两个属性还挺有趣，真是你中有我，我中有你，.完java再.kotlin，能这么一直循环玩下去。后两个属性的区别是，如果本身不是原始类型，那么javaPrimitiveType会返回null。</p>
+<p>前两个属性还挺有趣，Class.kotlin获取KClass，KClass.javaClass获取Class，真是你中有我，我中有你，.完java再.kotlin，能这么一直循环玩下去。后两个属性的区别是，如果本身不是原始类型，那么javaPrimitiveType会返回null。</p>
 <p>最后一个javaClass，已经弃用了，上面写了，让使用java属性，那就不管它就好了</p>
 <h3 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h3><p>Java的Class我们是很熟识的了，容易造成混乱的，就是它和KClass的关联，二者可以互相获取</p>
 <ul>
