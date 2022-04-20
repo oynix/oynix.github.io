@@ -30,7 +30,7 @@
 <meta property="og:description" content="ConstraintLayout，约束布局，是现在Android里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-17T09:22:55.000Z">
-<meta property="article:modified_time" content="2022-04-17T11:17:13.158Z">
+<meta property="article:modified_time" content="2022-04-20T08:09:22.669Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="ConstraintLayout">
@@ -264,14 +264,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>4.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -309,9 +309,20 @@
 <p>上面有说到，当指定了一个方向的两个边界时，这个控件就会在边界间居中对齐，这其实是默认值。还是上面那个例子，但是多了两个属性，一个是Horizotal_bias，一个是Vertical_bias，这两个属性的默认值都是0.5，意味着居中对齐。</p>
 <p>当给一个方向设定了两条边界的时候，并且该空间在这个方向还没有填充满，也就是有可以移动的空间，比如这个例子，图片的横向是填充父布局的，宽度设定为wrap_content，图片的实际宽度只有屏幕宽度的一半，所以剩下的宽度就是可以动的空间，那么就可以通过Horizontal_bias来设定它在水平方向的位置，默认值0.5是居中，0是居最左，1是居最右，垂直方向同理。</p>
 <p>当不存在可以动空间时，这个属性就不会生效，比如只设定了一个边界，或者设定了两个边界，但是填充满了。</p>
-<h3 id="7-宽高比"><a href="#7-宽高比" class="headerlink" title="7. 宽高比"></a>7. 宽高比</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintDimensionRatio=&quot;h,9:7&quot;</span><br></pre></td></tr></table></figure>
-<p>这个属性多用于控制图片的大小，当需要动态设定图片的宽度或者高度，但又不希望改变图片的原始宽高比，相比于原始的在代码中计算，使用这个属性就方便多了。上面这个例子中的”h,9:7”的意思是，动态设定h，即height高，高与宽的比例是9:7。同理，”w,16:9”的意思是，动态设定width高，高与宽的比例是16:9。</p>
-<p>总结起来就是，动态设定谁就写谁，h或w，比例中冒号前面的值代表的是动态设定的比例值。</p>
+<h3 id="7-宽高比"><a href="#7-宽高比" class="headerlink" title="7. 宽高比"></a>7. 宽高比</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintDimensionRatio=&quot;9:7&quot;</span><br></pre></td></tr></table></figure>
+<p>这个属性多用于控制图片的大小，当需要动态设定图片的宽度或者高度，但又不希望改变图片的原始宽高比，相比于原始的在代码中计算，使用这个属性就方便多了，首先明确的是，属性值中的比例是width:height，也就是宽高比。</p>
+<p>在ConstraintLayout中，元素的边长有2种情况，一种是设为0dp，一种是设定具体的值，当然wrap_content也算具体的值，既然是宽高比所以，那么就需要确定一个值，根据比例去算另一个值。系统在根据这个属性计算宽和高时，要考虑多种情况：</p>
+<ul>
+<li>高固定，款固定：二者都固定时，这个属性不会生效</li>
+<li>宽固定，高动态：根据宽度和比例计算高度</li>
+<li>高固定，宽动态：根据高度和比例计算宽度</li>
+<li>宽动态，高动态：这个时候要想元素设置最大的大小并且不超出约束边界，即可以完全显示出来，那么在计算最终边长时，就要根据约束边界的宽高比和属性值做比较了。</li>
+</ul>
+<p>说说两个都是动态时的情况，可以这么想，这个约束边界就以一块720x1280（9:16）的屏幕为准，也就是有一张图片完全填充屏幕，如果图片的宽高比是4.5:16时，那么就要以屏幕的高为基准计算宽，也就是高占满1280，用比例计算出宽占360，相反，要是以屏幕宽为基准，占满720，那么计算出来的高就是2560，超出边界范围了；同理，当图片的宽高比是18:16时，就要以宽为基准，占满720，计算出高为640。</p>
+<p>当然，也可以在属性值中手动指定谁是需要动态计算的，像下面这样</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintDimensionRatio=&quot;h,9:7&quot;</span><br></pre></td></tr></table></figure>
+<p>这样写的意思就是说，h是动态的，所以要先计算出来w，然后根据9:7再计算出h。</p>
+<p>总结起来就是，比例值是宽高比，谁是固定的，就用谁去计算另一个。两个都不固定时，如果没有指定谁是动态计算的话，那么就以不超出约束的边为基准的原则，计算边长。</p>
 <h3 id="8-几点说明"><a href="#8-几点说明" class="headerlink" title="8. 几点说明"></a>8. 几点说明</h3><ul>
 <li>当宽或高设定为wrap_content，并且设定了两条边界时，此时边界的作用是用来限定控件的位置，而不是宽或高，也就说，宽或高是有可能超出边界的范围的。</li>
 <li>如果有重叠，布局文件中写在下面的控件会盖在上面的空间，这一点和FrameLayout类似。</li>
@@ -532,7 +543,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:34</span>
+    <span title="站点阅读时长">4:35</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
