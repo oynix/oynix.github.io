@@ -248,7 +248,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>832</span>
+              <span>846</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -267,27 +267,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<p>Context获取存储目录的方法比较多，比如File目录，Cache目录，大致上可以分为两类，一类是应用内私有，只有应用自身可以访问，其他应用不可以直接访问，对于用户也是不可见的，但可以通过FileProvider将文件分享出去；另一类是应用外私有，同样是应用自身可以访问，但是用户是可以看到的。它们的共同点是，不需要系统权限，同时，会随着应用卸载而被删除。若不想被删除，那么就需要存储到共有目录中，而访问共有目录，就需要申请系统权限了。</p>
-<h3 id="1-应用内私有"><a href="#1-应用内私有" class="headerlink" title="1. 应用内私有"></a>1. 应用内私有</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Context.getCacheDir();</span><br><span class="line">Context.getDataDir();</span><br><span class="line">Context.getFilesDir();</span><br></pre></td></tr></table></figure>
-<p>这几个目录，所有的机型大致都在这个目录下，其中package name就是应用的包名</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/data/Android/package_name/</span><br></pre></td></tr></table></figure>
-<h3 id="2-应用外私有"><a href="#2-应用外私有" class="headerlink" title="2. 应用外私有"></a>2. 应用外私有</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Context.getExternalCacheDir();</span><br><span class="line">Context.getExternalCacheDirs();</span><br><span class="line">Context.getExternalFilesDir();</span><br><span class="line">Context.getExternalFilesDirs();</span><br></pre></td></tr></table></figure>
-<p>这几个目录，基本在这，package name也是应用包名，因为位于storage下，所以，对于用户是可见的</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/storage/<span class="number">0</span>/Android/package_name/</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-共有目录"><a href="#3-共有目录" class="headerlink" title="3. 共有目录"></a>3. 共有目录</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Environment.getExternalStorageDirectory();</span><br></pre></td></tr></table></figure>
-<p>这个目录，对应的共有路径，访问这个目录，需要申请系统的读写外部存储的权限</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/storage/<span class="number">0</span>/</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><ul>
-<li>应用私有的目录，在应用卸载时会被系统删除</li>
-<li>不同的ROM，路径可能会有差别，但是获取方式和使用原则是一样的</li>
-<li>要想把应用私有目录下的文件分享出去，参考<a href="https://oynix.github.io/2022/04/a19e8bb0ccff/">FileProvider的使用</a></li>
-<li>共有目录需要权限，私有的不需要，所以若不是必要，存储在应用私有的目录即可，减少权限的申请</li>
-</ul>
-
+          <p>总结下应用内可用的存储路径。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/eb42e35aec3a/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
