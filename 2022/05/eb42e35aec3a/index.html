@@ -30,7 +30,7 @@
 <meta property="og:description" content="总结下应用内可用的存储路径。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-06T14:10:56.000Z">
-<meta property="article:modified_time" content="2022-05-06T16:01:36.185Z">
+<meta property="article:modified_time" content="2022-05-07T01:28:03.205Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>846</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -281,16 +281,19 @@
 <span id="more"></span>
 
 <p>Context获取存储目录的方法比较多，比如File目录，Cache目录，大致上可以分为两类，一类是应用内私有，只有应用自身可以访问，其他应用不可以直接访问，对于用户也是不可见的，但可以通过FileProvider将文件分享出去；另一类是应用外私有，同样是应用自身可以访问，但是用户是可以看到的。它们的共同点是，不需要系统权限，同时，会随着应用卸载而被删除。若不想被删除，那么就需要存储到共有目录中，而访问共有目录，就需要申请系统权限了。</p>
-<h3 id="1-应用内私有"><a href="#1-应用内私有" class="headerlink" title="1. 应用内私有"></a>1. 应用内私有</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Context.getCacheDir();</span><br><span class="line">Context.getDataDir();</span><br><span class="line">Context.getFilesDir();</span><br></pre></td></tr></table></figure>
+<h3 id="1-应用内私有"><a href="#1-应用内私有" class="headerlink" title="1. 应用内私有"></a>1. 应用内私有</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Context.getCacheDir();</span><br><span class="line">Context.getDataDir();</span><br><span class="line">Context.getFilesDir();</span><br><span class="line">Context.getCodeCacheDir();</span><br><span class="line">Context.getDir(String name, <span class="keyword">int</span> mode);</span><br></pre></td></tr></table></figure>
 <p>这几个目录，所有的机型大致都在这个目录下，其中package name就是应用的包名</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/data/Android/package_name/</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/data/package_name/</span><br></pre></td></tr></table></figure>
+<p>其中，getDataDir指的就是该目录，其他的则会在该目录下创建文件夹，CacheDir对应cache目录，FilesDir对应files目录，CodeCache对应code_cache目录，而getDir则会创建新目录，名字就是第一个参数加上app前缀。</p>
 <h3 id="2-应用外私有"><a href="#2-应用外私有" class="headerlink" title="2. 应用外私有"></a>2. 应用外私有</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Context.getExternalCacheDir();</span><br><span class="line">Context.getExternalCacheDirs();</span><br><span class="line">Context.getExternalFilesDir();</span><br><span class="line">Context.getExternalFilesDirs();</span><br></pre></td></tr></table></figure>
 <p>这几个目录，基本在这，package name也是应用包名，因为位于storage下，所以，对于用户是可见的</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/storage/<span class="number">0</span>/Android/package_name/</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/Android/package_name/</span><br></pre></td></tr></table></figure>
+<p>或者，还有其他的目录映射，不同机型可能会有所差别</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/storage/self/primary/Android/package_name/</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-共有目录"><a href="#3-共有目录" class="headerlink" title="3. 共有目录"></a>3. 共有目录</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Environment.getExternalStorageDirectory();</span><br></pre></td></tr></table></figure>
+<h3 id="3-公有目录"><a href="#3-公有目录" class="headerlink" title="3. 公有目录"></a>3. 公有目录</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Environment.getExternalStorageDirectory();</span><br></pre></td></tr></table></figure>
 <p>这个目录，对应的共有路径，访问这个目录，需要申请系统的读写外部存储的权限</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/storage/<span class="number">0</span>/</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/</span><br><span class="line">/storage/self/primary/</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><ul>
 <li>应用私有的目录，在应用卸载时会被系统删除</li>
@@ -425,7 +428,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BA%94%E7%94%A8%E5%86%85%E7%A7%81%E6%9C%89"><span class="nav-text">1. 应用内私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BA%94%E7%94%A8%E5%A4%96%E7%A7%81%E6%9C%89"><span class="nav-text">2. 应用外私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%B1%E6%9C%89%E7%9B%AE%E5%BD%95"><span class="nav-text">3. 共有目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-text">4. 总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BA%94%E7%94%A8%E5%86%85%E7%A7%81%E6%9C%89"><span class="nav-text">1. 应用内私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BA%94%E7%94%A8%E5%A4%96%E7%A7%81%E6%9C%89"><span class="nav-text">2. 应用外私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%AC%E6%9C%89%E7%9B%AE%E5%BD%95"><span class="nav-text">3. 公有目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-text">4. 总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -505,7 +508,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">376k</span>
+    <span title="站点总字数">377k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
