@@ -4,7 +4,7 @@
   
   <subtitle>人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</subtitle>
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
-  
+  <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
   <updated>2022-05-09T14:52:59.686Z</updated>
   <id>https://oynix.github.io/</id>
