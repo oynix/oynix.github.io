@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-11T09:23:58.144Z</updated>
+  <updated>2022-05-11T09:43:39.825Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>shell多进程并发</title>
+    <link href="https://oynix.github.io/2022/05/8e045ba5bfb4/"/>
+    <id>https://oynix.github.io/2022/05/8e045ba5bfb4/</id>
+    <published>2022-05-11T09:25:17.000Z</published>
+    <updated>2022-05-11T09:43:39.825Z</updated>
+    
+    <content type="html"><![CDATA[<p>shell本身是不支持多线程的，想要并发编程，可以使用多进程。</p><span id="more"></span><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>shell多进程写法很方便，在执行的命令结尾加一个<code>&amp;</code>符号，便可以把当前操作放到后台进程执行，而当前进程可以继续执行其他操作。直接操作，进程数量会变得不可控，比如，对一个目录下每个文件都要执行一个操作，该操作通过<code>&amp;</code>放到后台进程执行，那么，当该目录下有10个文件时，就会启动10个进程，有100个文件时，就会启动100个进程。</p><p>而每个进程都是占用系统资源的，有些资源是有一定限制的，用<code>ulimit</code>命令可以查看</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">ulimit</span> -a</span></span><br><span class="line">core file size          (blocks, -c) 0</span><br><span class="line">data seg size           (kbytes, -d) unlimited</span><br><span class="line">file size               (blocks, -f) unlimited</span><br><span class="line">max locked memory       (kbytes, -l) unlimited</span><br><span class="line">max memory size         (kbytes, -m) unlimited</span><br><span class="line">open files                      (-n) 256</span><br><span class="line">pipe size            (512 bytes, -p) 1</span><br><span class="line">stack size              (kbytes, -s) 8192</span><br><span class="line">cpu time               (seconds, -t) unlimited</span><br><span class="line">max user processes              (-u) 2784</span><br><span class="line">virtual memory          (kbytes, -v) unlimited</span><br></pre></td></tr></table></figure><p>可以看到，其中，进程的栈大小限制8192k bytes，即8M，当创建100个进程时，就会占用800M内存。而当内存不够时，系统就会报错提示，</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Resource temporarily unavailable</span><br></pre></td></tr></table></figure><p>所以，需要对进程总数进行控制，下面说下通过管道控制的方式。</p><h3 id="管道FIFO-First-In-First-Out"><a href="#管道FIFO-First-In-First-Out" class="headerlink" title="管道FIFO First In First Out"></a>管道FIFO First In First Out</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">touch lock_f</span><br><span class="line"></span><br><span class="line">trap &quot;rm -f lock_f;exec 9&lt;&amp;-;exec 9&gt;&amp;-;exit 0&quot; 2</span><br><span class="line"></span><br><span class="line">thread_num=10</span><br><span class="line"></span><br><span class="line">temp_pipe=$$.fifo</span><br><span class="line">mkfifo $temp_pipe</span><br><span class="line">exec 9&lt;&gt;$temp_pipe # 绑定</span><br><span class="line"><span class="meta">#</span><span class="bash">rm -rf <span class="variable">$temp_pipe</span></span></span><br><span class="line"></span><br><span class="line">for (( i = 0; i &lt; thread_num; i++ )); do</span><br><span class="line">echo</span><br><span class="line">done &gt;&amp;9</span><br><span class="line"></span><br><span class="line">for (( i = 0; i &lt; 20; i++ ));</span><br><span class="line">do</span><br><span class="line">&#123;</span><br><span class="line">echo &quot;$i wait&quot;</span><br><span class="line">read -u9</span><br><span class="line">echo &quot;$i start&quot;</span><br><span class="line">if [[ -f lock_f ]]; then</span><br><span class="line">echo &gt;&amp;9</span><br><span class="line">exit</span><br><span class="line">fi</span><br><span class="line">sleep 2</span><br><span class="line">echo &quot;$i end&quot;</span><br><span class="line">echo &gt;&amp;9</span><br><span class="line">&#125; &amp;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">wait</span><br><span class="line"></span><br><span class="line">rm lock_f</span><br><span class="line"></span><br><span class="line">exec 9&gt;&amp;- # 关掉输出</span><br><span class="line">exec 9&lt;&amp;- # 关掉输入</span><br><span class="line"></span><br><span class="line">echo &quot;all end&quot;</span><br></pre></td></tr></table></figure><ul><li>通过trap拦截编号是2的信号，然后在里面执行一些操作</li><li>通过lock file将中断通知给所有进程</li><li>mkfifo创建管道，然后与系统输入输出绑定，操作系统输入输出等同于操作管道</li><li>使用wait，等待所有进程执行完毕</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;shell本身是不支持多线程的，想要并发编程，可以使用多进程。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Linux" scheme="https://oynix.github.io/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://oynix.github.io/tags/Linux/"/>
+    
+    <category term="Shell" scheme="https://oynix.github.io/tags/Shell/"/>
+    
+  </entry>
   
   <entry>
     <title>极简爬虫ons.ooo</title>
