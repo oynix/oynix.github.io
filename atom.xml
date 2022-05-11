@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-11T03:24:08.986Z</updated>
+  <updated>2022-05-11T08:03:48.599Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://oynix.github.io/2022/05/f8397aff378b/"/>
     <id>https://oynix.github.io/2022/05/f8397aff378b/</id>
     <published>2022-05-11T03:11:47.000Z</published>
-    <updated>2022-05-11T03:24:08.986Z</updated>
+    <updated>2022-05-11T08:03:48.599Z</updated>
     
-    <content type="html"><![CDATA[<p>偶然发现了一个都是美女的网站，<span class="exturl" data-url="aHR0cHM6Ly9vbnMub29vLw==">https://ons.ooo/<i class="fa fa-external-link-alt"></i></span>，临睡起意，写了几个简单的脚本，把上面的图片都抓了下来，大概有23个G。</p><span id="more"></span><p><img src="https://s2.loli.net/2022/05/11/ZCTuQAqwU3Gybh2.png"></p><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>爬虫，一般都是用Python，用Node，或者用Go，为了省事，就直接写了几个shell脚本，也幸亏这个网站的结构是传统的分页设计，要是动态加载的那就没得玩了。</p><p>目前一共273页，每页有24个item，每个item点进去就是一个组图，组图里面是完整的，没有分页，组图里图片数量不等，少的十几张，多的几十张到近百张。</p>]]></content>
+    <content type="html"><![CDATA[<p>偶然发现了几个都是美女的网站，这是其中之一，<span class="exturl" data-url="aHR0cHM6Ly9vbnMub29vLw==">https://ons.ooo/<i class="fa fa-external-link-alt"></i></span>，临睡起意，写了几个简单的脚本，把上面的图片都抓了下来，一共有16万多张，大概有23个G。</p><span id="more"></span><p><img src="https://s2.loli.net/2022/05/11/ZCTuQAqwU3Gybh2.png"></p><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>爬虫，一般都是用Python，用Node，或者用Go，为了省事，就直接写了几个shell脚本，也幸亏这个网站的结构是传统的分页设计，要是动态加载的那就没得玩了。</p><p>目前一共273页，每页有24个item，每个item点进去就是一个组图，组图里面是完整的，没有分页，组图里图片数量不等，少的十几张，多的几十张到近百张，这便是网站的整体结构设计。</p><h3 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h3><p>最简单的想法，就是模拟人真实的浏览，遍历每一页，再遍历每一页上的每一个item，进入item之后，再遍历每一张图片，下载到本地，这也是我最开始的想法。</p><p>这种方案有一个明显的弊端，会产生很多重复的请求。比如出错重试时、其他人下载时、调试时，等等，都会从头走一遍这个流程。简单说，我们的目的就是为了获取图片的URL，然后下载到本地，而这个URL是不变的，所以对于不变的量，获取一次就可以了，超过一次就是浪费流量。</p><p>为了避免重复获取，稍微调整了一下思路，第一步先将所有图片的URL存储到本地，第二步将URL对应的图片下载到本地。第一步很快而且出错概率低，而下载图片出错概率较高，如连接超时、请求中断，等等。</p><h3 id="3-通道并发"><a href="#3-通道并发" class="headerlink" title="3. 通道并发"></a>3. 通道并发</h3><p>如果用单个进程去跑，时间长的有些感人。单拿获取所有图片URL来说，请求一个item大概需要3秒左右，每页有24个item，一共有273页，奖金20万秒，大概5个小时，下载的话会更久</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">total = 3 * 24 * 273 = 19656s</span><br></pre></td></tr></table></figure><p>为了提速节省时间，使用了多进程并发，通过通道来控制，使用50个进程的情况下，拿到这16万张图的URL，需要10分钟上下，具体还要看网络情况，相比之下，这是量级的飞跃。如果机器允许，还可以进一步增加进程的数量。</p><h3 id="4-实现"><a href="#4-实现" class="headerlink" title="4. 实现"></a>4. 实现</h3><p>脚本中，除了字符串操作，唯一用到的命令就是<code>curl</code>了，这大概就是极简中的极简。通过<code>curl</code>拿到html，经过一些列字符串操作，定位到其中的href、src，等等。</p><p>工程里有两个html文件，一个是page的，一个是article的，page就是273页中的每一页，分析这个文件就可以得到页面中每一个item的href连接。而article则是item点进去的详情页面，分析这个文件便可以知道，组图中每一张图片的src下载链接。</p><h3 id="5-仓库"><a href="#5-仓库" class="headerlink" title="5. 仓库"></a>5. 仓库</h3><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4L1NwaWRlci1vbnNvb28=">Github Spider-onsooo<i class="fa fa-external-link-alt"></i></span></p>]]></content>
     
     
-    <summary type="html">&lt;p&gt;偶然发现了一个都是美女的网站，&lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly9vbnMub29vLw==&quot;&gt;https://ons.ooo/&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;，临睡起意，写了几个简单的脚本，把上面的图片都抓了下来，大概有23个G。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;偶然发现了几个都是美女的网站，这是其中之一，&lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly9vbnMub29vLw==&quot;&gt;https://ons.ooo/&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;，临睡起意，写了几个简单的脚本，把上面的图片都抓了下来，一共有16万多张，大概有23个G。&lt;/p&gt;</summary>
     
     
     
