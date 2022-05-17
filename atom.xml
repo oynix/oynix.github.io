@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-17T11:16:42.225Z</updated>
+  <updated>2022-05-17T11:38:48.987Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>修改shell输出字体颜色</title>
+    <link href="https://oynix.github.io/2022/05/de4f8861214c/"/>
+    <id>https://oynix.github.io/2022/05/de4f8861214c/</id>
+    <published>2022-05-17T11:18:25.000Z</published>
+    <updated>2022-05-17T11:38:48.987Z</updated>
+    
+    <content type="html"><![CDATA[<p>这几天一直在爬网站，写的shell特别多，自然看的log也就多，调整不同类型log的颜色，能更直观，尤其是大量log疯狂刷屏的时候。其实很多时候，都是在使用过程中产生了新需求，然后去查一查这需求能不能实现，一查发现，哎，能实现，然后就学到了新的知识。</p><span id="more"></span><p>这里的改变颜色，指的是改变在shell中输出的颜色，从本质上来讲，输出的其实都是字符，只不过对于一些特殊的字符，shell会帮忙顺手处理一下，然后再显示出来。对于颜色的标定，是使用<code>\033[</code>来标记，shell设定好了一些颜色，比如绿色、红色等，除了颜色，还有样式，比如加粗，具体格式如下</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#x27;\033[31m 31m \033[0m&#x27;</span><br></pre></td></tr></table></figure><p>31m表示的是红色，0m表示不修改，也就是恢复。跟在<code>\033[31m</code>后面的内容都会变成红色，因为只想改变这一条log的颜色，所以在结束后还要把颜色改回来，避免影响下面的输出。</p><p>31之前的值，我挨着试了一遍，没有什么特别醒目的改变，后面的几个变化较为明显，光说是说不出来，还说上个图吧<br><img src="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png"></p><p>总的来说，31、32和33就是标准的红绿黄，可以用来输出error、debug和warn级别的log。剩下的也就35和36看上去还算直观，可以用来输出一些需要特别关注的log。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;这几天一直在爬网站，写的shell特别多，自然看的log也就多，调整不同类型log的颜色，能更直观，尤其是大量log疯狂刷屏的时候。其实很多时候，都是在使用过程中产生了新需求，然后去查一查这需求能不能实现，一查发现，哎，能实现，然后就学到了新的知识。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Linux" scheme="https://oynix.github.io/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://oynix.github.io/tags/Linux/"/>
+    
+    <category term="Shell" scheme="https://oynix.github.io/tags/Shell/"/>
+    
+  </entry>
   
   <entry>
     <title>shell tr命令</title>

@@ -22,21 +22,23 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="cli，即Command Line Interface，是aws服务常用的命令工具">
+  <meta name="description" content="这几天一直在爬网站，写的shell特别多，自然看的log也就多，调整不同类型log的颜色，能更直观，尤其是大量log疯狂刷屏的时候。其实很多时候，都是在使用过程中产生了新需求，然后去查一查这需求能不能实现，一查发现，哎，能实现，然后就学到了新的知识。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="「AWS」入门安装aws cli">
-<meta property="og:url" content="https://oynix.github.io/2019/08/c35313b67e87/index.html">
+<meta property="og:title" content="修改shell输出字体颜色">
+<meta property="og:url" content="https://oynix.github.io/2022/05/de4f8861214c/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="cli，即Command Line Interface，是aws服务常用的命令工具">
+<meta property="og:description" content="这几天一直在爬网站，写的shell特别多，自然看的log也就多，调整不同类型log的颜色，能更直观，尤其是大量log疯狂刷屏的时候。其实很多时候，都是在使用过程中产生了新需求，然后去查一查这需求能不能实现，一查发现，哎，能实现，然后就学到了新的知识。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-08-22T12:57:37.000Z">
-<meta property="article:modified_time" content="2021-07-08T01:06:51.849Z">
+<meta property="og:image" content="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png">
+<meta property="article:published_time" content="2022-05-17T11:18:25.000Z">
+<meta property="article:modified_time" content="2022-05-17T11:38:48.987Z">
 <meta property="article:author" content="oynix">
-<meta property="article:tag" content="AWS">
-<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Shell">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png">
 
-<link rel="canonical" href="https://oynix.github.io/2019/08/c35313b67e87/">
+<link rel="canonical" href="https://oynix.github.io/2022/05/de4f8861214c/">
 
 
 <script id="page-configurations">
@@ -49,7 +51,7 @@
   };
 </script>
 
-  <title>「AWS」入门安装aws cli | oynix</title>
+  <title>修改shell输出字体颜色 | oynix</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
@@ -212,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2019/08/c35313b67e87/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2022/05/de4f8861214c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/fbb.jpg">
@@ -225,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          「AWS」入门安装aws cli
+          修改shell输出字体颜色
         </h1>
 
         <div class="post-meta">
@@ -235,7 +237,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-08-22 20:57:37" itemprop="dateCreated datePublished" datetime="2019-08-22T20:57:37+08:00">2019-08-22</time>
+              <time title="创建时间：2022-05-17 19:18:25" itemprop="dateCreated datePublished" datetime="2022-05-17T19:18:25+08:00">2022-05-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,7 +245,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS/" itemprop="url" rel="index"><span itemprop="name">AWS</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -260,14 +262,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>533</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -279,38 +281,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p>cli，即Command Line Interface，是aws服务常用的命令工具</p>
-</blockquote>
-<span id="more"></span> 
-<p><span class="exturl" data-url="aHR0cHM6Ly9hbWF6b25hd3MtY2hpbmEuY29tL2NuL2NsaS8=">AWS官网地址<i class="fa fa-external-link-alt"></i></span></p>
-<ul>
-<li>环境：Python</li>
-</ul>
-<ol>
-<li>安装</li>
-</ol>
-<p>安装起来只需要一条命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> pip install awscli --user</span></span><br></pre></td></tr></table></figure>
-<p>执行完成之后，输入<code>aws</code>，输出如下，则说明安装成功了：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> aws</span></span><br><span class="line">usage: aws [options] &lt;command&gt; &lt;subcommand&gt; [&lt;subcommand&gt; ...] [parameters]</span><br><span class="line">To see help text, you can run:</span><br><span class="line"></span><br><span class="line">  aws help</span><br><span class="line">  aws &lt;command&gt; help</span><br><span class="line">  aws &lt;command&gt; &lt;subcommand&gt; help</span><br><span class="line">aws: error: the following arguments are required: command</span><br></pre></td></tr></table></figure>
+        <p>这几天一直在爬网站，写的shell特别多，自然看的log也就多，调整不同类型log的颜色，能更直观，尤其是大量log疯狂刷屏的时候。其实很多时候，都是在使用过程中产生了新需求，然后去查一查这需求能不能实现，一查发现，哎，能实现，然后就学到了新的知识。</p>
+<span id="more"></span>
 
-<p>查看支持的命令，其中的<code>AVAILABLE SERVICES</code>便是支持的命令，内容过多，只罗列了部分</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> aws <span class="built_in">help</span></span></span><br><span class="line">NAME</span><br><span class="line">       aws -</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       The  AWS  Command  Line  Interface is a unified tool to manage your AWS</span><br><span class="line">       services.</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">          aws [options] &lt;command&gt; &lt;subcommand&gt; [parameters]</span><br><span class="line"></span><br><span class="line">       Use aws command help for information on a  specific  command.  Use  aws</span><br><span class="line">       help  topics  to view a list of available help topics. The synopsis for</span><br><span class="line">       each command shows its parameters and their usage. Optional  parameters</span><br><span class="line">       are shown in square brackets.</span><br><span class="line">AVAILABLE SERVICES</span><br><span class="line">       o acm</span><br><span class="line"></span><br><span class="line">       o acm-pca</span><br><span class="line"></span><br><span class="line">       o alexaforbusiness</span><br><span class="line"></span><br><span class="line">       o amplify</span><br><span class="line"></span><br><span class="line">       o apigateway</span><br><span class="line"></span><br><span class="line">       o apigatewaymanagementapi</span><br><span class="line"></span><br><span class="line">       o apigatewayv2</span><br><span class="line"></span><br><span class="line">       o application-autoscaling</span><br><span class="line"></span><br><span class="line">       o appmesh</span><br><span class="line"></span><br><span class="line">       o appstream</span><br><span class="line"></span><br><span class="line">       o appsync</span><br><span class="line"></span><br><span class="line">       o athena</span><br><span class="line"></span><br><span class="line">       o autoscaling</span><br><span class="line"></span><br><span class="line">       o autoscaling-plans</span><br><span class="line"></span><br><span class="line">       o backup</span><br><span class="line"></span><br><span class="line">       o batch</span><br><span class="line"></span><br><span class="line">       o budgets</span><br><span class="line"></span><br><span class="line">       o ce</span><br><span class="line"></span><br><span class="line">       o chime</span><br><span class="line"></span><br><span class="line">       o cloud9</span><br><span class="line"></span><br><span class="line">       o clouddirectory</span><br><span class="line"></span><br><span class="line">       o cloudformation</span><br><span class="line"></span><br><span class="line">       o cloudfront</span><br><span class="line"></span><br><span class="line">       o cloudhsm</span><br><span class="line"></span><br><span class="line">       o cloudhsmv2</span><br><span class="line"></span><br><span class="line">       o cloudsearch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>配置</li>
-</ol>
-<p>其中有一个子命令<code>configure</code>，是用来配置aws cli的。aws cli访问的都是 aws 服务，而每个服务都是需要身份验证的，所以在使用之前，需要先配置身份信息。</p>
-<p>同样，先查看<code>configure</code>的说明：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> aws configure <span class="built_in">help</span></span></span><br><span class="line">NAME</span><br><span class="line">       configure -</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       Configure  AWS  CLI  options. If this command is run with no arguments,</span><br><span class="line">       you will be prompted for configuration values such as your  AWS  Access</span><br><span class="line">       Key  Id  and you AWS Secret Access Key.  You can configure a named pro-</span><br><span class="line">       file using the --profile argument.  If your config file does not  exist</span><br><span class="line">       (the default location is ~/.aws/config), the AWS CLI will create it for</span><br><span class="line">       you.  To keep an existing value, hit enter when prompted for the value.</span><br><span class="line">       When  you  are prompted for information, the current value will be dis-</span><br><span class="line">       played in [brackets].  If the config item has no value, it be displayed</span><br><span class="line">       as  [None].  Note that the configure command only work with values from</span><br><span class="line">       the config file.  It does not use any configuration values  from  envi-</span><br><span class="line">       ronment variables or the IAM role.</span><br><span class="line"></span><br><span class="line">       Note:  the  values  you  provide  for the AWS Access Key ID and the AWS</span><br><span class="line">       Secret Access Key will  be  written  to  the  shared  credentials  file</span><br><span class="line">       (~/.aws/credentials).</span><br><span class="line"></span><br><span class="line">CONFIGURATION VARIABLES</span><br><span class="line">       The following configuration variables are supported in the config file:</span><br><span class="line"></span><br><span class="line">       o aws_access_key_id - The AWS access key part of your credentials</span><br><span class="line"></span><br><span class="line">       o aws_secret_access_key - The AWS secret access key part of  your  cre-</span><br><span class="line">         dentials</span><br><span class="line"></span><br><span class="line">       o aws_session_token  - The session token part of your credentials (ses-</span><br><span class="line">         sion tokens only)</span><br><span class="line"></span><br><span class="line">       o metadata_service_timeout - The number of seconds to  wait  until  the</span><br><span class="line">         metadata service request times out.  This is used if you are using an</span><br><span class="line">         IAM role to provide your credentials.</span><br><span class="line"></span><br><span class="line">       o metadata_service_num_attempts - The number  of  attempts  to  try  to</span><br><span class="line">         retrieve  credentials.   If you know for certain you will be using an</span><br><span class="line">         IAM role on an Amazon EC2 instance, you can set this value to  ensure</span><br><span class="line">         any intermittent failures are retried.  By default this value is 1.</span><br><span class="line"></span><br><span class="line">       For  more information on configuration options, see Configuring the AWS</span><br><span class="line">       Command Line Interface in the AWS CLI User Guide.</span><br><span class="line"></span><br><span class="line">       See &#x27;aws help&#x27; for descriptions of global parameters.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>其中有用的就是<code>CONFIGURATION VARIABLES</code>，一般需要两个参数，<code>aws_access_key_id</code>和<code>aws_secrct_access_key</code>，这两个参数登陆AWS后从IAM获取，下面是配置方法，<code>--profile</code>是给当前配置的身份起一个名字，这里起名叫<code>dev</code>：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> aws configure --profile dev</span></span><br><span class="line">AWS Access Key ID [None]: </span><br><span class="line">AWS Secret Access Key [None]: </span><br><span class="line">Default region name [None]: </span><br><span class="line">Default output format [None]: </span><br></pre></td></tr></table></figure>
-<p>执行后会让你输入以上几项，<code>aws_access_key_id</code>和<code>aws_secrct_access_key</code>照常填写，后面几项可以不填，也可按需填写。</p>
-<p>这样，就配置完成了，使用<code>dev</code>这个身份，就可以访问aws的各种服务了。</p>
-<hr>
-<p><strong>到这就算是入门了</strong></p>
+<p>这里的改变颜色，指的是改变在shell中输出的颜色，从本质上来讲，输出的其实都是字符，只不过对于一些特殊的字符，shell会帮忙顺手处理一下，然后再显示出来。对于颜色的标定，是使用<code>\033[</code>来标记，shell设定好了一些颜色，比如绿色、红色等，除了颜色，还有样式，比如加粗，具体格式如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#x27;\033[31m 31m \033[0m&#x27;</span><br></pre></td></tr></table></figure>
+<p>31m表示的是红色，0m表示不修改，也就是恢复。跟在<code>\033[31m</code>后面的内容都会变成红色，因为只想改变这一条log的颜色，所以在结束后还要把颜色改回来，避免影响下面的输出。</p>
+<p>31之前的值，我挨着试了一遍，没有什么特别醒目的改变，后面的几个变化较为明显，光说是说不出来，还说上个图吧<br><img src="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png"></p>
+<p>总的来说，31、32和33就是标准的红绿黄，可以用来输出error、debug和warn级别的log。剩下的也就35和36看上去还算直观，可以用来输出一些需要特别关注的log。</p>
 
     </div>
 
@@ -355,7 +333,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2019/08/c35313b67e87/" title="「AWS」入门安装aws cli">https://oynix.github.io/2019/08/c35313b67e87/</a>
+    <a href="https://oynix.github.io/2022/05/de4f8861214c/" title="修改shell输出字体颜色">https://oynix.github.io/2022/05/de4f8861214c/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -385,8 +363,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/AWS/" rel="tag"># AWS</a>
-              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/Shell/" rel="tag"># Shell</a>
           </div>
 
         
@@ -395,13 +373,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/08/d923d0c927c5/" rel="prev" title="Golang 项目结构">
-      <i class="fa fa-chevron-left"></i> Golang 项目结构
+    <a href="/2022/05/61d4af8f9d77/" rel="prev" title="shell tr命令">
+      <i class="fa fa-chevron-left"></i> shell tr命令
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/09/e4951d749391/" rel="next" title="在Spark中加载Redshift数据问题汇总">
-      在Spark中加载Redshift数据问题汇总 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -642,7 +617,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'oynix.github.io',
       owner       : 'oynix',
       admin       : ['oynix'],
-      id          : '30af410dfc324fd2332e04875d01aab4',
+      id          : '632633156cdcb6beeb2e695f106b8b0c',
         language: '',
       distractionFreeMode: true
     });
