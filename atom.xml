@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-17T11:38:48.987Z</updated>
+  <updated>2022-05-17T12:30:37.915Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>URL编码与解码</title>
+    <link href="https://oynix.github.io/2022/05/ffa81c6fdcc4/"/>
+    <id>https://oynix.github.io/2022/05/ffa81c6fdcc4/</id>
+    <published>2022-05-17T11:53:36.000Z</published>
+    <updated>2022-05-17T12:30:37.915Z</updated>
+    
+    <content type="html"><![CDATA[<p>这几天接触了很多的网址URL，形形色色的URL，其中多数都掺杂着%，之前只是知道这是转码，因为有些符号不能直接在URL里展示，这次学习了一下。</p><span id="more"></span><h3 id="1-引题"><a href="#1-引题" class="headerlink" title="1. 引题"></a>1. 引题</h3><p>我们都知道，URL是可以传参数的，比如</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http<span class="variable">s:</span>//www.google.<span class="keyword">com</span>/<span class="built_in">search</span>?q=tom&amp;ie=UTF-<span class="number">8</span></span><br></pre></td></tr></table></figure><p>像上面这样，通过Google搜索关键词tom时，就会访问这样一个URL，通过URL向Google传递了2个参数，一个是q一个是ie，通过&amp;符号连接，Google在收到请求，解析的时候，也会通过&amp;符号切割，并读取q和ie的值。</p><p>同理，当要搜索tom&amp;jerry时，对应的URL应该是这个样子</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http<span class="variable">s:</span>//www.google.<span class="keyword">com</span>/<span class="built_in">search</span>?q=tom&amp;jerry&amp;ie=UTF-<span class="number">8</span></span><br></pre></td></tr></table></figure><p>但是，Google在解析的时候，就会出问题，无法正确解析。这个时候就需要对URL进行编码，将&amp;转换成%26，Google收到请求后，会先对URL解码，这样一来就不会出问题</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http<span class="variable">s:</span>//www.google.<span class="keyword">com</span>/<span class="built_in">search</span>?q=tom%<span class="number">26</span>jerry&amp;ie=UTF-<span class="number">8</span></span><br></pre></td></tr></table></figure><h3 id="2-编码和解码"><a href="#2-编码和解码" class="headerlink" title="2. 编码和解码"></a>2. 编码和解码</h3><p>简单说，就是将其转换成16进制的形式，然后再用百分号%分隔。再通过shell中的xxd命令操作</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo -n &#x27;&amp;&#x27; | xxd -plain</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 26</span> </span><br></pre></td></tr></table></figure><p>其中，-n是为了去掉echo默认输出的回车符。</p><ul><li><p>编码<br>其中，sed的command表示每隔两个字符，添加一个百分号</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo -n &#x27;你好&#x27; | xxd -plain | sed &#x27;s/\(..\)/%\1/g&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> %e4%bd%a0%e5%a5%bd</span></span><br></pre></td></tr></table></figure></li><li><p>解码<br>解码的过程，将每个%和两个十六进制数字的形式，转换成\x加两个十六进制数字的形式，然后，使用printf命令就可以输出</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">printf $(echo -n &#x27;%e4%bd%a0%e5%a5%bd&#x27; | sed &#x27;s/\(%\)\([0-9a-fA-F]\&#123;2\&#125;\)/\\x\2/g&#x27;)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 你好</span></span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;这几天接触了很多的网址URL，形形色色的URL，其中多数都掺杂着%，之前只是知道这是转码，因为有些符号不能直接在URL里展示，这次学习了一下。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="网络" scheme="https://oynix.github.io/categories/%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="URL" scheme="https://oynix.github.io/tags/URL/"/>
+    
+  </entry>
   
   <entry>
     <title>修改shell输出字体颜色</title>
