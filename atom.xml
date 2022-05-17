@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-17T13:00:57.071Z</updated>
+  <updated>2022-05-17T13:01:41.527Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://oynix.github.io/2022/05/4a93513ce45a/"/>
     <id>https://oynix.github.io/2022/05/4a93513ce45a/</id>
     <published>2022-05-17T12:38:32.000Z</published>
-    <updated>2022-05-17T13:00:57.071Z</updated>
+    <updated>2022-05-17T13:01:41.527Z</updated>
     
-    <content type="html"><![CDATA[<p><span class="exturl" data-url="aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDE5LzA4L3hhcmdzLXR1dG9yaWFsLmh0bWw=">阮一峰的这篇写的非常详尽了<i class="fa fa-external-link-alt"></i></span>，点个赞！</p><span id="more"></span><p>但是，还是那个问题，Linux的xargs是GNU版本的，而Mac的xargs是BSD版本的，所以还是有着一些差别，记录几个能用、且常用的。</p><ul><li>-p<br>询问是否执行</li><li>-t<br>把执行的命令输出，但不询问</li><li>-L<br>传入多行参数时，通过L指定多少行执行一次后面的命令</li><li>-n<br>L是限定每次多少行，n是限定每次多少个，比如一个有多个，可用n来限定</li><li>-I<br>给每次使用的参数起个名字，后面命令中使用这个名字，在执行的时候会用真实的参数替换这个命名，注意，每次出现的这个命名都会被替换，可能会有一些意想不到的效果<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat file.text | xargs -I file echo file</span><br></pre></td></tr></table></figure></li><li>-P<br>大写的P，进程数量，0表示不限制，能启动多少就启动多少，移动文件的时候试用，多进程会加快一些速度</li></ul>]]></content>
+    <content type="html"><![CDATA[<p><span class="exturl" data-url="aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDE5LzA4L3hhcmdzLXR1dG9yaWFsLmh0bWw=">阮一峰的这篇写的非常详尽了<i class="fa fa-external-link-alt"></i></span>，点个赞！</p><span id="more"></span><p>但是，还是那个问题，Linux的xargs是GNU版本的，而Mac的xargs是BSD版本的，所以还是有着一些差别，记录几个能用、且常用的。</p><ul><li>-p<br>询问是否执行</li><li>-t<br>把执行的命令输出，但不询问</li><li>-L<br>传入多行参数时，通过L指定多少行执行一次后面的命令</li><li>-n<br>L是限定每次多少行，n是限定每次多少个，比如一个有多个，可用n来限定</li><li>-I<br>给每次使用的参数起个名字，后面命令中使用这个名字，在执行的时候会用真实的参数替换这个命名，注意，每次出现的这个命名都会被替换，可能会有一些意想不到的效果<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat file.text | xargs -I file echo file</span><br></pre></td></tr></table></figure></li><li>-P<br>大写的P，进程数量，0表示不限制，能启动多少就启动多少，移动文件的时候试用，多进程会加快一些速度，理论上是这样的，但我实践过后，发现还不如直接用mv，感觉更快一些</li></ul>]]></content>
     
     
     <summary type="html">&lt;p&gt;&lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDE5LzA4L3hhcmdzLXR1dG9yaWFsLmh0bWw=&quot;&gt;阮一峰的这篇写的非常详尽了&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;，点个赞！&lt;/p&gt;</summary>
