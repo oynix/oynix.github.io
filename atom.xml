@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-17T10:42:32.364Z</updated>
+  <updated>2022-05-17T11:16:42.225Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>shell tr命令</title>
+    <link href="https://oynix.github.io/2022/05/61d4af8f9d77/"/>
+    <id>https://oynix.github.io/2022/05/61d4af8f9d77/</id>
+    <published>2022-05-17T10:44:16.000Z</published>
+    <updated>2022-05-17T11:16:42.225Z</updated>
+    
+    <content type="html"><![CDATA[<p>上篇写了sed命令，它是以行为单位来处理数据的，而tr命令则是以字符为单位处理数据，这里的字符指的是ASCII码。</p><span id="more"></span><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>tr命令是操作字符的，命令的基本格式如下</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tr string1 string2</span><br></pre></td></tr></table></figure><p>除此之外，还有三个参数，分别是-d、-c和-s，这3个参数和上面的2个字符相互搭配，就有了多种方式。tr的输入可以用管道流，也可以用输入符<code>&lt;</code>，默认输出到屏幕，也可以通过<code>&gt;</code>符号输出到文件。</p><h3 id="2-替换"><a href="#2-替换" class="headerlink" title="2. 替换"></a>2. 替换</h3><p>常用于大小写替换，会把处于string1中的字符，替换成string2中对应的字符</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;abc MN op&#x27; | tr &#x27;a-z&#x27; &#x27;A-Z&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ABC MN OP</span></span><br></pre></td></tr></table></figure><h3 id="3-删除"><a href="#3-删除" class="headerlink" title="3. 删除"></a>3. 删除</h3><p>删除需要使用-d参数，delete，通过string1指定需要删除的字符集，所以不需要string2</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;abc MN op&#x27; | tr -d &#x27;a-z&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">  MN</span> </span><br></pre></td></tr></table></figure><h3 id="4-反向删除"><a href="#4-反向删除" class="headerlink" title="4. 反向删除"></a>4. 反向删除</h3><p>通过-c参数表示使用string1字符集的补集，complement，上面是将string1中的字符删掉，反向则是将不在string1中的删掉，下面这个命令则是把小写字母之外的字符都删除，包括空格</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;abc MN op&#x27; | tr -d -c &#x27;a-z&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> abcop</span></span><br></pre></td></tr></table></figure><h3 id="5-合并连续重复的字符"><a href="#5-合并连续重复的字符" class="headerlink" title="5. 合并连续重复的字符"></a>5. 合并连续重复的字符</h3><p>通过-s参数，squeeze，压缩的意思，连续且重复的多个字符，只保留一个，通过string1指定需要压缩的字符集</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;aaabbbccc&#x27; | tr -s &#x27;a&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> abbbccc</span></span><br></pre></td></tr></table></figure><h3 id="6-压缩并替换"><a href="#6-压缩并替换" class="headerlink" title="6. 压缩并替换"></a>6. 压缩并替换</h3><p>当使用-s参数，并同时指定了string1和string2时，表示按照string1压缩，并且将string1中的字符替换为string2，下面这个命令表示，压缩空格，并将空格替换为-</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;2022   05  17&#x27; | tr -s &#x27; &#x27; &#x27;-&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 2022-05-17</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;上篇写了sed命令，它是以行为单位来处理数据的，而tr命令则是以字符为单位处理数据，这里的字符指的是ASCII码。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Linux" scheme="https://oynix.github.io/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://oynix.github.io/tags/Linux/"/>
+    
+    <category term="Shell" scheme="https://oynix.github.io/tags/Shell/"/>
+    
+  </entry>
   
   <entry>
     <title>sed命令</title>
