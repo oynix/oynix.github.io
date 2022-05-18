@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png">
 <meta property="article:published_time" content="2022-05-17T11:18:25.000Z">
-<meta property="article:modified_time" content="2022-05-17T11:38:48.987Z">
+<meta property="article:modified_time" content="2022-05-18T03:26:18.772Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Shell">
@@ -262,7 +262,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>533</span>
+              <span>561</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -286,7 +286,7 @@
 
 <p>这里的改变颜色，指的是改变在shell中输出的颜色，从本质上来讲，输出的其实都是字符，只不过对于一些特殊的字符，shell会帮忙顺手处理一下，然后再显示出来。对于颜色的标定，是使用<code>\033[</code>来标记，shell设定好了一些颜色，比如绿色、红色等，除了颜色，还有样式，比如加粗，具体格式如下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#x27;\033[31m 31m \033[0m&#x27;</span><br></pre></td></tr></table></figure>
-<p>31m表示的是红色，0m表示不修改，也就是恢复。跟在<code>\033[31m</code>后面的内容都会变成红色，因为只想改变这一条log的颜色，所以在结束后还要把颜色改回来，避免影响下面的输出。</p>
+<p>31m表示的是红色，0m表示不修改，也就是恢复。跟在<code>\033[31m</code>后面的内容都会变成红色，因为只想改变这一条log的颜色，所以在结束后还要把颜色改回来，避免影响下面的输出。其中，-e表示解释转义字符，即<code>\033</code>，否则将原样输出。</p>
 <p>31之前的值，我挨着试了一遍，没有什么特别醒目的改变，后面的几个变化较为明显，光说是说不出来，还说上个图吧<br><img src="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png"></p>
 <p>总的来说，31、32和33就是标准的红绿黄，可以用来输出error、debug和warn级别的log。剩下的也就35和36看上去还算直观，可以用来输出一些需要特别关注的log。</p>
 
