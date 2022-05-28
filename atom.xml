@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-05-18T03:18:20.870Z</updated>
+  <updated>2022-05-28T14:55:32.864Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>网络是怎样连接的</title>
+    <link href="https://oynix.github.io/2022/05/af776b794cdb/"/>
+    <id>https://oynix.github.io/2022/05/af776b794cdb/</id>
+    <published>2022-05-25T11:10:30.000Z</published>
+    <updated>2022-05-28T14:55:32.864Z</updated>
+    
+    <content type="html"><![CDATA[<p>为了找一个答案，看了一本书，「网络是怎样连接的」。</p><span id="more"></span><p>我们都知道，DNS是用来根据域名查询IP地址的，而ARP协议则是根据IP地址查询MAC地址的。偶然想到，如果传输一个网络数据包通过IP地址就可以知道目的地，那么MAC地址在这个过程中的作用是什么呢？看完书发现，之前对应用层和传输层关注过多，而忽略了链路层。</p><p>网络是从无到有一步一步发展到今天这个形态，所以，就必然会有着一些由于历史原因所导致的元素，而这也是事物发展所必须要要经历的阶段。</p><ul><li><p>MAC地址<br>MAC地址就是网卡的身份证号，唯一且不轻易变。</p></li><li><p>集线器<br>解决了一台电脑需要和其他多台电脑互联的需求，它可将收到的数据包发送给所有端口的设备，即，广播，非目标MAC地址接收者则自动忽略。</p></li><li><p>交换机<br>相比于集线器的无脑广播，交换机可以做到精准发送，自身有一张存储了端口和MAC地址的对应表，可以把数据包只发送给目标MAC地址。从理论上来说，只要把所有的交换机都连接在一起，那么网络中所有的设备都可以互联。不过，一般用从理论上这句开头的设想，在现实中都是不成立的。当交换机中的一个端口连接的是一台设备时，它的MAC地址表中只需要存储一条记录，即一个端口对应一个MAC地址，但是，当这个端口连接的是一个交换机时，它的映射表中增加的不是一条记录，而是需要把另一台交换机中所有的MAC地址都添加到自己的记录表中，这样，当有设备给其他交换机下的MAC地址发送数据时，它可以查到这个数据需要发送到这个连着交换机的端口，数据到达另一个交换机后，这个交换机再根据MAC地址精准转发到目标端口。换句话说，网络中每个交换机中都存储着所有设备的MAC地址，几百个设备可能还勉强可以，但当到达一定级别的数量之后，这个网络可能就变得十分臃肿且不可行。</p></li><li><p>IP地址<br>在上面这两个设备中，都是使用MAC地址来指定数据接收地址的，还涉及不到IP地址，毕竟每块网卡的MAC地址都是唯一且不变。当设备多到交换机难以为继时，就要考虑新模型了，这也就是当下在用的，子网。只有处于同一子网中的设备，可通过交换机直接互联。那么，如何判定是否处于同一子网呢？如果依据MAC地址，那么网络内每个设备都需要维护一个所有设备的MAC列表，但是设备是动态变化的，而且一个设备可能这个时候在这个子网中，下个时候在其他子网中，所以不可行。这个时候，IP地址应运而生，用一个长度为32bit的数字来标识每一个设备，点分十进制之后，就是我们经常看到的形式，IP地址由两部分组成，网络号和主机号，用子网掩码来标识。如192.168.1.10/24，表示前面24位表示网络号，即192.168.1，剩下的表示这个设备在这个网络中的主机号，即10，是这个网络中的第10台主机。</p></li><li><p>路由器<br>在发送数据前，先计算一下自己的网络号和目标设备的网络号，如果相同说明处于同一子网中，那么就可直接将数据发出，如果处于不同的子网，那么就将数据发送给网关，网关通过路由器转发，最终将数据发送到目标设备所在的网络中，网关收到数据后，根据数据接收IP地址，查找对应的MAC地址，然后发出。网关的地址是提前配置好的，打开电脑的网络设置，除了可以看到我们的IP地址，还可以看到一个网关的地址，一般主机号都是1。</p></li></ul><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzIxNTQ2NDA4">有了 IP 地址，为什么还要用 MAC 地址？<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAyMjA5OTQ3Mw==">集线器、交换机、路由器、网桥、网关之间的区别和联系<i class="fa fa-external-link-alt"></i></span></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;为了找一个答案，看了一本书，「网络是怎样连接的」。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="读书笔记" scheme="https://oynix.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="读书笔记" scheme="https://oynix.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="网络协议" scheme="https://oynix.github.io/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>xargs 命令</title>
