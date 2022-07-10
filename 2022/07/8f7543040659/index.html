@@ -30,7 +30,7 @@
 <meta property="og:description" content="API Gateway接收请求，继而传递给Lambda处理。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-08T01:52:19.815Z">
-<meta property="article:modified_time" content="2022-07-10T06:16:22.155Z">
+<meta property="article:modified_time" content="2022-07-10T12:43:45.581Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="AWS">
 <meta property="article:tag" content="Lambda">
@@ -300,6 +300,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">serverless deploy --stage dev</span><br></pre></td></tr></table></figure>
 
 <p>每次来了新请求时，如果没有正在跑着的虚拟机，Lambda会启动一个新的虚拟机，来执行操作，很显然，启动并配置虚拟机是需要时间的，虽然很短，毫秒级别，但如果为了追求极致的体验，可以使用预配置并发，顾名思义，提前给你启动并配置好一定数量的机器，请求一旦来了便直接处理。既然有机器在跑，那肯定是要收费的了。就像冬天想要开车，需要热个一两分钟再跑，如果你不想等这一两分钟，那就要保证车是提前热的，也就是一直没有熄火，既然没熄火那自然是要烧油的了。</p>
+<p>此外，如果要删除Lambda，一定要把相关联的CloudFormation和S3中对应的存储桶删掉，这样才算完整删除。其中，CloudFormation负责把S3中的代码部署到Lambda。</p>
 <h3 id="3-附加：压缩可执行文件"><a href="#3-附加：压缩可执行文件" class="headerlink" title="3. 附加：压缩可执行文件"></a>3. 附加：压缩可执行文件</h3><p>go build后出来的可执行文件很大，是可以通过压缩来减小大小，来提高传输效率。如果你坚定的选择不压缩，似乎也没什么问题。</p>
 <p>go build默认是用静态编译，即编译后的文件中包含执行中所有需要的库，所以，即便调用了一个库里的一个函数，那么也会把这个库完整的打包进可执行文件里，有时发现只加了几行代码，但是编译后的文件却一下大了很多，原因便在此。</p>
 <p>除了静态编译，还可以动态编译，也就是说，不把所有的依赖库都打进可执行文件里，对于一些常见的系统库，选择在执行时动态链接的方式，这样一来可以大大减少可执行文件的体积。但是，有得便有失，如果执行的环境中没有需要的库，那么便无法正确执行。</p>
