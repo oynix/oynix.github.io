@@ -42,31 +42,6 @@
   </entry>
   
   <entry>
-    <title></title>
-    <link href="https://oynix.github.io/2022/06/29eb0bfe2103/"/>
-    <id>https://oynix.github.io/2022/06/29eb0bfe2103/</id>
-    <published>2022-06-28T01:30:05.843Z</published>
-    <updated>2022-07-03T16:08:40.580Z</updated>
-    
-    <content type="html"><![CDATA[<p>一、部署lambda</p><ul><li>serverless 版本</li><li>删除lambda要删除cloudformation</li><li>报错 502</li><li> Invalid permissions on Lambda function</li><li> go build 之后要压缩</li><li> APIGatewayProxyRequest</li><li> ses domain模式和email模式</li><li> gateway资源修改后需要部署后生效，否则403</li></ul><p>go get github.com/dgrijalva/jwt-go</p><p>acl<br>安全组<br>子网<br>vpc<br>互联网网关<br><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmF3cy5hbWF6b24uY29tL3poX2NuL3ZwYy9sYXRlc3QvdXNlcmd1aWRlL1ZQQ19JbnRlcm5ldF9HYXRld2F5Lmh0bWw=">https://docs.aws.amazon.com/zh_cn/vpc/latest/userguide/VPC_Internet_Gateway.html<i class="fa fa-external-link-alt"></i></span><br>nc -zv pubstore-dev.cjqcjqzrq84s.ap-south-1.rds.amazonaws.com 3306</p><p>iam<br>vpc</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;一、部署lambda&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;serverless 版本&lt;/li&gt;
-&lt;li&gt;删除lambda要删除cloudformation&lt;/li&gt;
-&lt;li&gt;报错 502&lt;/li&gt;
-&lt;li&gt; Invalid permissions on Lambda function</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
     <title>网络是怎样连接的</title>
     <link href="https://oynix.github.io/2022/05/af776b794cdb/"/>
     <id>https://oynix.github.io/2022/05/af776b794cdb/</id>
