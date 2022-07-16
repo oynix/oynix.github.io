@@ -30,7 +30,7 @@
 <meta property="og:description" content="API Gateway接收请求，继而传递给Lambda处理。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-08T01:52:19.815Z">
-<meta property="article:modified_time" content="2022-07-10T12:43:45.581Z">
+<meta property="article:modified_time" content="2022-07-16T03:29:37.395Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="AWS">
 <meta property="article:tag" content="Lambda">
@@ -261,14 +261,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>14k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
+              <span>13 分钟</span>
             </span>
 
         </div>
@@ -362,7 +362,18 @@
 <p>如果没有什么特殊需求，一般操作是允许网络ACL的所有进站和出站流量，也就是不限制，然后各个实例根据自己的需求修改关联的安全组。我在这里的操作就是如此，创建一个安全组，进站流量类型限制到MySql，端口3306，IP不作限制，出站流量规则不做限制，这样就可以在本地连上数据库了，下面是测试是否可连接的命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -zv &#123;mysql_host_url&#125; 3306</span><br></pre></td></tr></table></figure>
 
-<h3 id="14-总结"><a href="#14-总结" class="headerlink" title="14. 总结"></a>14. 总结</h3><p>虽然表明上看只需要Lambda和API Gateway，但实际上里里外外用了很多服务，比如CloudWatch、RDS、SES、CloudFormation、VPC、S3、IAM等。但多数内容都是一次性的，也就是在初始化时配置一次，然后就不需要再管了，后面只需要关系自己的业务逻辑即可，相对来说还是比较省心。</p>
+<h3 id="14-部署前端到S3"><a href="#14-部署前端到S3" class="headerlink" title="14. 部署前端到S3"></a>14. 部署前端到S3</h3><p>所谓部署前端，其实就是将打包好的网页App存储到一个可供用户访问的网络位置。网页App包以其中的index.html作为入口，同时还包含需要的所有资源，如js文件、图片资源、样式文件、字体文件，等等。S3可为存储桶中的文件提供一个可公开访问的URL，这样就可以将App包上传到存储桶，将存储桶公开，通过index.html的URL即可访问。当然，这些仅限于静态网页，毕竟存储桶是个存储设备，若要做动态网页需要考虑其他方案。</p>
+<p>存储桶支持动态网页部署的功能，可设置入口文件和错误文件，默认做法是将这两个选项都设置成index.html，因为有些请求内会返回非200，这个时候也是需要访问index.html，所以都设置成一样的即可。</p>
+<h3 id="15-关于跨域"><a href="#15-关于跨域" class="headerlink" title="15. 关于跨域"></a>15. 关于跨域</h3><p>当一个URL地址为<code>https://www.aaa.com</code>网页中，向<code>https://www.bbb.com</code>发起了一个请求，这个时候就发生了跨域操作，不仅如此，当protocol、host和port中，任何一个不同时，都是跨域操作，CORS（Corss Origin Resources Sharing），这样的请求会被浏览器拦截，是发送不出去的。但是，如果通过命令行或是其他Http客户端，如PostMan之类，你会发现一切都是正常的，所以，可以明确的是，跨域这个策略policy是浏览器的行为，而不是<code>https://www.bbb.com</code>的拒绝提供服务。</p>
+<p>在浏览器看来，他觉得既然你这个网页是来自a，你却向b发出请求，那么这个行为就是有安全风险的，所以要禁止。比如百度搜索的网页上搜索一个东西，百度拿到搜索关键词之后什么都不干，扭头就调用谷歌的接口，把谷歌返回的结果展示个用户，结果广告费都让百度赚了，活却都是谷歌干的。当然这只是一个不太恰当但却能说明事情的小栗子。</p>
+<p>但是，这种跨域请求却是一个比较常见的场景，尤其是在前后端分离的架构中，前端网页部署在S3上，访问网页肯定是S3的URL地址，而服务器部署在API Gateway，向服务器发请求时肯定是Gateway提供的URL，这两个URL是不一样的。还有一些场景，如在网页上调用一些三方的服务接口，如统计、广告等，都会出现跨域的操作。</p>
+<p>解决跨域问题有两种方式，很显然，一个是在前端网页处理，另个是在后端服务器处理。</p>
+<p>前端网页处理时，就要设置一个代理，通过代理去访问服务器，以此来通过浏览器的检查。而后端服务器的处理方式则是告诉浏览器：嘿，你别拦截了，我允许他访问我，我们俩是一伙的。具体方式就是，在发起请求前，先向服务器发送一个OPTIONS请求，服务器把允许的Origin、Headers和Method都返回来，浏览器按照服务器提供的白名单做出检查，如果都符合则放行，否则拦截。Origin表示允许谁访问，Headers表示允许的访问头，Method则表示允许的请求方式，返回<code>*</code>则表示允许任何人访问。</p>
+<p>这三个字段对应三个请求头：<code>Access-Control-Allow-Origin</code>，<code>Access-Control-Allow-Headers</code>，<code>Access-Control-Allow-Methods</code>，不仅是OPTIONS请求，在服务器返回的所有回应中，都需要带着这三个header。</p>
+<p>而通过在API Gateway中通过Lambda代理集成将请求转发至Lambda时，是不能修改集成响应的，这也就意味着不能载方法响应中添加header（注意区分集成响应和方法响应），AWS文档给出的解决方案是，在Lambda中手动添加，也就是在代码里添加这三个header。</p>
+<h3 id="16-CloudFront"><a href="#16-CloudFront" class="headerlink" title="16. CloudFront"></a>16. CloudFront</h3><p>这个是AWS提供的一种CDN服务，如果前端网页的用户较为分散，在多个全球的多个区，可通过CDN为访问加速。先创建一个CDN分发，然后将源配置到S3的存储桶上，这里要注意权限问题，部署之后，用户就可以通过CDN提供的URL地址访问前端网页了，首次访问时CDN会从S3请求资源，并缓存，后面再有该地区的请求时，就会直接返回CDN的缓存来提高速度。这里有个问题，据说某些地区无法访问到CloudFront，不知是真是假，如果是真的，不知道AWS解决了没。</p>
+<p>还要再提一句收费的问题，S3是按照存储和传输收费的，而CloudFront是按照传输收费的，定价里写是这么写的，但是月底看账单时，总能发现一些小惊喜，给这平淡无奇的生活增添一点小惊喜。如果数据量小，访问S3和访问CloudFront的成本区别应是不大。</p>
+<h3 id="17-总结"><a href="#17-总结" class="headerlink" title="17. 总结"></a>17. 总结</h3><p>虽然表明上看只需要Lambda和API Gateway，但实际上里里外外用了很多服务，比如CloudWatch、RDS、SES、CloudFormation、VPC、S3、IAM、CloufFront等。但多数内容都是一次性的，也就是在初始化时配置一次，然后就不需要再管了，后面只需要关系自己的业务逻辑即可，相对来说还是比较省心。</p>
 
     </div>
 
@@ -511,7 +522,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-text">1. 引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Lambda%E7%BC%96%E5%86%99%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="nav-text">2. Lambda编写和部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%99%84%E5%8A%A0%EF%BC%9A%E5%8E%8B%E7%BC%A9%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="nav-text">3. 附加：压缩可执行文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%99%84%E5%8A%A0%EF%BC%9A%E8%A7%92%E8%89%B2%E5%92%8C%E7%AD%96%E7%95%A5"><span class="nav-text">4. 附加：角色和策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-API-Gateway"><span class="nav-text">5. API Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-API-Gateway%E8%BD%AC%E5%8F%91%E8%87%B3Lambda"><span class="nav-text">6. API Gateway转发至Lambda</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-API-Gateway%E8%BD%AC%E5%8F%91%E8%87%B3S3"><span class="nav-text">7. API Gateway转发至S3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-API-Gateway%E6%8E%88%E6%9D%83%E6%96%B9%E9%85%8D%E7%BD%AE"><span class="nav-text">8. API Gateway授权方配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-SES"><span class="nav-text">9. SES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-RDS"><span class="nav-text">10. RDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-VPC%E5%92%8C%E5%AD%90%E7%BD%91"><span class="nav-text">11. VPC和子网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%AE%89%E5%85%A8%E7%BB%84%E5%92%8C%E7%BD%91%E7%BB%9CACL"><span class="nav-text">12. 安全组和网络ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E6%9C%AC%E5%9C%B0%E8%BF%9E%E6%8E%A5RDS"><span class="nav-text">13. 本地连接RDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E6%80%BB%E7%BB%93"><span class="nav-text">14. 总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-text">1. 引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Lambda%E7%BC%96%E5%86%99%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="nav-text">2. Lambda编写和部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%99%84%E5%8A%A0%EF%BC%9A%E5%8E%8B%E7%BC%A9%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="nav-text">3. 附加：压缩可执行文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%99%84%E5%8A%A0%EF%BC%9A%E8%A7%92%E8%89%B2%E5%92%8C%E7%AD%96%E7%95%A5"><span class="nav-text">4. 附加：角色和策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-API-Gateway"><span class="nav-text">5. API Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-API-Gateway%E8%BD%AC%E5%8F%91%E8%87%B3Lambda"><span class="nav-text">6. API Gateway转发至Lambda</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-API-Gateway%E8%BD%AC%E5%8F%91%E8%87%B3S3"><span class="nav-text">7. API Gateway转发至S3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-API-Gateway%E6%8E%88%E6%9D%83%E6%96%B9%E9%85%8D%E7%BD%AE"><span class="nav-text">8. API Gateway授权方配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-SES"><span class="nav-text">9. SES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-RDS"><span class="nav-text">10. RDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-VPC%E5%92%8C%E5%AD%90%E7%BD%91"><span class="nav-text">11. VPC和子网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%AE%89%E5%85%A8%E7%BB%84%E5%92%8C%E7%BD%91%E7%BB%9CACL"><span class="nav-text">12. 安全组和网络ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E6%9C%AC%E5%9C%B0%E8%BF%9E%E6%8E%A5RDS"><span class="nav-text">13. 本地连接RDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E9%83%A8%E7%BD%B2%E5%89%8D%E7%AB%AF%E5%88%B0S3"><span class="nav-text">14. 部署前端到S3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E5%85%B3%E4%BA%8E%E8%B7%A8%E5%9F%9F"><span class="nav-text">15. 关于跨域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-CloudFront"><span class="nav-text">16. CloudFront</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E6%80%BB%E7%BB%93"><span class="nav-text">17. 总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -594,12 +605,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">400k</span>
+    <span title="站点总字数">402k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:03</span>
+    <span title="站点阅读时长">6:05</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
