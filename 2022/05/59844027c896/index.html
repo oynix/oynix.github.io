@@ -30,7 +30,7 @@
 <meta property="og:description" content="上篇文章简单说了OkHttp的使用，这篇来说Retrofit。同样，Retrofit也是Square公司出品。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-02T05:12:43.000Z">
-<meta property="article:modified_time" content="2022-05-02T11:38:11.715Z">
+<meta property="article:modified_time" content="2022-07-21T12:11:29.930Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Retrofit">
@@ -316,7 +316,7 @@
 <h3 id="5-请求的最终URL"><a href="#5-请求的最终URL" class="headerlink" title="5. 请求的最终URL"></a>5. 请求的最终URL</h3><p>Retrofit会根据请求方法注解(@GET, @POST等)里面的路径参数动态生成最终的URL，对于Retrofit的baseUrl配置项，有两种形式，当以斜杠<code>/</code>结尾时是目录形式，当以非斜杠结尾时是文件形式，这两种形式是不同的，对于请求方法注解中写的路径，以斜杠<code>/</code>开头表示绝对路径和不以斜杠开头表示相对路径，这两种形式也是不同的。</p>
 <p>所以在生成最终的请求URL时就会有多种情况：</p>
 <ul>
-<li>情况一，请求方法中写的是https/http开头的完整URL，这时Retrofit便会使用配置的baseUrl，而是直接使用请求方法注解里的值，当所有请求都写的完整请求URL，那么这时候可以不配置baseUrl</li>
+<li>情况一，请求方法中写的是https/http开头的完整URL，这时Retrofit不会使用配置的baseUrl，而是直接使用请求方法注解里的值，当所有请求都写的完整请求URL，那么这时候可以不配置baseUrl</li>
 <li>情况二，路径使用的绝对路径，也就是以斜杠<code>/</code>开头，那么这时不管baseUrl是哪种形式，这个路径会直接接到主机和端口后，形成最终的URL<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">baseUrl = <span class="string">&quot;https://host:port/a/b&quot;</span></span><br><span class="line">path = <span class="string">&quot;/user&quot;</span></span><br><span class="line">URL = <span class="string">&quot;https://host:port/user&quot;</span></span><br></pre></td></tr></table></figure></li>
 <li>情况三，路径是相对路径，baseUrl是目录形式，那么这时候会直接拼接，形成最终URL<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">baseUrl = <span class="string">&quot;https://host:port/a/&quot;</span> <span class="comment">// 这里是斜杠结尾，是目录形式</span></span><br><span class="line">path = <span class="string">&quot;user&quot;</span></span><br><span class="line">URL = <span class="string">&quot;https://host:prot/a/user&quot;</span></span><br></pre></td></tr></table></figure></li>
 <li>情况四，路径是相对路径，但baseUrl是文件形式，那么这时候路径会接到最后一个文件后，形成最终URL。可以这么理解，因为文件下不能有文件，目录下才能有文件，所以user不能接在a的后面。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">baseUrl = <span class="string">&quot;https://host:port/a&quot;</span> <span class="comment">// 注意这里没有斜杠结尾，所以是文件形式</span></span><br><span class="line">path = <span class="string">&quot;user&quot;</span></span><br><span class="line">URL = <span class="string">&quot;https://host:port/user&quot;</span></span><br></pre></td></tr></table></figure></li>
