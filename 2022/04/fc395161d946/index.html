@@ -30,7 +30,7 @@
 <meta property="og:description" content="这篇来学习一下从按下桌面应用图标、到应用完成启动，运行至前台，这个过程中系统都做了哪些事。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-22T13:02:44.000Z">
-<meta property="article:modified_time" content="2022-07-25T02:24:08.168Z">
+<meta property="article:modified_time" content="2022-07-25T03:37:43.964Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -346,6 +346,7 @@
 <p>先是获取到了一个clientTransaction实例，然后向其中添加了一个LaunchActivityItem，然后又设置了ResumeActivityItem，最终传给了scheduleTransaction。最终会调用IApplicationThread的scheduleTransaction方法，也就是说，系统服务进程会调用Activity进程的中ApplicationTHread的scheduleTransaction方法，这个事务中的LaunchActivityItem，最终会调用ActivityThread的handleLaunchActivity，而ResumeActivityItem会调用ActivityThread的handleResumeActivity方法。Activity的onResume方法执行完，就意味着这个页面已经展示在了屏幕上。</p>
 <p>现在想一下，为什么要这么做呢？我们通过ActivityTaskManager.getService可以调用ActivityTaskManagerService中的方法，通过ActivityManager.getService可以调用ActivityManagerService中的方法，这是我们的Activity进程调用系统进程服务的方法，那么系统服进程中的服务若是需要调用Activity进程中的方法，那么它该需要通过什么方式来获取具有可调用方法的实例呢？答案是没有，系统服务进城是开机时创建的，它可以提供接口供后来者调用来获取实例来和它通信，但是我们的Activity进程是在用户的使用过程中创建和销毁的，所以，要想让系统服务进程调用我们Activity进程的方法，那么就需要在Activity进程启动的时候，主动将包含方法的实例告诉系统服务进程，也就是上面所说的绑定操作。而这里所谓的包含方法的实例，则叫做代理。Activity进程通过系统服务进程的代理，调用系统服务进程的方法；系统服务进程则是通过Activity进程的代理，来调用Activity进程的方法。</p>
 <p>也就是说，IApplicationThread是Activity进程在系统服务进程的代理，系统服务进程都会通过IApplicationThread来调用Activity进程的方法。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hbmRyb2lkLmdvb2dsZXNvdXJjZS5jb20vcGxhdGZvcm0vZnJhbWV3b3Jrcy9iYXNlLysvNzQyYTY3MTI3MzY2YzM3NmZkZjE4OGZmOTliYTMwYjI3ZDNiZjkwYy9jb3JlL2phdmEvYW5kcm9pZC9hcHAvSUFwcGxpY2F0aW9uVGhyZWFkLmphdmE=">IApplicationThread.java<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9hbmRyb2lkLmdvb2dsZXNvdXJjZS5jb20vcGxhdGZvcm0vZnJhbWV3b3Jrcy9iYXNlLysvbWFzdGVyL2NvcmUvamF2YS9hbmRyb2lkL2FwcC9JQXBwbGljYXRpb25UaHJlYWQuYWlkbA==">IApplicationThread.aidl<i class="fa fa-external-link-alt"></i></span></p>
 <p>至此，启动流程完成。</p>
 <h3 id="14-Transaction"><a href="#14-Transaction" class="headerlink" title="14. Transaction"></a>14. Transaction</h3><p>上面的方法里用到了Transaction，LaunchActivityItem是怎么调用ActivityThread的handleLaunhActivity方法的呢？ResumeActivityItem又是怎么调用ActivityThread的handleResumeActivity的呢？下面来说一说这个。</p>
 <p>首先，我们知道的是，系统服务进程中的Transaction是通过这样发送出去的</p>
