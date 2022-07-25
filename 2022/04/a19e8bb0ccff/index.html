@@ -30,7 +30,7 @@
 <meta property="og:description" content="FileProvider是ContentProvider的一个特殊子类，它通过为文件创建一个content:&#x2F;&#x2F;的URI，而不是file:&#x2F;&#x2F;&#x2F;URI，来帮助应用间的文件安全分享。在Android 7.0及以上的系统中，尝试传递file:&#x2F;&#x2F;&#x2F;URI可能会触发FileUriExposedException。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-15T13:39:59.000Z">
-<meta property="article:modified_time" content="2022-04-15T15:36:06.588Z">
+<meta property="article:modified_time" content="2022-07-25T23:04:42.489Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="FileProvider">
@@ -317,7 +317,7 @@
 <li>调用Intent.setFlags设置FLAG_GRANT_READ_URI_PERMISSION、FLAG_GRANT_WRITE_URI_PERMISSION，或者两个都设置。为了兼容4.1（API 16）和5.1（API 22）之间的设备，包括5.1，使用ClipData<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shareContentIntent.setClipData(ClipData.newRawUri(<span class="string">&quot;&quot;</span>, contentUri));</span><br><span class="line">shareContentIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);</span><br></pre></td></tr></table></figure></li>
 <li>将Intent发给其他应用，通常可用调用setResult()来完成<br>Intent里权限在接收Activity栈活跃前都是可用的，当栈完成被销毁后，权限自动移除。授予给某个应用的一个Activity的权限，会自动扩展至该应用的其他组件。</li>
 </ul>
-<h3 id="5-将content-URI提供给另一个应用"><a href="#5-将content-URI提供给另一个应用" class="headerlink" title="5. 将content URI提供给另一个应用"></a>5. 将content URI提供给另一个应用</h3><p>有多种方式可讲content URI提供给客户端应用。一个常用的方式，客户端应用通过Intent启动你的应用里的一个Activity。作为回应，你的应用应该立即返回一个content URI给客户端应用，或者展示一个页面允许用户选择一个文件，这种情况下，一旦用户选择了一个问价，你的应用就可以返回这个文件的URI。在这两种情况中，你的应用都是通过setResult()返回一个Intent。</p>
+<h3 id="5-将content-URI提供给另一个应用"><a href="#5-将content-URI提供给另一个应用" class="headerlink" title="5. 将content URI提供给另一个应用"></a>5. 将content URI提供给另一个应用</h3><p>有多种方式可讲content URI提供给客户端应用。一个常用的方式，客户端应用通过Intent启动你的应用里的一个Activity。作为回应，你的应用应该立即返回一个content URI给客户端应用，或者展示一个页面允许用户选择一个文件，这种情况下，一旦用户选择了一个文件，你的应用就可以返回这个文件的URI。在这两种情况中，你的应用都是通过setResult()返回一个Intent。</p>
 <p>还可以把content URI放到一个ClipData对象中，然后将这个对象添加到发送给客户端应用的Intent中，可通过调用Intent.setClipData()实现。当使用这种方式时，可添加多个ClipData对象到Intent中，每一个都有着它自己的URI，当通过Intent.setFlags()设置访问权限时，所有的content URI都将获得同样的权限。</p>
 <p>注意，Intent.setClipData()只在API 16及之后的平台上可用。如果需要在更早版本上的兼容性，应该一次在一个Intent里只发送一个conent URI。设置Intent的action为ACTION_SEND，然后通过调用setData()来添加URI。</p>
 <h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h3><p>妈呀，终于轮到我说话了。上面这些都是翻译的官方文档，本想用Google翻译一键转换，发现Google翻译并不是太懂Android官方写的文档，虽然Android也是Google的，同进一家门，不认自家人，所以只要自己动手，一句一句来，太累了。</p>

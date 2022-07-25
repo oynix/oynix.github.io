@@ -30,7 +30,7 @@
 <meta property="og:description" content="ConstraintLayout，约束布局，是现在Android里面最常用的布局方式，也是系统默认的布局方式，说一说它的日常用法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-17T09:22:55.000Z">
-<meta property="article:modified_time" content="2022-04-20T08:09:22.669Z">
+<meta property="article:modified_time" content="2022-07-25T10:26:17.602Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="ConstraintLayout">
@@ -295,7 +295,7 @@
 <li>下边界和目标元素的下边界对齐<br>这是垂直方向的，水平方向也是一样的道理，两两组和也会有四种选择。下面是其中的几个属性，属性的值写目标元素的id，如果是父布局就写parent。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;0dp&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;0dp&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:src</span>=<span class="string">&quot;@drawable/image&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:layout_constraintStart_toStartOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">&quot;@id/title&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 <p>以上就是基本使用，是的，用这些就能实现线性布局、相对布局等的效果了。下来说一说约束布局独有的特点</p>
-<h3 id="5-GuideLine"><a href="#5-GuideLine" class="headerlink" title="5. GuideLine"></a>5. GuideLine</h3><p>GuideLine，引导线，这个在布局上是看不到的，但是可以帮助我们来指定其他空间的位置，比如，不管在哪种尺寸的屏幕上，你都需要在屏幕上30%的位置显示一行文字，在其他布局中，需要每次手动获取屏幕高度，计算出目标位置，然后再把文字放到这个位置上。但是在约束布局中，是用GuideLine就可实现。</p>
+<h3 id="5-GuideLine"><a href="#5-GuideLine" class="headerlink" title="5. GuideLine"></a>5. GuideLine</h3><p>GuideLine，引导线，这个在布局上是看不到的，但是可以帮助我们来指定其他控件的位置，比如，不管在哪种尺寸的屏幕上，你都需要在屏幕上30%的位置显示一行文字，在其他布局中，需要每次手动获取屏幕高度，计算出目标位置，然后再把文字放到这个位置上。但是在约束布局中，是用GuideLine就可实现。</p>
 <p>引导线有两个方向，水平方向和垂直方向。此外，它有两种模式，百分比模式，和距离模式</p>
 <ul>
 <li>百分比模式，percent指定的是百分比，水平方向时指距离左侧，垂直方向时指距离顶部<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">androidx.constraintlayout.widget.Guideline</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;0dp&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;0dp&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;horizontal&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:layout_constraintGuide_percent</span>=<span class="string">&quot;0.3&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure></li>
@@ -303,13 +303,13 @@
 </ul>
 <h3 id="6-位置百分比"><a href="#6-位置百分比" class="headerlink" title="6. 位置百分比"></a>6. 位置百分比</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:src</span>=<span class="string">&quot;@drawable/home_bg&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintHorizontal_bias</span>=<span class="string">&quot;0.0&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintStart_toStartOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">app:layout_constraintVertical_bias</span>=<span class="string">&quot;1.0&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>上面有说到，当指定了一个方向的两个边界时，这个控件就会在边界间居中对齐，这其实是默认值。还是上面那个例子，但是多了两个属性，一个是Horizotal_bias，一个是Vertical_bias，这两个属性的默认值都是0.5，意味着居中对齐。</p>
-<p>当给一个方向设定了两条边界的时候，并且该空间在这个方向还没有填充满，也就是有可以移动的空间，比如这个例子，图片的横向是填充父布局的，宽度设定为wrap_content，图片的实际宽度只有屏幕宽度的一半，所以剩下的宽度就是可以动的空间，那么就可以通过Horizontal_bias来设定它在水平方向的位置，默认值0.5是居中，0是居最左，1是居最右，垂直方向同理。</p>
+<p>当给一个方向设定了两条边界的时候，并且该控件在这个方向还没有填充满，也就是有可以移动的空间，比如这个例子，图片的横向是填充父布局的，宽度设定为wrap_content，图片的实际宽度只有屏幕宽度的一半，所以剩下的宽度就是可以动的空间，那么就可以通过Horizontal_bias来设定它在水平方向的位置，默认值0.5是居中，0是居最左，1是居最右，垂直方向同理。</p>
 <p>当不存在可以动空间时，这个属性就不会生效，比如只设定了一个边界，或者设定了两个边界，但是填充满了。</p>
 <h3 id="7-宽高比"><a href="#7-宽高比" class="headerlink" title="7. 宽高比"></a>7. 宽高比</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintDimensionRatio=&quot;9:7&quot;</span><br></pre></td></tr></table></figure>
 <p>这个属性多用于控制图片的大小，当需要动态设定图片的宽度或者高度，但又不希望改变图片的原始宽高比，相比于原始的在代码中计算，使用这个属性就方便多了，首先明确的是，属性值中的比例是width:height，也就是宽高比。</p>
 <p>在ConstraintLayout中，元素的边长有2种情况，一种是设为0dp，一种是设定具体的值，当然wrap_content也算具体的值，既然是宽高比所以，那么就需要确定一个值，根据比例去算另一个值。系统在根据这个属性计算宽和高时，要考虑多种情况：</p>
 <ul>
-<li>高固定，款固定：二者都固定时，这个属性不会生效</li>
+<li>高固定，宽固定：二者都固定时，这个属性不会生效</li>
 <li>宽固定，高动态：根据宽度和比例计算高度</li>
 <li>高固定，宽动态：根据高度和比例计算宽度</li>
 <li>宽动态，高动态：这个时候要想元素设置最大的大小并且不超出约束边界，即可以完全显示出来，那么在计算最终边长时，就要根据约束边界的宽高比和属性值做比较了。</li>
@@ -321,7 +321,7 @@
 <p>总结起来就是，比例值是宽高比，谁是固定的，就用谁去计算另一个。两个都不固定时，如果没有指定谁是动态计算的话，那么就以不超出约束的边为基准的原则，计算边长。</p>
 <h3 id="8-几点说明"><a href="#8-几点说明" class="headerlink" title="8. 几点说明"></a>8. 几点说明</h3><ul>
 <li>当宽或高设定为wrap_content，并且设定了两条边界时，此时边界的作用是用来限定控件的位置，而不是宽或高，也就说，宽或高是有可能超出边界的范围的。</li>
-<li>如果有重叠，布局文件中写在下面的控件会盖在上面的空间，这一点和FrameLayout类似。</li>
+<li>如果有重叠，布局文件中写在下面的控件会盖在上面的控件，这一点和FrameLayout类似。</li>
 </ul>
 
     </div>
