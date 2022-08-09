@@ -30,7 +30,7 @@
 <meta property="og:description" content="工具类产品一般泛指那几大类功能，包括但不限于垃圾清理、手机加速、文件管理、应用管理，等等。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-05T02:33:17.000Z">
-<meta property="article:modified_time" content="2022-08-08T14:48:20.784Z">
+<meta property="article:modified_time" content="2022-08-09T15:20:09.203Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -259,14 +259,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.2k</span>
+              <span>6.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -313,6 +313,44 @@
 
 <p>在<code>NotificationListenerService</code>中，有个<code>onListenerConnected</code>方法，当启动时具有权限，或者用户授予权限时，系统就会回调这个方法，在此处可以判断用户是否已授权。此外，还有个<code>onNotificationPosted</code>方法，当处于授权状态时，一旦系统收到通知，这个方法会立刻被回调，所以在这个方法里可以操作通知，比如通过cancl方法取消通知，以此来避免对用户的打扰。</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotiService</span> : <span class="type">NotificationListenerService</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onNotificationPosted</span><span class="params">(sbn: <span class="type">StatusBarNotification</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onNotificationPosted(sbn)</span><br><span class="line">        cancelNotification(sbn?.key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onListenerConnected</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onListenerConnected()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-应用锁"><a href="#5-应用锁" class="headerlink" title="5. 应用锁"></a>5. 应用锁</h3><p>顾名思义，这个功能可以给手机上的应用加上一个锁，防止进入。具体的实现方式是，实时监听手机的状态，数据类似<code>adb shell dumpsys activity</code>命令的输出，判断当前运行、或者刚刚运行的应用是否在用户需要锁定的应用范围之内，如果在，则在这个应用上覆盖一层View，用来拦截后续操作</p>
+<p>这个过程中，涉及到两个权限，一个是查看手机应用使用情况的权限，有了这个权限才可以知道应用启动事件，另个是悬浮窗口权限，有了这个权限才可以在其他应用上面盖上一层View进行阻拦。</p>
+<ul>
+<li><p>应用使用情况权限<br>首先需要在AndroidManifest.xml文件中声明，然后在合适的时机判断是否已获取，如果没有获取则需要打开系统设置页面，引导用户授权。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.PACKAGE_USAGE_STATS&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>判断是否已获取，</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">checkUsageStatsPermission</span><span class="params">(ctx: <span class="type">Context</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">    <span class="keyword">val</span> aom = ctx.getSystemService(Context.APP_OPS_SERVICE) <span class="keyword">as</span> AppOpsManager</span><br><span class="line">    <span class="keyword">val</span> mode = aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), ctx.packageName)</span><br><span class="line">    <span class="keyword">return</span> mode == AppOpsManager.MODE_ALLOWED</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>跳转至系统设置页面，引导用户授权，</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">openUsageStatsSetting</span><span class="params">(ctx: <span class="type">Context</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, Uri.parse(<span class="string">&quot;package:&quot;</span> + ctx.packageName))</span><br><span class="line">    activity.startActivity(intent)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>上层显示权限</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">checkCanDrawOverlays</span><span class="params">(ctx: <span class="type">Context</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) &#123;</span><br><span class="line">        <span class="keyword">return</span> Settings.canDrawOverlays(ctx)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">openDrawOverlaysSetting</span><span class="params">(ctx: <span class="type">Context</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) &#123;</span><br><span class="line">        <span class="keyword">val</span> intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(<span class="string">&quot;package:&quot;</span> + ctx.packageName))</span><br><span class="line">        ctx.startActivity(ctx)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>注意</strong>，这个权限不是必须的，具体要看处理需求，因为可以感知到其他应用启动，所以在监测到启动后，直接可以采取操作，比如打开一个验证密码的叶脉内，而不是非要在其上面覆盖一层View。</p>
+<p>至于如何获取当前正在运行的应用，也就是任务栈栈顶的应用，如果是API 21以下，使用<code>ActivityManager,getRunningTask</code>即可，如果高于这个版本，则需要用到刚刚获取的那个权限，应用使用情况权限。</p>
+<p>通过这个权限可以获取到手机一段时间内触发的所有事件，事件的类型有很多，比如<code>ACTIVITY_PAUSED</code>,<code>ACTIVITY_RESUMED</code>等等，具体可以查看<br><code>anddroid.app.usage.UsageEvents.Event</code>。</p>
+<p>具体做法就是，每隔一段时间就就查询一下<code>ACTIVITY_RESUMED</code>事件，因为只要是应用启动，一定会触发这个事件，然后通过这个事件的包名来判断，这个包名是否是用户设置了应用锁的应用，如果是，则进行拦截。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getResumedPackageName</span><span class="params">(ctx: <span class="type">Context</span>)</span></span>: String &#123;</span><br><span class="line">    <span class="keyword">val</span> usm = ctx.getSystemService(Context.USAGE_STATS_SERVICE) <span class="keyword">as</span> UsageStatsManager</span><br><span class="line">    <span class="keyword">val</span> now = System.currentTimeMillis()</span><br><span class="line">    <span class="keyword">val</span> events = usm.queryEvents(now - <span class="number">10</span> * <span class="number">1000</span>, now)</span><br><span class="line">    <span class="keyword">val</span> event: UsageEvents.Evnet? = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">while</span> (events.hasNextEvent()) &#123;</span><br><span class="line">        <span class="keyword">val</span> e = UsageEvents.Event()</span><br><span class="line">        events.getNextEvent(e)</span><br><span class="line">        <span class="keyword">if</span> (e.eventType == UsageEvents.Event.ACTIVITY_RESUMED) &#123;</span><br><span class="line">            event = e</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> event?.packageName ?: <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -473,7 +511,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E5%AD%98%E5%82%A8%E6%80%BB%E7%A9%BA%E9%97%B4%E3%80%81%E5%8F%AF%E7%94%A8%E7%A9%BA%E9%97%B4"><span class="nav-text">1. 获取存储总空间、可用空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%80%BBRAM%E3%80%81%E5%8F%AF%E7%94%A8RAM"><span class="nav-text">2. 获取总RAM、可用RAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%9E%83%E5%9C%BE%E6%96%87%E4%BB%B6"><span class="nav-text">3. 垃圾文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%80%9A%E7%9F%A5%E7%AE%A1%E7%90%86"><span class="nav-text">4. 通知管理</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E5%AD%98%E5%82%A8%E6%80%BB%E7%A9%BA%E9%97%B4%E3%80%81%E5%8F%AF%E7%94%A8%E7%A9%BA%E9%97%B4"><span class="nav-text">1. 获取存储总空间、可用空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%80%BBRAM%E3%80%81%E5%8F%AF%E7%94%A8RAM"><span class="nav-text">2. 获取总RAM、可用RAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%9E%83%E5%9C%BE%E6%96%87%E4%BB%B6"><span class="nav-text">3. 垃圾文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%80%9A%E7%9F%A5%E7%AE%A1%E7%90%86"><span class="nav-text">4. 通知管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%BA%94%E7%94%A8%E9%94%81"><span class="nav-text">5. 应用锁</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -556,12 +594,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">414k</span>
+    <span title="站点总字数">416k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:17</span>
+    <span title="站点阅读时长">6:19</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
