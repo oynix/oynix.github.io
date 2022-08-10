@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-08-08T23:57:52.803Z</updated>
+  <updated>2022-08-10T15:53:23.372Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>adb安装xapk</title>
+    <link href="https://oynix.github.io/2022/08/22220996a369/"/>
+    <id>https://oynix.github.io/2022/08/22220996a369/</id>
+    <published>2022-08-10T11:04:42.000Z</published>
+    <updated>2022-08-10T15:53:23.372Z</updated>
+    
+    <content type="html"><![CDATA[<p>常规安装包是apk格式，或是aab格式，而xapk是ApkPure的一种特殊安装包格式。</p><span id="more"></span><p>既然是ApkPure提出的，所以它有提供了安装方式，那就是安装它的应用，里面有扫描、安装xapk文件的功能。</p><p>xapk，本质是多个apk文件的组合，所以，也可以通过adb安装，将xapk文件后缀改成zip，便可以直接解压缩，然后就可以看到里面的多个apk文件，这些apk是由aab提供的，使用install命令即可安装，</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install-multiple part.apk part2.apk part3.apk</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;常规安装包是apk格式，或是aab格式，而xapk是ApkPure的一种特殊安装包格式。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Android" scheme="https://oynix.github.io/categories/Android/"/>
+    
+    
+    <category term="Android" scheme="https://oynix.github.io/tags/Android/"/>
+    
+    <category term="adb" scheme="https://oynix.github.io/tags/adb/"/>
+    
+    <category term="xapk" scheme="https://oynix.github.io/tags/xapk/"/>
+    
+  </entry>
   
   <entry>
     <title>Shell相关汇总</title>
