@@ -281,8 +281,10 @@
 <ul>
 <li>请求读取权限<br>是否已经获取<code>READ_EXTERNAL_STORAGE</code>权限，如果没有则返回null</li>
 <li>使用旧存储模型<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:preserveLegacyExternalStorage</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:requestLegacyExternalStorage</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-Android 10（target29）及更高版本推出了一种新的存储范例，叫做分区存储，直白一点讲，就是进一步收紧了访问权限，只可访问应用专属的目录，和几个特定的公开目录，如图片文件、下载文件，等，其他的均不可以访问，所以<code>listFiles()</code>会返回null，因为没有权限。<br>在Android 10上，将<code>requestLegacyExternalStorage</code>设置为true，可以照常使用就存储模型。<br>在Android 11上，将<code>preserveLegacyExternalStorage</code>设置为true，只有覆盖安装的应用可以最后挣扎一下，照常使用旧存储模型，如果是新安装的，则是一点机会也没有。</li>
+Android 10（target29）及更高版本推出了一种新的存储范例，叫做分区存储，直白一点讲，就是进一步收紧了访问权限，只可访问应用专属的目录，和几个特定的公开目录，如图片文件、下载文件，等，其他的均不可以访问，所以<code>listFiles()</code>会返回null，因为没有权限。</li>
 </ul>
+<p>在Android 10上，将<code>requestLegacyExternalStorage</code>设置为true，可以照常使用旧存储模型。</p>
+<p>在Android 11上，将<code>preserveLegacyExternalStorage</code>设置为true，只有覆盖安装的应用可以最后挣扎一下，照常使用旧存储模型，如果是新安装的，则是一点机会也没有。</p>
 <p><strong>参考</strong></p>
 <ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTQ2MzIwODc=">一文带你了解适配Android 11分区存储<i class="fa fa-external-link-alt"></i></span></li>
