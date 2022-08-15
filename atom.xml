@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2022-08-13T06:41:33.860Z</updated>
+  <updated>2022-08-15T02:42:34.216Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MacOS上关于mds_stores进程失控问题</title>
+    <link href="https://oynix.github.io/2022/08/85f4399f4a2a/"/>
+    <id>https://oynix.github.io/2022/08/85f4399f4a2a/</id>
+    <published>2022-08-15T02:26:19.000Z</published>
+    <updated>2022-08-15T02:42:34.216Z</updated>
+    
+    <content type="html"><![CDATA[<p>每次装个大软件，或者下载的文件一多，就会面临机器重启发烫的问题。</p><span id="more"></span><p>打开活动监视器就会发现，有个叫<code>mds_stores</code>的进程在一路疯跑，CPU占用率动不动就飙上几百，而且即便杀死，转眼就会重启。</p><p>这个进程是在建立索引，给SpotLight用。</p><p>我的使用习惯是，只用SpotLight打开软件，而不通过它搜索文件，搜索文件的需求很少，即便有也是通过其他方式，所以，建立的大多数索引对于我来说都是用不上的，无效索引。</p><p>网上能搜到各种关闭这个进程的方式，包括不少的野生路子，但一一试过之后会发现基本都是无用，主要还是版本的问题，新版本的MacOS上想要关掉个系统进程太难了。正面刚不过，还可以曲线救国：既然关不掉，那便不关。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">系统偏好设置 -&gt; SpotLight -&gt; Privacy</span><br></pre></td></tr></table></figure><p>这里面可以添加禁止SpotLight扫描的目录，如果完全不需要这个功能，那么可以直接把整个硬盘添加进去，效果立竿见影，<code>mds_stores</code>立刻就停了，因为没有需要扫描建立索引的文件。</p><p>也可以选择性添加，我是把<code>/Applications</code>之外的目录都加进去了，这样虽然还会扫描部分文件，但也是极大的减少了非必要的工作。</p><p>如果也需要用SpotLight搜索一些文件，也可以把用户目录单独出来，以便让SpotLight可以扫描，<code>/Users/&#123;user&#125;</code>。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;每次装个大软件，或者下载的文件一多，就会面临机器重启发烫的问题。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="MacOS" scheme="https://oynix.github.io/categories/MacOS/"/>
+    
+    
+    <category term="MacOS" scheme="https://oynix.github.io/tags/MacOS/"/>
+    
+  </entry>
   
   <entry>
     <title>PropertyValuesHolder动画</title>
