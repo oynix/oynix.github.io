@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="平常经常写一些shell脚本，来执行一些自动化任务，比如打包、连接等，记录下常用到的语法和命令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell常用语法">
+<meta property="og:url" content="https://oynix.github.io/2022/04/740e031ce254/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="平常经常写一些shell脚本，来执行一些自动化任务，比如打包、连接等，记录下常用到的语法和命令。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-03T03:40:41.000Z">
+<meta property="article:modified_time" content="2022-05-14T05:37:37.000Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.github.io/2022/04/740e031ce254/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>shell常用语法 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">29</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">133</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2022/04/740e031ce254/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          shell常用语法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-03 11:40:41" itemprop="dateCreated datePublished" datetime="2022-04-03T11:40:41+08:00">2022-04-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>平常经常写一些shell脚本，来执行一些自动化任务，比如打包、连接等，记录下常用到的语法和命令。</p>
+<span id="more"></span>
+
+<h3 id="1-格式和运行"><a href="#1-格式和运行" class="headerlink" title="1. 格式和运行"></a>1. 格式和运行</h3><p>格式是指开头第一行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br></pre></td></tr></table></figure>
+<p>其中的#!叫shebang，也叫hashbang，后面跟着的这个脚本解释器的绝对路径，我的电脑上用的是bash。运行的时候直接使用sh后面跟上脚本的名字即可，如果给脚本文件加上可执行的权限，用./也可执行，如果不写第一行的话，你会发现也可以执行，如果不光是给自己用，建议还是要写上的。</p>
+<h3 id="2-获取参数"><a href="#2-获取参数" class="headerlink" title="2. 获取参数"></a>2. 获取参数</h3><p>有时一些参数是不固定的，需要每次运行的时候传入。方式有两种，一种是直接在后面写参数的值，如</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh command.sh arg1 arg2 arg3</span><br></pre></td></tr></table></figure>
+<p>这种方式在读取时，是凭借参数的位置顺序读取的，$0为command.sh，$1为参数一arg1，$2为参数二arg2，依次类推。这种方式方便传入和读取，但是受到位置的限制，有时可能只需要传入参数二，而参数一使用缺省值便可，这时使用-argName的方式会更方便，按需指定并传入，如</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh command.sh -a argA -b argB -c argC</span><br></pre></td></tr></table></figure>
+<p>读取时，要这样，getopts，即get options，获取所有的可选参数，通过循环读取每个参数的值</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="built_in">getopts</span> <span class="string">&quot;a:b:c:&quot;</span> opt</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="keyword">case</span> <span class="variable">$opt</span> <span class="keyword">in</span></span><br><span class="line">        a ) argA=<span class="variable">$OPTARG</span> ;;</span><br><span class="line">        b ) argB=<span class="variable">$OPTARG</span> ;;</span><br><span class="line">        c ) argC=<span class="variable">$OPTARG</span> ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-条件判断"><a href="#3-条件判断" class="headerlink" title="3. 条件判断"></a>3. 条件判断</h3><p>判断是脚本中最常见的命令语句了，基本语法为</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ <span class="built_in">command</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">elif</span> [ <span class="built_in">command</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>其中的command有很多，按类型可以分为：判断文件/目录、判断字符串和判断数值大小，举几个常用的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件/目录</span></span><br><span class="line">[ -e FILE ] 文件存在 </span><br><span class="line">[ -s FILE ] 文件存在且长度不为0</span><br><span class="line">[ -f FILE ] 普通文件存在 -b：二进制文件 -c：字符文件 -r：可读文件 -x：可执行文件</span><br><span class="line">[ -d DIR ] 目录存在</span><br><span class="line">[ FILE1 -nt FILE2 ] newer than，也就是1比2更新 同理，-ot：older than</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符串</span></span><br><span class="line">[ -z STRING ] zero长度为0</span><br><span class="line">[ -n STRING ] not zero长度不为0，-n也可以省略，即等同于 [ STRING ]</span><br><span class="line">[ S1 = S2 ] 相同，同理 !=为不同</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数值</span></span><br><span class="line">[ INT1 -eq INT2 ] equals，相等，同理 -ne：not equals</span><br><span class="line">[ INT1 -gt INT2 ] greater than,大于，也可以写成大于号: &gt;，同理 -lt：less than</span><br><span class="line">[ INT1 -ge INT2 ] greater or equals, 即为&gt;=，同理 -le：&lt;= 小于等于</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多个条件</span></span><br><span class="line">[ (条件1) -a (条件2) ] all，与，也可以写成 &amp;&amp;</span><br><span class="line">[ () -o () ] or，或，也可以写成 ||</span><br><span class="line">[ ! () ] not，非</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-服务器"><a href="#4-服务器" class="headerlink" title="4. 服务器"></a>4. 服务器</h3><p>ssh连接服务器，如果已经把自己的公钥id_rsa.pub添加到了服务器的authorized_keys里，那么可以直接连接，就可以了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@server-ip</span><br></pre></td></tr></table></figure>
+<p>如果没有添加，则需要指定服务器的私钥的pem文件作为参数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i identification.pem username@server-ip</span><br></pre></td></tr></table></figure>
+<p>原理很简单，一是服务器信任了自己的公钥，二是拿着服务器的私钥的pem，pem的获取方式为</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务器生成公钥匙私钥对，这会得到一个私钥private，和公钥private.pub</span></span><br><span class="line">ssh-keygen</span><br><span class="line"><span class="comment"># 转换私钥，传入私钥，得到pem格式，凡是拿着这个pem的客户端都可以连接</span></span><br><span class="line">openssl rsa -<span class="keyword">in</span> private -outform pem &gt; private.pem</span><br></pre></td></tr></table></figure>
+<p>当然，光连上服务器不是目的，这些如果写到shell脚本里会中断执行，而我的目的是在服务器上执行命令，连到服务器只是前提，若执行命令，如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh username@server-ip <span class="string">&quot;[command]&quot;</span></span><br><span class="line"><span class="comment"># e.g。</span></span><br><span class="line">ssh user@server-ip <span class="string">&quot;cd documents &amp;&amp; ls -la&quot;</span></span><br></pre></td></tr></table></figure>
+<p>有时还会需要在本地和远程之间传递文件命令，从本地到远程如下（远程到本地就反过来），注意server-ip后面的冒号，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scp [options] /<span class="built_in">local</span>/<span class="built_in">source</span>/file/path user@server-ip:/path/to/destination</span><br><span class="line">-C 要大写，压缩</span><br><span class="line">-P 要大写，端口号，默认22</span><br><span class="line">-r recursive递归</span><br><span class="line">-p 保留访问修改时间</span><br></pre></td></tr></table></figure>
+<p>服务器的IP地址经常会变，每次通过ssh连接一个不存在于.ssh/known_hosts中的ip时，都会弹出一个警告，问是否要将这个正在连接的主机添加到已知设备中，中断自动化脚本的执行。</p>
+<p>在这里，都要连接登陆了，所以肯定是要加的，可以通过指定一个参数，让其自动添加，而不中断自动化流程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -o StrictHostKeyChecking=no -i identificaiton.pem username@host</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-编译shell脚本"><a href="#5-编译shell脚本" class="headerlink" title="5. 编译shell脚本"></a>5. 编译shell脚本</h3><p>有时写完一个shell脚本，需要给别人使用，但是又不想让别人看到里面的代码，可能因为里面有重要数据，也可能没有为什么，就是不想，这时可以把shell脚本编译成可执行文件，这样一来，既可以执行，但又无法查看了。一共有两种方式，一是系统自带的gzexe，二是使用shc命令，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzexe command.sh</span><br></pre></td></tr></table></figure>
+<p>这会在目录下生成两个文件，一个是command.sh，另个是command.sh~，前者是压缩之后的，带～的是原文件，打开压缩之后的文件，可以发现里面有不少内容还是可以看懂的，尽管多数都不沾边了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shc -f command.sh</span><br></pre></td></tr></table></figure>
+<p>这也会在目录下生成两个文件，一个是command.sh.x，这是可执行文件，另个是command.sh.x.c，这是个c文件，打开可执行文件后，会发现完全看不懂，都是乱码，推测可能先生成了c文件，然后再将c编译成二进制可执行文件。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25ldXJvYmluL3NoYw==">这是shc的github地址<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="6-脚本里调用其他脚本"><a href="#6-脚本里调用其他脚本" class="headerlink" title="6. 脚本里调用其他脚本"></a>6. 脚本里调用其他脚本</h3><p>当有多个shell文件，其中相互调用的时候，要用source命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">! /bin/bash</span></span><br><span class="line">echo &#x27;first shell scripts&#x27;</span><br><span class="line"></span><br><span class="line">source other.sh</span><br></pre></td></tr></table></figure>
+<p>虽然写在多个shell文件里，但是因为运行在同一个shell会话中，所以变量是可以共用的，也就是first里声明的变量，在other里可以读取，我一般用这种方式来处理脚本的参数，当一个脚本需要多个参数时，就把这些参数都单独写在一个shell里，然后再最后通过source调用真正的执行文件就好。</p>
+<h3 id="7-相关的变量说明"><a href="#7-相关的变量说明" class="headerlink" title="7. $相关的变量说明"></a>7. $相关的变量说明</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$0</td>
+<td>脚本的名字，即文件名</td>
+</tr>
+<tr>
+<td>$n(n ≥ 1)</td>
+<td>参数名字</td>
+</tr>
+<tr>
+<td>$#</td>
+<td>传给脚本的参数个数</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>传来的所有参数</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>传来的所有参数</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>上个命令的退出值</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>shell进程ID</td>
+</tr>
+</tbody></table>
+<p>其中，<code>$@</code>和<code>$*</code>，没有引号包围时，二者完全一样，当有双引号包围时，<code>$@</code>依然无变化，而<code>$*</code>则是把所有参数合并成了一个变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sh test.sh p1 p2 p3</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 读取参数代码</span></span><br><span class="line">for p in []</span><br><span class="line">do</span><br><span class="line">    echo $p</span><br><span class="line">done</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">$</span><span class="bash">@ $* <span class="string">&quot;<span class="variable">$@</span>&quot;</span> 输出的都是</span></span><br><span class="line">p1</span><br><span class="line">p2</span><br><span class="line">p3</span><br><span class="line"></span><br><span class="line">&quot;$*&quot; 输出的是 p1 p2 p3</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2022/04/740e031ce254/" title="shell常用语法">https://oynix.github.io/2022/04/740e031ce254/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/shell/" rel="tag"># shell</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/aea0472175e5/" rel="prev" title="JNI使用总结">
+      <i class="fa fa-chevron-left"></i> JNI使用总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/6920df894e5f/" rel="next" title="keytool命令使用">
+      keytool命令使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A0%BC%E5%BC%8F%E5%92%8C%E8%BF%90%E8%A1%8C"><span class="nav-text">1. 格式和运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-text">2. 获取参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="nav-text">3. 条件判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">4. 服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91shell%E8%84%9A%E6%9C%AC"><span class="nav-text">5. 编译shell脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%84%9A%E6%9C%AC%E9%87%8C%E8%B0%83%E7%94%A8%E5%85%B6%E4%BB%96%E8%84%9A%E6%9C%AC"><span class="nav-text">6. 脚本里调用其他脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%9B%B8%E5%85%B3%E7%9A%84%E5%8F%98%E9%87%8F%E8%AF%B4%E6%98%8E"><span class="nav-text">7. $相关的变量说明</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">428k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '36be869c507d40666e4459c09dc567da',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

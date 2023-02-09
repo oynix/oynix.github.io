@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="在AndroidStudio中导入开源库一般就是一句话的事：compile &#39;xxx.xx.xx:xx&#39;。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行compile &#39;xxx.xxx.xx:xx&#39; 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几分钟完成发布开源库到jCenter">
+<meta property="og:url" content="https://oynix.github.io/2017/10/cb79da36ff8f/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="在AndroidStudio中导入开源库一般就是一句话的事：compile &#39;xxx.xx.xx:xx&#39;。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行compile &#39;xxx.xxx.xx:xx&#39; 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/nDrYj29khgLP3HQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/lSWt5zHh7qaBY1r.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/7gemVscRGIrH2MQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/3xVtoCEBzNfD6KT.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/NevJYK8bCSkWUV5.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/cPX6dYtHeijrZbl.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/78qtx2wumGjSy1d.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/ho8iIzSP3tBxJK4.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/LZm2MYtP8XJ1RjU.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/HKzyexF9aZscOdW.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/CNPLzhVtXdxnRI8.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/Ed6kULb9QNpMDAa.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/02/bdaZXRcOkflTy96.png">
+<meta property="article:published_time" content="2017-10-10T02:22:53.000Z">
+<meta property="article:modified_time" content="2021-07-08T01:08:44.000Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="jCenter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/07/02/nDrYj29khgLP3HQ.png">
+
+<link rel="canonical" href="https://oynix.github.io/2017/10/cb79da36ff8f/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>几分钟完成发布开源库到jCenter | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">29</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">133</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2017/10/cb79da36ff8f/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          几分钟完成发布开源库到jCenter
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-10 10:22:53" itemprop="dateCreated datePublished" datetime="2017-10-10T10:22:53+08:00">2017-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<p>在AndroidStudio中导入开源库一般就是一句话的事：<code>compile &#39;xxx.xx.xx:xx&#39;</code>。 实际上我们也可以通过这种方式来导入自己的开源库，方便自己的使用。AndroidStudio执行<code>compile &#39;xxx.xxx.xx:xx&#39;</code> 会先到jCenter上查找该开源库，所以需要我们把自己的开源库库发布到jCenter上。无法直接在jCenter上发布开源库，要通过它的托管商–Bintray（Bintray托管着很多仓库，jCenter只是其中一个）来完成。</p>
+<p>把自己平时经常用到的一些代码写到一起上传到jCenter，以后不管做什么项目一句话就能导入，算来还是一个比较实用的功能。</p>
+<span id="more"></span>
+<h4 id="总体步骤概览"><a href="#总体步骤概览" class="headerlink" title="总体步骤概览"></a>总体步骤概览</h4><blockquote>
+<p> <a href="#step1">1. 注册Bintray账号并创建仓库</a><br>    <a href="#step2">2. 准备开源库</a><br>    <a href="#step3">3. 修改gradle文件</a><br>    <a href="#step4">4. 编译并上传至Bintray</a><br>    <a href="#step5">5. linked to jCenter</a></p>
+</blockquote>
+<hr>
+<h3 id="step1"> 1. 注册Bintray账号并创建仓库</h3>
+
+<p>使用Bintray当然要先注册个账号，<span class="exturl" data-url="aHR0cHM6Ly9iaW50cmF5LmNvbS9zaWdudXAvb3Nz">注册地址<i class="fa fa-external-link-alt"></i></span></p>
+<p><img src="https://i.loli.net/2021/07/02/nDrYj29khgLP3HQ.png" alt="注册界面"><br>我选的是<code>Sign up with Github</code>。<br>注册登录之后应该是这个样子， 点击<code>Add New Repository</code></p>
+<p><img src="https://i.loli.net/2021/07/02/lSWt5zHh7qaBY1r.png"><br><img src="https://i.loli.net/2021/07/02/7gemVscRGIrH2MQ.png"></p>
+<ul>
+<li>Name：仓库的名字，写了之后不能再改，记住该名字，后面上传时会用到；</li>
+<li>Type：仓库类型，选择<code>Maven</code>；</li>
+<li>License：开源协议，随便选一个就好；</li>
+<li>Description：仓库描述，随便写；</li>
+</ul>
+<p><strong>点击<code>Create</code> 完成仓库创建，到此第一步完成。</strong></p>
+<hr>
+<h3 id="step2"> 2. 准备开源库</h3>
+
+<p>备好你想要上传的开源库，有两种方式：</p>
+<ol>
+<li>AndroidStudio中new一个project，然后在project中new一个Module，类型选择<code>Android Library</code>.</li>
+<li>直接修改当前Module的build.gradle（<strong>注意区分project的build.gradle文件和Module的build.gradle文件，前者在project根目录下，后者在对应的Module目录下</strong>）文件，将第一行的<code>apply plugin: &#39;com.android.application</code> 改为 <code>apply plugin: com.android.library</code> ，再把下面的<code>applicationId &quot;你的包名&quot;</code> 这一行删除(library是不允许有applicationId的).</li>
+</ol>
+<p>两种方式最终结果都是得到了一个<code>Android Library</code> 类型的Module，在Module里添加你想要上传的开源库代码（我随便弄了一个，里面有个我常用到的加载App Icon的方法）。</p>
+<p><strong>到此第二步准备开源库完成</strong></p>
+<hr>
+<h3 id="step3"> 3. 修改gradle文件</h3>
+
+<p><strong>还是那句话，注意区分project的build.gradle文件和Module的build.gradle文件，前者在project根目录下，后者在对应的Module目录下</strong></p>
+<ul>
+<li><p>修改project的build.gradle文件，添加下面这两句话<br><img src="https://i.loli.net/2021/07/02/3xVtoCEBzNfD6KT.png"><br><a target="_blank" rel="noopener" href="https://github.com/dcendents/android-maven-gradle-plugin"><em>Maven Github地址</em></a>：对应里面的说明选择使用的版本号<br><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin"><em>Bintray Github地址</em></a>：对应里面的说明选择使用的版本号</p>
+</li>
+<li><p>修改Module的build.gradle文件（这步有点乱，认真看）<br>需要配置3个信息：</p>
+</li>
+</ul>
+<ol>
+<li>Bintray账号配置和Developer信息，告诉AndroidStudio传到哪及开发者介绍；</li>
+<li>Project信息，开源库的介绍；</li>
+<li>上传配置，对以上3个信息的调用以及其他一些配置；</li>
+</ol>
+<p>为了看起来条理清晰，我把能独立的部分都独立到单独文件里了，便于阅读，以下分别说明。</p>
+<p><strong>1. Bintray账号信息和Developer信息</strong><br><code>AndroidStudio</code>创建项目时默认会在project根目录下创建<code>local.properties</code> 文件并添加到了<code>.gitignore</code> 文件中（如果没有请自行创建并添加至<code>.gitignore</code> 中），在其中添加以下内容：</p>
+<p><img src="https://i.loli.net/2021/07/02/NevJYK8bCSkWUV5.png"></p>
+<ul>
+<li>bintray.user：Bintray注册的用户名</li>
+<li>bintray.apikey：Bintray的API key</li>
+<li>developer.id：开源社区的昵称（一般指github，或是使用的其他开源社区）</li>
+<li>developer.name：姓名</li>
+<li>developer.email：邮箱地址</li>
+</ul>
+<p><em>查看API key方法：</em><br><img src="https://i.loli.net/2021/07/02/cPX6dYtHeijrZbl.png"><br><img src="https://i.loli.net/2021/07/02/78qtx2wumGjSy1d.png"></p>
+<p><strong>2. Project信息配置</strong></p>
+<p>在<em><strong>开源库Module目录</strong></em>下新建<code>project.properties</code>文件，添加以下内容：</p>
+<p><img src="https://i.loli.net/2021/07/02/ho8iIzSP3tBxJK4.png"></p>
+<ul>
+<li>project.name：开源库名字</li>
+<li>project.groupId：项目组ID，写包名</li>
+<li>project.artifaceId：项目ID，写Module名</li>
+<li>project.packaging：打包方式，写aar</li>
+<li>project.siteUrl：项目主页，没有就写github地址</li>
+<li>project.gitUrl：项目仓库地址</li>
+<li>javadoc.name：javadoc主页显示的名称，写项目名字就好</li>
+</ul>
+<p><strong>3. 上传配置</strong></p>
+<p>在<em><strong>开源库Module目录</strong></em>下新建<code>bintrayUpload.gradle</code>文件，添加以下内容：(内容较多，直接贴源码了，阅读可能不太美观）</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.github.dcendents.android-maven&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jfrog.bintray&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// load properties</span></span><br><span class="line">Properties properties = <span class="keyword">new</span> Properties()</span><br><span class="line"></span><br><span class="line">File projectPropertiesFile = project.file(<span class="string">&quot;project.properties&quot;</span>)</span><br><span class="line"><span class="keyword">if</span>(projectPropertiesFile.exists())&#123;</span><br><span class="line">    properties.load(projectPropertiesFile.newDataInputStream())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// read properties</span></span><br><span class="line"><span class="keyword">def</span> projectName = properties.getProperty(<span class="string">&quot;project.name&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> projectGroupId = properties.getProperty(<span class="string">&quot;project.groupId&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> projectArtifactId = properties.getProperty(<span class="string">&quot;project.artifactId&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> projectVersionName = android.defaultConfig.versionName</span><br><span class="line"><span class="keyword">def</span> projectPackaging = properties.getProperty(<span class="string">&quot;project.packaging&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> projectSiteUrl = properties.getProperty(<span class="string">&quot;project.siteUrl&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> projectGitUrl = properties.getProperty(<span class="string">&quot;project.gitUrl&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> javadocName = properties.getProperty(<span class="string">&quot;javadoc.name&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">File localPropertiesFile = project.rootProject.file(<span class="string">&quot;local.properties&quot;</span>)</span><br><span class="line"><span class="keyword">if</span>(localPropertiesFile.exists())&#123;</span><br><span class="line">    properties.load(localPropertiesFile.newDataInputStream())</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">def</span> developerId = properties.getProperty(<span class="string">&quot;developer.id&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> developerName = properties.getProperty(<span class="string">&quot;developer.name&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> developerEmail = properties.getProperty(<span class="string">&quot;developer.email&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> bintrayUser = properties.getProperty(<span class="string">&quot;bintray.user&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> bintrayApikey = properties.getProperty(<span class="string">&quot;bintray.apikey&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">group = projectGroupId</span><br><span class="line"></span><br><span class="line"><span class="comment">// This generates POM.xml with proper parameters</span></span><br><span class="line">install &#123;</span><br><span class="line">    repositories.mavenInstaller &#123;</span><br><span class="line">        pom &#123;</span><br><span class="line">            project &#123;</span><br><span class="line">                name projectName</span><br><span class="line">                groupId projectGroupId</span><br><span class="line">                artifactId projectArtifactId</span><br><span class="line">                version projectVersionName</span><br><span class="line">                packaging projectPackaging</span><br><span class="line">                url projectSiteUrl</span><br><span class="line">                licenses &#123;</span><br><span class="line">                    license &#123;</span><br><span class="line">                        name <span class="string">&#x27;The Apache Software License, Version 2.0&#x27;</span></span><br><span class="line">                        url <span class="string">&#x27;http://www.apache.org/licenses/LICENSE-2.0.txt&#x27;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                developers &#123;</span><br><span class="line">                    developer &#123;</span><br><span class="line">                        id developerId</span><br><span class="line">                        name developerName</span><br><span class="line">                        email developerEmail</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                scm &#123;</span><br><span class="line">                    connection projectGitUrl</span><br><span class="line">                    developerConnection projectGitUrl</span><br><span class="line">                    url projectSiteUrl</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This generates sources.jar</span></span><br><span class="line">task sourcesJar(<span class="attr">type:</span> Jar) &#123;</span><br><span class="line">    from android.sourceSets.main.java.srcDirs</span><br><span class="line">    classifier = <span class="string">&#x27;sources&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task javadoc(<span class="attr">type:</span> Javadoc) &#123;</span><br><span class="line">    source = android.sourceSets.main.java.srcDirs</span><br><span class="line">    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This generates javadoc.jar</span></span><br><span class="line">task javadocJar(<span class="attr">type:</span> Jar, <span class="attr">dependsOn:</span> javadoc) &#123;</span><br><span class="line">    classifier = <span class="string">&#x27;javadoc&#x27;</span></span><br><span class="line">    from javadoc.destinationDir</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">artifacts &#123;</span><br><span class="line">    archives javadocJar</span><br><span class="line">    archives sourcesJar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// javadoc configuration</span></span><br><span class="line">javadoc &#123;</span><br><span class="line">    options&#123;</span><br><span class="line">        encoding <span class="string">&quot;UTF-8&quot;</span></span><br><span class="line">        charSet <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">        author <span class="literal">true</span></span><br><span class="line">        version projectVersionName</span><br><span class="line">        links <span class="string">&quot;http://docs.oracle.com/javase/7/docs/api&quot;</span></span><br><span class="line">        title javadocName</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bintray configuration</span></span><br><span class="line">bintray &#123;</span><br><span class="line">    user = bintrayUser</span><br><span class="line">    key = bintrayApikey</span><br><span class="line">    configurations = [<span class="string">&#x27;archives&#x27;</span>]</span><br><span class="line">    pkg &#123;</span><br><span class="line">        repo = <span class="string">&quot;maven&quot;</span></span><br><span class="line">        name = projectName</span><br><span class="line">        websiteUrl = projectSiteUrl</span><br><span class="line">        vcsUrl = projectGitUrl</span><br><span class="line">        licenses = [<span class="string">&quot;Apache-2.0&quot;</span>]</span><br><span class="line">        publish = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上传开源库的配置基本都是这样，不用改动什么，值得注意的是<code>bintray</code> 节点的<code>repo</code> 指的是第一步中创建的Maven仓库的名字，这两个名字要一致；此外开源库的版本号默认取的是project的版本号<code>def projectVersionName = android.defaultConfig.versionName</code>，如果有需要也可把这两个属性抽取到<code>project.properties</code> 文件中，便于管理。</p>
+<p>最后一个操作，在<em><strong>开源库Module</strong></em>的<code>build.gradle</code> 文件末尾中添加如下代码<code>apply from: &#39;bintrayUpload.gradle&#39;</code> 来调用配置文件。</p>
+<p><strong>至此第3步配置gradle文件完成。</strong></p>
+<hr>
+<h3 id="step4"> 4. 编译并上传至Bintray</h3>
+
+<ul>
+<li>编译：打开AndroidStudio的Terminal窗口（一般在底部，没有的话点击<code>顶部工具栏</code>-&gt;<code>View</code>-&gt;<code>Tools Windows</code>-&gt; <code>Terminal</code>），输入命令并回车：</li>
+</ul>
+<blockquote>
+<p>gradlew install</p>
+</blockquote>
+<p>等待一段时间后提示<code>BUILD SUCCESSFUL</code>，表示成功。</p>
+<ul>
+<li>上传，同样在Terminal中输入以下命令并回车：</li>
+</ul>
+<blockquote>
+<p>gradlew bintrayUpload</p>
+</blockquote>
+<p>等待一段时间后提示<code>BUILD SUCCESSFUL</code>，表示成功。</p>
+<p><strong>至此第4步编译并上传完成。</strong></p>
+<hr>
+<h3 id="step5"> 5. Linked to jCenter</h3>
+
+<p><img src="https://i.loli.net/2021/07/02/LZm2MYtP8XJ1RjU.png"></p>
+<p><img src="https://i.loli.net/2021/07/02/HKzyexF9aZscOdW.png"></p>
+<p><img src="https://i.loli.net/2021/07/02/CNPLzhVtXdxnRI8.png"></p>
+<p><img src="https://i.loli.net/2021/07/02/Ed6kULb9QNpMDAa.png"></p>
+<p><strong>按照上面4步，发送include request之后等待Bintray团队审核，审核完成后会收到邮件和站内信。</strong></p>
+<p><img src="https://i.loli.net/2021/07/02/bdaZXRcOkflTy96.png"></p>
+<p><strong>至此第5步Linked to jCenter完成。</strong></p>
+<hr>
+<h3 id="如果遇到问题，请参考这两篇文章"><a href="#如果遇到问题，请参考这两篇文章" class="headerlink" title="如果遇到问题，请参考这两篇文章"></a>如果遇到问题，请参考这两篇文章</h3><ol>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5qaWFuc2h1LmNvbS9wL2M3MjFmOTI5N2IyZj91dG1fY2FtcGFpZ249aHVnbyZ1dG1fbWVkaXVtPXJlYWRlcl9zaGFyZSZ1dG1fY29udGVudD1ub3Rl">Android 项目打包到 JCenter 的坑<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5qaWFuc2h1LmNvbS9wL2M1MThhMTBmZGFlZA==">Android 发布项目到 JCenter 遇到的各种坑<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+<h4 id="如有问题，欢迎指正"><a href="#如有问题，欢迎指正" class="headerlink" title="如有问题，欢迎指正~"></a><strong>如有问题，欢迎指正~</strong></h4>
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2017/10/cb79da36ff8f/" title="几分钟完成发布开源库到jCenter">https://oynix.github.io/2017/10/cb79da36ff8f/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/jCenter/" rel="tag"># jCenter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/09/62fb68592e6c/" rel="prev" title="Android Drawable 和 xml文件转化关系">
+      <i class="fa fa-chevron-left"></i> Android Drawable 和 xml文件转化关系
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/f49b7256166f/" rel="next" title="手把手教你实现RecyclerView的下拉刷新和上拉加载更多">
+      手把手教你实现RecyclerView的下拉刷新和上拉加载更多 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E6%AD%A5%E9%AA%A4%E6%A6%82%E8%A7%88"><span class="nav-text">总体步骤概览</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step1"><span class="nav-text"> 1. 注册Bintray账号并创建仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step2"><span class="nav-text"> 2. 准备开源库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step3"><span class="nav-text"> 3. 修改gradle文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step4"><span class="nav-text"> 4. 编译并上传至Bintray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step5"><span class="nav-text"> 5. Linked to jCenter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98%EF%BC%8C%E8%AF%B7%E5%8F%82%E8%80%83%E8%BF%99%E4%B8%A4%E7%AF%87%E6%96%87%E7%AB%A0"><span class="nav-text">如果遇到问题，请参考这两篇文章</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9C%89%E9%97%AE%E9%A2%98%EF%BC%8C%E6%AC%A2%E8%BF%8E%E6%8C%87%E6%AD%A3"><span class="nav-text">如有问题，欢迎指正~</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">428k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '2df046f54f4d44532988605aa87f116f',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

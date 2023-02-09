@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="我发现，想要解释清楚一个名词，如果只是拿着定义反复说，远不如举个合适的例子来的更快更直接。而且，举的例子越形象，理解的就越快，选的对比物越独特，记忆就越持久，这样即便是过了很久，只要是到了用的时候，便会立刻回忆起这个独特的例子，从而相关知识再次被成功加载到脑子里。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java和Kotlin的范型">
+<meta property="og:url" content="https://oynix.github.io/2022/04/a59fca43ac2f/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="我发现，想要解释清楚一个名词，如果只是拿着定义反复说，远不如举个合适的例子来的更快更直接。而且，举的例子越形象，理解的就越快，选的对比物越独特，记忆就越持久，这样即便是过了很久，只要是到了用的时候，便会立刻回忆起这个独特的例子，从而相关知识再次被成功加载到脑子里。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-19T15:29:16.000Z">
+<meta property="article:modified_time" content="2022-07-25T06:25:10.000Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Kotlin">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.github.io/2022/04/a59fca43ac2f/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java和Kotlin的范型 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">29</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">133</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2022/04/a59fca43ac2f/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java和Kotlin的范型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-19 23:29:16" itemprop="dateCreated datePublished" datetime="2022-04-19T23:29:16+08:00">2022-04-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我发现，想要解释清楚一个名词，如果只是拿着定义反复说，远不如举个合适的例子来的更快更直接。而且，举的例子越形象，理解的就越快，选的对比物越独特，记忆就越持久，这样即便是过了很久，只要是到了用的时候，便会立刻回忆起这个独特的例子，从而相关知识再次被成功加载到脑子里。</p>
+<span id="more"></span>
+<h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>范型这个东西，接触也不是一天两天了，但好像就从来没有领悟透彻，需要的时候查一查，加上高度人性化的IDE，总是能满足迎面而来的种种需求，等到事后便又云里雾里，所谓知其然，更要知其所以然，这篇就来好好说说，系统性的来捋一捋。</p>
+<p>想了一下，还是用生活中常见的东西来举例吧：手机。新世纪初曾出现过一种系统名字为塞班的手机，Symbian，后来被诺基亚收购，全球出货量相当之高，至今记录尚未被打破，在当时有个塞班手机是个很开心的事了，在上面能装QQ，通过流量和朋友聊天，相比于发短信能省下不少钱，那个时候30M的流量可以用上一个月，每天都计算着流量玩手机。时代在发展，社会在进步，再后来，更智能的Android系统和iOS系统出现了，逐步替代了塞班机器，出了塞班机能做到的事情，它还有着更先进的功能。</p>
+<p>接下来，就用手机(Phone, Symbian, Android)、手机生产商(Producer)和手机用户(Consumer)，来说说范型是什么。</p>
+<p>在功能上，我们可以把它们之间看成是继承的关系，Phone代表的就是能打电话的设备，Symbian代表的在能打电话的基础上，还能进行一些简单的联网操作，比如发个QQ消息，打开个网页，而Android则是在Symbian的功能之上，又增加了更多的功能，比如语音通话、视频通话、看直播，等等。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">|--Phone （打电话）</span><br><span class="line">   |--Symbian （打电话，发消息）</span><br><span class="line">      |--Android （打电话，发消息，视频通话）</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-引出"><a href="#1-引出" class="headerlink" title="1. 引出"></a>1. 引出</h3><p>先从熟悉的Java说起。</p>
+<p>我们都知道，当声明完一个类型的变量后，可以用这个类型自身来初始化，也可以用它的子类来初始化，这些都是可以编译运行的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Symbian phone = <span class="keyword">new</span> Symbian();</span><br><span class="line">Symbian phone = <span class="keyword">new</span> Android();</span><br></pre></td></tr></table></figure>
+<p>这个其实很好理解，你想，我声明一个Symbian是为了干嘛，不是打电话就是发消息，那么，不管给我一个Symbian还是给我一个Android，等我拿到手后，都可以满足我的需求，所以这是允许的，这也就是Java三大特性之一，多态。</p>
+<p>说完这个，再来看看下面这种使用集合时的情况</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Symbian&gt; sym = <span class="keyword">new</span> ArrayList&lt;Symbian&gt;();</span><br><span class="line">List&lt;Android&gt; and = sym;</span><br></pre></td></tr></table></figure>
+<p>声明一个Android类型的集合，然后用一个类型是Symbian的集合来赋值，你会发现，这么写会报错，也就是不被允许的。这是因为，Symbian虽然是Android的子类，<code>List&lt;Symbian&gt;</code>却不是<code>List&lt;Android&gt;</code>的子类，这里，就涉及到了类型擦除。</p>
+<p>简单说说什么是类型擦除。Java虽然支持范型，但是JVM里却没有范型这个东西的，Java写的代码最终都要放到JVM里去跑，所以，其中的范型都要去掉，替换成一个确定的类型，这个操作，就叫类型擦除，这个事是在编译阶段由编译器来做的。所以，<code>List&lt;Symbian&gt;</code>不是<code>List&lt;Android&gt;</code>的子类，但是，<code>List&lt;Symbian&gt;</code>是<code>Collection&lt;Symbian&gt;</code>的子类。</p>
+<p>针对这个问题，Java提供了两个通配符，? extends和? super。</p>
+<h3 id="2-extends"><a href="#2-extends" class="headerlink" title="2. ? extends"></a>2. ? extends</h3><p>? extends是Java提供的范型通配符，通过extends限制了位置类型的?，用法如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;? extends Symbian&gt; phone = <span class="keyword">new</span> ArrayList&lt;Symbian&gt;();</span><br><span class="line">List&lt;? extends Symbian&gt; phone = <span class="keyword">new</span> ArrayList&lt;Android&gt;();</span><br></pre></td></tr></table></figure>
+<p>对于声明的变量phone，?代表着类型不确定，但是通过extends可以知道，它是Symbian的子类，所以在初始化的时候，可用Symbian或者它的子类，甚至它的子类的子类，都是可以的。</p>
+<p>通过phone的get方法获取元素时，返回的类型只能是Symbian，因为对于变量phone来说，它只知道自己存储的是Symbian或其子类，具体类型并不知道，所以为了安全，它只能返回Symbian类型。假如它返回了一个Android类型，调用者拿返回值来视频通话，但是实际存储若是Symbian类型，则没有视频通过这个功能，为避免这种情况，Java将返回类型限定为Symbian。</p>
+<p>现在想一下通过add方法向phone添加元素的情况，当存储的真实类型是Android时，这个时候是不能向其中添加Symbian类型元素的，因为Symbian是Android的子类，父类型接收子类型的实例这是可以的，因为父类型有的功能子类型都有，所以调用父类型任何方法都不会出错，但是子类型接收父类型的实例是不可以的，声明一个Android类型，用Symbian初始化，等到调用视频通过时，Symbian就傻眼了，它不会呀。为了避免这个可能出现意外的情况，所以Java直接禁止了向其中添加元素，既然解决不了问题，那就解决提出问题的人。</p>
+<p>所以，? extends T通配符可以用自身及其子类，子类的子类初始化，从其中get获取元素时，均为T类型，且不可向其add元素。</p>
+<h3 id="3-super"><a href="#3-super" class="headerlink" title="3. ? super"></a>3. ? super</h3><p>看过上面的extends，这个? super T就很好理解了，?同样代表着类型不确定，但是是T的父类型，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;? <span class="keyword">super</span> Symbian&gt; phone = <span class="keyword">new</span> ArrayList&lt;Symbian&gt;();</span><br><span class="line">List&lt;? <span class="keyword">super</span> Symbian&gt; phone = <span class="keyword">new</span> ArrayList&lt;Phone&gt;();</span><br></pre></td></tr></table></figure>
+<p>通过super通配符限定变量phone的范型，它可以使用Android，或是Symbian初始化。要知道，Java中Object是所有类的父类型，所以在此使用Object初始化，也是可以的。</p>
+<p>通过get从中获取元素时，因为phone不知道具体类型，所以为了万无一失，它只能返回Object类型，只有Object类型才能应对所有类型的情况。通过add添加时，虽然phone不确定自己存储的是哪种类型，但是，接收Symbian及其子类型类型就一定不会出错，因为不管是Symbian的父类型还是间接父类型，只要它有的功能，Symbian就一定也有，同理，Symbian的子类型也有。</p>
+<p>总结下来就是，? super限定符的集合，可以add添加，但是获取的都是Object类型</p>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><p>Java这些对于范型极其限定符的种种限制，其实，都是为了编译后在JVM中运行不出现问题，如果能从这一点考虑，这些就很好理解了。如果把Java中的继承关系，看成上下承接关系的话，父类在上，子类在下，子类在继承了父类型之后，又扩展了自己独特的功能，就像上面的例子中Phone、Symbian和Android的关系，这样来看，它们就像一个没有底边的三角形，坐在尖尖上的就是Object的，功能最少，越向下的子类型，功能越丰富，也就越庞大，这个关系模型需要记住，有了这个还算形象的模型，后面的一点定义会很好理解。</p>
+<p>? extends T限定符限定了类型是T或其子类，官方说法是，限定了类型上限，结合三角形模型来看，就像是在T这一层画一条线，被这个限定符限定的，只能是这条线以下的类型，这条线即为类型上限，T为功能最小的类型，也叫协变，covariance。</p>
+<p>? super T限定符限定了类型是T或其父类，官方说法是，限定了类型下限，结合三角形模型来看，类型T同样是一条线，可接收的类型均在线的上方，这条线是类型下限，T是功能最多的类型，这个叫逆变，contravariance，向下才能做大做强，它非要逆流而上，所以叫它逆变</p>
+<p>当没有修饰符，只有一个T时，这个时候限定了类型只能是这种，没有其他可能，所以这个叫不变，invariance</p>
+<h3 id="5-类型擦除"><a href="#5-类型擦除" class="headerlink" title="5. 类型擦除"></a>5. 类型擦除</h3><p>上面提到了类型擦除，那么如何擦除，以及擦除后是什么样子的呢？简单说，就是用实际的类型替换掉不确定的范型。举个例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Phone</span>&gt; </span>&#123;</span><br><span class="line">   T phone;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> T <span class="title">getPhone</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> phone; &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPhone</span><span class="params">(T p)</span> </span>&#123; phone = p; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设这个带范型的类，擦除之后大概就是这样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">   Phone phone;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Phone <span class="title">getPhone</span><span class="params">()</span> </span>&#123; reurn phone; &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPhone</span><span class="params">(Phone p)</span> </span>&#123; phone = p; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>擦除之后，没有范型的类，在JVM中才可运行。这是类中范型的例子，方法参数的情况也是一样的道理。</p>
+<p>不变的范型，替换成Object。</p>
+<p>协变的范型，替换成上限类型。</p>
+<p>逆变的范型，替换成Object。</p>
+<h3 id="6-lt-gt"><a href="#6-lt-gt" class="headerlink" title="6. &lt;?&gt; "></a>6. &lt;?&gt; <T></h3><p>如果仔细看上面的话，会发现一个小细节，在开始声明变量phone时，用的是? extends，到上面类型擦除的例子里，用的变成了T extends。这两个的区别就在此，</p>
+<ul>
+<li><code>&lt;?&gt;</code>：范型的声明</li>
+<li><code>&lt;T&gt;</code>：范型的定义<br>相同点，就是二者都可以限定类型的上限，或者下限。</li>
+</ul>
+<h3 id="7-in，out"><a href="#7-in，out" class="headerlink" title="7. in，out"></a>7. in，out</h3><p>说完Java，再看看Kotlin。</p>
+<p>Kotlin中没有extends和super，与之替换的是out和in</p>
+<ul>
+<li>out：限定类型上限，与? extends等同，在三角模型中，上面是个死胡同，想要out就要向下后，所以限定了上限</li>
+<li>in：等同? super，限定类型下限，也可以结合三角模型来记，in就是往三角里面走</li>
+</ul>
+<h3 id="8-Java的？和Kotlin的"><a href="#8-Java的？和Kotlin的" class="headerlink" title="8. Java的？和Kotlin的*"></a>8. Java的？和Kotlin的*</h3><p>在Java中单独使用<code>?</code>当作范型类型时，它表示的所有类型，等同于：? extends Object。</p>
+<p>Kotlin中有个与之对等的<code>*</code>，等同于out Any。</p>
+<h3 id="9-where"><a href="#9-where" class="headerlink" title="9. where"></a>9. where</h3><p>当有多个类型限定范型时，Java和Kotlin的写法稍有不同，Java是这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Fruits</span>&gt; </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Fruits</span> &amp; <span class="title">Food</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin中，单个限制时使用冒号，多个时使用where</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span>&lt;<span class="type">T : Fruits</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span>&lt;<span class="type">T</span>&gt; <span class="title">where</span> <span class="title">T</span> : <span class="type">Fruits</span>, <span class="type">T : Food</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-refied"><a href="#10-refied" class="headerlink" title="10. refied"></a>10. refied</h3><p>上面说过范型擦除，所以在运行时候需要知道范型确切类型信息的操作都没法用了，因为不是上限类型就是下限类型，或者是Object</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class Test&lt;T&gt; &#123;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(Object item)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (item <span class="keyword">instanceof</span> T) &#123;</span><br><span class="line">         <span class="comment">// 这里是获取不到的，编译也过不去</span></span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin也是一样的</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>&lt;<span class="type">T</span>&gt; </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">fun</span> <span class="title">print</span><span class="params">(item: <span class="type">Any</span>)</span></span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (item <span class="keyword">is</span> T) &#123;</span><br><span class="line">         <span class="comment">// 同Java一样</span></span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Java中的解决方式是，将T换成Class<code>&lt;T&gt;</code>，然后通过Class.isInstance方法<br>   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Class Test&lt;T&gt; &#123;</span><br><span class="line">   Class&lt;T&gt; ct;</span><br><span class="line">   Test(Class&lt;T&gt; c) &#123;</span><br><span class="line">      ct = t;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(Object item)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (ct.isInstance(item)) &#123;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在Kotlin中，也可以使用这中方法</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>&lt;<span class="type">T</span>&gt;</span>(<span class="keyword">val</span> c: Class&lt;T&gt;) &#123;</span><br><span class="line">   <span class="function"><span class="keyword">fun</span> <span class="title">print</span><span class="params">(item: <span class="type">Any</span>)</span></span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (c.isInstance(item)) &#123;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除此之外，Kotlin还提供了一个关键字reified，使得一种更为简答的方式可用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>&lt;<span class="type">T</span>&gt; </span>&#123;</span><br><span class="line">   <span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T <span class="keyword">reified</span>&gt;</span> <span class="title">print</span><span class="params">(item: <span class="type">Any</span>)</span></span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (item <span class="keyword">is</span> T) &#123;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-应用-PECS"><a href="#11-应用-PECS" class="headerlink" title="11. 应用 PECS"></a>11. 应用 PECS</h3><p>上面提到过，extends限定了类型上限的List，不能添加，只能向外提供，我们给它起个名字，就叫做生产者，Producer。同样，super限定了类型下限的List，get出来的都是Object，并没有什么实际意义，而可通过add向内添加元素，我们也给它起个名字，叫做消费者，Consumer，结合二者，便是常说的PECS，在Kotlin中，应该就是POCI了吧，但是好像还没听过有谁这么叫，在Java面前，可能Kotlin还是年轻些。</p>
+<p>生产者和消费者模式，就是范型限定的常见应用，举个例子，说明一下。还是用手机的例子。</p>
+<p>生产者接口，可以提供商品</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Producer</span>&lt;<span class="type">out T</span>&gt; </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">fun</span> <span class="title">produce</span><span class="params">()</span></span>: T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>消费者接口，可以使用商品</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="type">in T</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>手机生产者</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneProducer</span> : <span class="type">Producer</span>&lt;<span class="type">Phone</span>&gt; </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SymbianProducer</span> : <span class="type">Producer</span>&lt;<span class="type">Symbian</span>&gt; </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidProducer</span> : <span class="type">Producer</span>&lt;<span class="type">Android</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>实例化出来生产者</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> p1: Producer&lt;Phone&gt; = PhoneProducer()</span><br><span class="line"><span class="keyword">val</span> p2: Producer&lt;Phone&gt; = SymbianProducer()</span><br><span class="line"><span class="keyword">val</span> p3: Producer&lt;Phone&gt; = AndroidProducer()</span><br></pre></td></tr></table></figure>
+<p>分析一下，我们声明了一个类型是<code>Producer&lt;Phone&gt;</code>的变量p，Producer使用了out范型修饰符，也就是说，p的类型上限就是Phone，那么自然可以传递Phone或其子类行给p，如果反过来则不行，通俗的理解就是，我一个准备生产只带有打电话功能的手机，你给我一个Phone工厂可以生产，Symbian工厂也能生产，Android工厂更能生产了，相反，我想要一个生产Android的工厂，你给一个生产Symbian的，肯定就是不行了，这里的重点是能否生产出。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> p1: Producer&lt;Android&gt; = PhoneProducer() <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">val</span> p2: Producer&lt;Android&gt; = SymbianProducer() <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">val</span> p3: Producer&lt;Android&gt; = AndroidProducer()</span><br></pre></td></tr></table></figure>
+<p>这便是体现了限定上限范型的协变性。</p>
+<p>生产者看完，再来看看消费者</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneConsumer</span> : <span class="type">Consumer</span>&lt;<span class="type">Phone</span>&gt; </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SymbianConsumer</span> : <span class="type">Consumer</span>&lt;<span class="type">Symbian</span>&gt; </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidConsumer</span> : <span class="type">Consumer</span>&lt;<span class="type">Android</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>实例化出消费者</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> c1: Consumer&lt;Android&gt; = PhoneConsumer()</span><br><span class="line"><span class="keyword">val</span> c2: Consumer&lt;Android&gt; = SymbianConsumer()</span><br><span class="line"><span class="keyword">val</span> c2: Consumer&lt;Android&gt; = AndroidConsumer()</span><br></pre></td></tr></table></figure>
+<p>再分析一个消费者，限定符in限定了类型下限是Android，所以可以传递父类型给c，这里通俗的理解就是，我一个能把Android玩明白的消费者，你让我去玩一个只能打电话的Phone，我肯定没有问题，同理，反过来也是不行的，我只能会用只能打电话的老年机Phone，你给我一个Android，我不会用的呀，这里的重点是能否消费掉，这里体现的是范型的逆变性。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> c1: Consumer&lt;Phone&gt; = PhoneConsumer()</span><br><span class="line"><span class="keyword">val</span> c2: Consumer&lt;Phone&gt; = SymbianConsumer() <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">val</span> c3: Consumer&lt;Phone&gt; = AndroidConsumer() <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>此外，除了生产者和消费者，还有个聚合体，叫生产消费者，ProducerConsumer，根据传入的类型T，生产时成为类型上限，消费时成为类型下限，最终，就只能是类型T，所以生产消费这体现的是不变性。</p>
+<h3 id="9-总结"><a href="#9-总结" class="headerlink" title="9.总结"></a>9.总结</h3><p>发现每个小节的开头语，多数都是上面提到过、上面说过，下面的内容在不断的延伸上面的内容，就像台阶一样，只有把下面的看明白，才能看懂上面的。完整的看一遍下来，发现范型里也没什么深奥难懂的点，只是自己知识的盲点给它增加了几分神秘色彩，稍稍花上点时间，就可以揭开这神秘的面纱。</p>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2022/04/a59fca43ac2f/" title="Java和Kotlin的范型">https://oynix.github.io/2022/04/a59fca43ac2f/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/cf0bb291ed6f/" rel="prev" title="Kotlin的KClass，Java的Class">
+      <i class="fa fa-chevron-left"></i> Kotlin的KClass，Java的Class
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/db78d37c58ab/" rel="next" title="Kotlin的inline，noinline，crossline">
+      Kotlin的inline，noinline，crossline <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E8%A8%80"><span class="nav-text">序言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E5%87%BA"><span class="nav-text">1. 引出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-extends"><span class="nav-text">2. ? extends</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-super"><span class="nav-text">3. ? super</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-text">4. 总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4"><span class="nav-text">5. 类型擦除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-lt-gt"><span class="nav-text">6. &lt;?&gt; </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-in%EF%BC%8Cout"><span class="nav-text">7. in，out</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Java%E7%9A%84%EF%BC%9F%E5%92%8CKotlin%E7%9A%84"><span class="nav-text">8. Java的？和Kotlin的*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-where"><span class="nav-text">9. where</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-refied"><span class="nav-text">10. refied</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%BA%94%E7%94%A8-PECS"><span class="nav-text">11. 应用 PECS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E6%80%BB%E7%BB%93"><span class="nav-text">9.总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">428k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : 'ad2d8a690877a43e10b0b81f5866dbd8',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

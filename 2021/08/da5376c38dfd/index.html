@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="Room是一个数据库，基于SQLite的抽象层，也可以直接使用SQLite，但强烈建议使用Room。 官方文档：Android Room">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Room的使用">
+<meta property="og:url" content="https://oynix.github.io/2021/08/da5376c38dfd/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="Room是一个数据库，基于SQLite的抽象层，也可以直接使用SQLite，但强烈建议使用Room。 官方文档：Android Room">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-24T11:49:22.000Z">
+<meta property="article:modified_time" content="2021-08-25T01:18:24.000Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Kotlin">
+<meta property="article:tag" content="Room">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.github.io/2021/08/da5376c38dfd/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Room的使用 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">29</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">133</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2021/08/da5376c38dfd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Room的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-24 19:49:22" itemprop="dateCreated datePublished" datetime="2021-08-24T19:49:22+08:00">2021-08-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Room是一个数据库，基于SQLite的抽象层，也可以直接使用SQLite，但强烈建议使用Room。</p>
+<p>官方文档：<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuYW5kcm9pZC5jb20vdHJhaW5pbmcvZGF0YS1zdG9yYWdlL3Jvb20=">Android Room<i class="fa fa-external-link-alt"></i></span></p>
+<span id="more"></span>
+
+<h3 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">// ..... 其他依赖 .....</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Room</span></span><br><span class="line">    <span class="keyword">def</span> room_version = <span class="string">&quot;2.3.0&quot;</span></span><br><span class="line"></span><br><span class="line">    implementation <span class="string">&quot;androidx.room:room-runtime:$room_version&quot;</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;androidx.room:room-compiler:$room_version&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// To use Kotlin annotation processing tool (kapt)</span></span><br><span class="line">    kapt <span class="string">&quot;androidx.room:room-compiler:$room_version&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建表。"><a href="#创建表。" class="headerlink" title="创建表。"></a>创建表。</h3><p>Room里的表，需要用@Entry注解标注，这里用个简单的学生表</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// table_name就是表的名字，indecies是可选项，用来生成表的索引</span></span><br><span class="line"><span class="meta">@Entity(tableName = <span class="meta-string">&quot;student&quot;</span>, indices = [Index(value = [<span class="meta-string">&quot;num&quot;</span>], unique = true)</span>])</span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>(</span><br><span class="line">    <span class="meta">@PrimaryKey</span> <span class="keyword">val</span> id: <span class="built_in">Int</span>,</span><br><span class="line">    <span class="keyword">val</span> num: <span class="built_in">Int</span>,</span><br><span class="line">    <span class="keyword">val</span> name: String,</span><br><span class="line">    <span class="keyword">val</span> age: <span class="built_in">Int</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建数据表访问类。"><a href="#创建数据表访问类。" class="headerlink" title="创建数据表访问类。"></a>创建数据表访问类。</h3><p>这里我们只需要声明接口，并加以@Dao注解标注，具体实现交给Room来做，</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里只定义CRUD，增删改查，也可根据需要定义其他接口，如查询分数大于某个数值的所有学生</span></span><br><span class="line"><span class="meta">@Dao</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">StudentDao</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Insert</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">insert</span><span class="params">(student: <span class="type">Student</span>)</span></span>: <span class="built_in">Long</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Delete</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">delete</span><span class="params">(student: <span class="type">Student</span>)</span></span>: <span class="built_in">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Update</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">update</span><span class="params">(student: <span class="type">Student</span>)</span></span>: <span class="built_in">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query(<span class="meta-string">&quot;SELECT * FROM student WHERE num = :num&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">query</span><span class="params">(num: <span class="type">Int</span>)</span></span>: Student?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表有了，访问方式也有了，下面创建数据库。"><a href="#表有了，访问方式也有了，下面创建数据库。" class="headerlink" title="表有了，访问方式也有了，下面创建数据库。"></a>表有了，访问方式也有了，下面创建数据库。</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 继承自RoomDatabase，其中已经实现了绝大数功能，我们只需要额外声明几个接口，用来提供Dao数据类</span></span><br><span class="line"><span class="comment">// 方法的具体实现交给Room来做</span></span><br><span class="line"><span class="meta">@Database(entities = [Student::class], version = 1)</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppDatabase</span> : <span class="type">RoomDatabase</span></span>() &#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">studentDao</span><span class="params">()</span></span>: StudentDao</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="万事俱备，现在可以用了。在Activity里调用下试试看"><a href="#万事俱备，现在可以用了。在Activity里调用下试试看" class="headerlink" title="万事俱备，现在可以用了。在Activity里调用下试试看"></a>万事俱备，现在可以用了。在Activity里调用下试试看</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过Room提供的Builder创建数据库的实例</span></span><br><span class="line">        <span class="comment">// 第一个参数是个context，第二个参数是数据库的Class，第三个参数是数据库文件的名字</span></span><br><span class="line">        <span class="keyword">val</span> db = Room.databaseBuilder(<span class="keyword">this</span>, AppDatabase::<span class="keyword">class</span>.java, <span class="string">&quot;app.db&quot;</span>).build()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获得一个Dao</span></span><br><span class="line">        <span class="keyword">val</span> dao = db.studentDao()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加一条记录</span></span><br><span class="line">        dao.insert(Student(<span class="number">1</span>, <span class="number">1</span>, <span class="string">&quot;john&quot;</span>, <span class="number">98</span>))</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加完成，运行一下。"><a href="#添加完成，运行一下。" class="headerlink" title="添加完成，运行一下。"></a>添加完成，运行一下。</h3><p>然后你会发现，崩溃了。。。日志如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: Unable to start activity ComponentInfo&#123;com.oynix.room.sample/com.oynix.room.sample.MainActivity&#125;: java.lang.IllegalStateException: Cannot access database on the main thread since it may potentially lock the UI for a long period of time.</span><br></pre></td></tr></table></figure>
+<p>这句话的意思是说，不能在main thread，也就是主线程访问数据库，因为这样有可能会把页面卡住一段很长的时间。这样的检测机制算是合理的，毕竟这属于IO操作，而IO操作都应该放到单独的线程去跑。<br>但是也可以去掉这种检测，在创建数据库的时候额外传入个配置：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> db = Room.databaseBuilder(<span class="keyword">this</span>, AppDatabase::<span class="keyword">class</span>.java, <span class="string">&quot;app.db&quot;</span>)</span><br><span class="line">            .allowMainThreadQueries() <span class="comment">// 允许在主线程操作</span></span><br><span class="line">            .build()</span><br><span class="line">        <span class="keyword">val</span> dao = db.studentDao()</span><br><span class="line">        dao.insert(Student(<span class="number">1</span>, <span class="number">1</span>, <span class="string">&quot;john&quot;</span>, <span class="number">98</span>))</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候再运行一下，就会发现顺利执行</p>
+<h3 id="数据库文件"><a href="#数据库文件" class="headerlink" title="数据库文件"></a>数据库文件</h3><p>这个时候，在Android Studio的Device File Explorer中，可以在data/data/{包名}/database目录下发现3个文件，app.db、app.db-shm和app.db-wal，其中.db是数据库文件，另外两个是临时文件。<br>把这三个文件导出到电脑桌面，然后用能打开db文件的软件将app.db打开，如SQLite Professional、SQLite Studio等，会看到我们创建的student表，以及表中刚刚插入的那条数据。</p>
+<h3 id="增加一张表"><a href="#增加一张表" class="headerlink" title="增加一张表"></a>增加一张表</h3><p>这个时候，业务发生调整，我们需要增加一张教师表，如下</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity(tableName = <span class="meta-string">&quot;teacher&quot;</span>, indices = [Index(value = [<span class="meta-string">&quot;num&quot;</span>], unique = true)</span>])</span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>(</span><br><span class="line">    <span class="meta">@PrimaryKey</span> <span class="keyword">val</span> id: <span class="built_in">Int</span>,</span><br><span class="line">    <span class="keyword">val</span> num: <span class="built_in">Int</span>, <span class="comment">// 教师编号</span></span><br><span class="line">    <span class="keyword">val</span> name: String,</span><br><span class="line">    <span class="keyword">val</span> course: String</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Dao</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TeacherDao</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Insert</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">insert</span><span class="params">(teacher: <span class="type">Teacher</span>)</span></span>: <span class="built_in">Long</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Delete</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">delete</span><span class="params">(teacher: <span class="type">Teacher</span>)</span></span>: <span class="built_in">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Update</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">update</span><span class="params">(teacher: <span class="type">Teacher</span>)</span></span>: <span class="built_in">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query(<span class="meta-string">&quot;SELECT * FROM teacher WHERE num = :num&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">query</span><span class="params">(num: <span class="type">Int</span>)</span></span>: Teacher?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时，也要修改数据库类，增加新的教师表实体</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Database(entities = [Student::class, Teacher::class], version = 1)</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppDatabase</span> : <span class="type">RoomDatabase</span></span>() &#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">studentDao</span><span class="params">()</span></span>: StudentDao</span><br><span class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">teacherDao</span><span class="params">()</span></span>: TeacherDao</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>增加一条教师的记录。张老师，他很厉害，会教数学</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> db = Room.databaseBuilder(<span class="keyword">this</span>, AppDatabase::<span class="keyword">class</span>.java, <span class="string">&quot;app.db&quot;</span>)</span><br><span class="line">            .allowMainThreadQueries()</span><br><span class="line">            .build()</span><br><span class="line">        <span class="comment">// John，学号：1</span></span><br><span class="line">        <span class="keyword">val</span> dao = db.studentDao()</span><br><span class="line">        dao.insert(Student(<span class="number">1</span>, <span class="number">1</span>, <span class="string">&quot;John&quot;</span>, <span class="number">14</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 张老师，教数学</span></span><br><span class="line">        <span class="keyword">val</span> teacherDao = db.teacherDao()</span><br><span class="line">        teacherDao.insert(Teacher(<span class="number">1</span>, <span class="number">1001</span>, <span class="string">&quot;Miss Zhang&quot;</span>, <span class="string">&quot;Math&quot;</span>))</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>再一运行，发现又报错了。。。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: Unable to start activity ComponentInfo&#123;com.oynix.room.sample/com.oynix.room.sample.MainActivity&#125;: java.lang.IllegalStateException: Room cannot verify the data integrity. Looks like you&#x27;ve changed schema but forgot to update the version number. You can simply fix this by increasing the version number.</span><br></pre></td></tr></table></figure>
+<p>这句话的意思是说，数据库的schema，也就是结构发生了改变，但是版本号没有更新，Room不知道怎么处理这些schema的修改，然后就报了个错。</p>
+<h3 id="数据库升级"><a href="#数据库升级" class="headerlink" title="数据库升级"></a>数据库升级</h3><p>就像刚刚那样，在版本的迭代更新中，常常会有修改数据库结构的情况。在Room中，数据库是通过version号，来管理数据库版本的，每做一次修改，version都要增加，一般增加1，你每次加2也没人能拿你怎么样。我们在创建数据库的同时，还要告诉Room版本更新做了哪些操作，这些需要通过addMigrations来添加。<br>只修改schema，而不增加version，程序会崩溃。<br>只增加version，而不提供Migration，程序会删除并重建数据库</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> db = Room.databaseBuilder(<span class="keyword">this</span>, AppDatabase::<span class="keyword">class</span>.java, <span class="string">&quot;app.db&quot;</span>)</span><br><span class="line">            .allowMainThreadQueries()</span><br><span class="line">            .addMigrations(<span class="keyword">object</span> : Migration(<span class="number">1</span>, <span class="number">2</span>)&#123;</span><br><span class="line">                <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">migrate</span><span class="params">(database: <span class="type">SupportSQLiteDatabase</span>)</span></span> &#123;</span><br><span class="line">                    database.execSQL(<span class="string">&quot;CREATE TABLE IF NOT EXISTS `teacher` (`id` INTEGER NOT NULL, `num` INTEGER NOT NULL, `name` TEXT NOT NULL, `course` TEXT NOT NULL, PRIMARY KEY(`id`))&quot;</span>)</span><br><span class="line">                    database.execSQL(<span class="string">&quot;CREATE UNIQUE INDEX IF NOT EXISTS `index_teacher_num` ON `teacher` (`num`)&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .build()</span><br><span class="line">        <span class="comment">// 这里要注掉，因为表里已经有了一个id为1的记录了</span></span><br><span class="line">        <span class="comment">// val dao = db.studentDao()</span></span><br><span class="line">        <span class="comment">// dao.insert(Student(1, 1, &quot;John&quot;, 14))</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> teacherDao = db.teacherDao()</span><br><span class="line">        teacherDao.insert(Teacher(<span class="number">1</span>, <span class="number">1001</span>, <span class="string">&quot;Miss Zhang&quot;</span>, <span class="string">&quot;Math&quot;</span>))</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>如上，从1到2后，我们新加了一个teacher表，并在表上加了一个索引，那么这么写就可以了。<br>如果说，不想写这么长的SQL语句怎么办？也好办，全局搜AppDatabase_Impl.java文件，这里面就是Room已经写好的。<br>再次运行，发现没有再崩溃，打开app.db，里面多了一张表，表里有一条刚加的张老师的记录。</p>
+<h3 id="addMigrations"><a href="#addMigrations" class="headerlink" title="addMigrations"></a>addMigrations</h3><p>这里要单独说一说这个方法，程序运行后，如果本地数据库版本和代码里的版本不一致，这个时候这个方法才会派上用场，如果一致则无用。<br>先帖下文档里的说明：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">Adds a migration to the builder.</span></span><br><span class="line"><span class="comment">Each Migration has a start and end versions and Room runs these migrations to bring the database to the latest version.</span></span><br><span class="line"><span class="comment">If a migration item is missing between current version and the latest version, Room will clear the database and recreate so even if you have no changes between 2 versions, you should still provide a Migration object to the builder.</span></span><br><span class="line"><span class="comment">A migration can handle more than 1 version (e.g. if you have a faster path to choose when going version 3 to 5 without going to version 4). If Room opens a database at version 3 and latest version is &gt;= 5, Room will use the migration object that can migrate from 3 to 5 instead of 3 to 4 and 4 to 5.</span></span><br><span class="line"><span class="comment">Params:</span></span><br><span class="line"><span class="comment">migrations – The migration object that can modify the database and to the necessary changes.</span></span><br><span class="line"><span class="comment">Returns:</span></span><br><span class="line"><span class="comment">This RoomDatabase.Builder instance.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="keyword">public</span> Builder&lt;T&gt; addMigrations(<span class="meta">@NonNull</span> Migration... migrations)</span><br></pre></td></tr></table></figure>
+<p>它接收可变参数，即可同时接收多个Migration。每个Migration都有个startVersion，以及一个endVersion，Room将会运行这些Migration，将本地数据库的版本一步步升级到代码里的最新版本。如果缺失当前版本到最新版本的Migration，Room将会清空数据库并重建。所以，即便在两个版本之间没有变化，仍然需要提供一个Migration给builder。<br>一个Migration可以处理多个版本，例如，当前是版本3，最新是版本5，你提供了3到4的Migration、4到5的Migration以及3到5的Migration，那么Room就会选择更快的Migration，即3到5，而不是由3到4再到5。</p>
+<h3 id="数据加密"><a href="#数据加密" class="headerlink" title="数据加密"></a>数据加密</h3><p>虽然Android高版本在数据安全这一块已经提升了很多，未root的手机基本看不到其他应用独立存储空间里的内容，但为了以防万一，可以进一步将数据库文件，也就是app.db，进行加密。<br>当前有很多种实现思路，如每次写之前，将数据加密，读之后，将数据解密，等。<br>这里介绍个第三方加密库，使用很方便，当然也有缺点，就是包体会变大，因为用到了native库，增大6M左右</p>
+<ul>
+<li>引入依赖<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// room cypher maven</span></span><br><span class="line">maven &#123; url <span class="string">&quot;https://s3.amazonaws.com/repo.commonsware.com&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// room cypher</span></span><br><span class="line">implementation <span class="string">&quot;com.commonsware.cwac:saferoom.x:1.2.1&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li>增加Factory，openHeloperFactory，<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> db = Room.databaseBuilder(<span class="keyword">this</span>, AppDatabase::<span class="keyword">class</span>.java, <span class="string">&quot;app.db&quot;</span>)</span><br><span class="line">            .allowMainThreadQueries()</span><br><span class="line">            .openHelperFactory(SafeHelperFactory(<span class="string">&quot;your_database_password&quot;</span>.toCharArray()))</span><br><span class="line">            .addMigrations(<span class="keyword">object</span> : Migration(<span class="number">1</span>, <span class="number">2</span>)&#123;</span><br><span class="line">                <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">migrate</span><span class="params">(database: <span class="type">SupportSQLiteDatabase</span>)</span></span> &#123;</span><br><span class="line">                    database.execSQL(<span class="string">&quot;CREATE TABLE IF NOT EXISTS `teacher` (`id` INTEGER NOT NULL, `num` INTEGER NOT NULL, `name` TEXT NOT NULL, `course` TEXT NOT NULL, PRIMARY KEY(`id`))&quot;</span>)</span><br><span class="line">                    database.execSQL(<span class="string">&quot;CREATE UNIQUE INDEX IF NOT EXISTS `index_teacher_num` ON `teacher` (`num`)&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .build()</span><br><span class="line"><span class="comment">//        val dao = db.studentDao()</span></span><br><span class="line"><span class="comment">//        dao.insert(Student(1, 1, &quot;John&quot;, 14))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        val teacherDao = db.teacherDao()</span></span><br><span class="line"><span class="comment">//        teacherDao.insert(Teacher(1, 1001, &quot;Miss Zhang&quot;, &quot;Math&quot;))</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li>加密之后，再导出来的app.db就无法打开了</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上，Room的简单使用就这些了，相比于SQLite，简单、方便了不少，本地化数据可以多考虑使用。<br>另外还有些更高级的用法，比如和ViewModel的结合、和Hilt的结合、异步操作数据流，等等，这里就就不做说明了。</p>
+<p>附上Github地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4L1Jvb21TYW1wbGU=">https://github.com/oynix/RoomSample<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2021/08/da5376c38dfd/" title="Room的使用">https://oynix.github.io/2021/08/da5376c38dfd/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+              <a href="/tags/Room/" rel="tag"># Room</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/56ea6b63b2f8/" rel="prev" title="管理 MacOS 上的 Python 环境版本">
+      <i class="fa fa-chevron-left"></i> 管理 MacOS 上的 Python 环境版本
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/a911d3b22245/" rel="next" title="Kotlin之let、apply、also、with">
+      Kotlin之let、apply、also、with <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-text">导入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E3%80%82"><span class="nav-text">创建表。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E8%AE%BF%E9%97%AE%E7%B1%BB%E3%80%82"><span class="nav-text">创建数据表访问类。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E6%9C%89%E4%BA%86%EF%BC%8C%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F%E4%B9%9F%E6%9C%89%E4%BA%86%EF%BC%8C%E4%B8%8B%E9%9D%A2%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%82"><span class="nav-text">表有了，访问方式也有了，下面创建数据库。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%87%E4%BA%8B%E4%BF%B1%E5%A4%87%EF%BC%8C%E7%8E%B0%E5%9C%A8%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%BA%86%E3%80%82%E5%9C%A8Activity%E9%87%8C%E8%B0%83%E7%94%A8%E4%B8%8B%E8%AF%95%E8%AF%95%E7%9C%8B"><span class="nav-text">万事俱备，现在可以用了。在Activity里调用下试试看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%8C%E6%88%90%EF%BC%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%8B%E3%80%82"><span class="nav-text">添加完成，运行一下。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6"><span class="nav-text">数据库文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%BC%A0%E8%A1%A8"><span class="nav-text">增加一张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8D%87%E7%BA%A7"><span class="nav-text">数据库升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#addMigrations"><span class="nav-text">addMigrations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86"><span class="nav-text">数据加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">428k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : 'a445ee5ce28e6a07e87b1441e9d17408',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
