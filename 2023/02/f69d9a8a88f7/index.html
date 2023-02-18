@@ -30,7 +30,7 @@
 <meta property="og:description" content="日常开发中，经常会遇到需要将做了一些修改的文件恢复原状的需求，在这里，尽量用简洁的描述来总结一些 Git 中不同状态下的文件如何撤销修改。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-18T06:09:29.000Z">
-<meta property="article:modified_time" content="2023-02-18T10:53:31.540Z">
+<meta property="article:modified_time" content="2023-02-18T15:49:37.161Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
@@ -259,7 +259,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -285,20 +285,26 @@
 <ul>
 <li>工作区：即工作目录</li>
 <li>暂存区：用于存放临时改动，通过<code>git add</code>命令即可将工作区的改动添加至暂存区</li>
-<li>仓库区：用于存放提交，通过<code>git commit</code>命令即可将暂存区的内容提交至仓库</li>
+<li>仓库区：用于存放提交，通过<code>git commit</code>命令即可将暂存区的内容提交至仓库区</li>
 <li>远程仓库：用于托管本地仓库</li>
 </ul>
-<h3 id="2-撤销新添加的文件（未被追踪的文件）"><a href="#2-撤销新添加的文件（未被追踪的文件）" class="headerlink" title="2. 撤销新添加的文件（未被追踪的文件）"></a>2. 撤销新添加的文件（未被追踪的文件）</h3><p>对于新增的文件，在<code>仓库区</code>中并没有记录，对于这样未被追踪的文件，需要使用<code>clean</code>命令，但<code>clean</code>命令只能清理<code>工作区</code>的文件，如果已经通过<code>git add</code>命令添加到了<code>暂存区</code>的文件，则需要先将文件退回到工作区，然后再<code>clean</code>。</p>
+<h3 id="2-撤销新添加的文件（未被追踪的文件）"><a href="#2-撤销新添加的文件（未被追踪的文件）" class="headerlink" title="2. 撤销新添加的文件（未被追踪的文件）"></a>2. 撤销新添加的文件（未被追踪的文件）</h3><p>对于新增的文件，在<code>仓库区</code>中并没有记录，对于这样未被追踪的文件，需要使用<code>clean</code>命令，但<code>clean</code>命令只能清理<code>工作区</code>的文件，如果已经通过<code>git add</code>命令添加到了<code>暂存区</code>的文件，则需要先将文件退回到<code>工作区</code>，然后再<code>clean</code>。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 针对在工作区的文件，直接clean</span></span><br><span class="line">git clean -df</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 针对在暂存区的文件，先退回再clean</span></span><br><span class="line">git restore --staged file.name</span><br><span class="line">git clean -df</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-撤销修改的文件（已被追踪的文件）"><a href="#3-撤销修改的文件（已被追踪的文件）" class="headerlink" title="3. 撤销修改的文件（已被追踪的文件）"></a>3. 撤销修改的文件（已被追踪的文件）</h3><p>对于已经存在于<code>仓库区</code>的文件，即为已被追踪的文件，如果想要撤销这种文件的改动，需要使用<code>restore</code>命令，同上面，如果文件已经添加到暂存区，那么也需要先退回到工作区，然后再撤销。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 针对在工作区的文件，直接restore</span></span><br><span class="line">git restore file.name</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 针对在暂存区的文件，先退回再restore</span></span><br><span class="line">git restore --staged file.name</span><br><span class="line">git restore file.name</span><br></pre></td></tr></table></figure>
 
-<h3 id="4-撤销提交中的某个文件（已提交到仓库区的文件）"><a href="#4-撤销提交中的某个文件（已提交到仓库区的文件）" class="headerlink" title="4. 撤销提交中的某个文件（已提交到仓库区的文件）"></a>4. 撤销提交中的某个文件（已提交到仓库区的文件）</h3><p>某次提交了多个文件，但是想将其中的某一个文件的修改撤回。这种情况，流程是这样的，首先需要确定文件需要回退到哪次提交的状态，比如，想撤回提交ID为C1中对文件的修改，那么也就是说，文件需要回到C1上一次的提交。然后，Git会基于目标状态，分析出当前状态都有了哪些改动，只要放弃这些改动，那么文件便回到了目标状态。</p>
+<h3 id="4-撤销提交中的某个文件（已提交到仓库区的文件）"><a href="#4-撤销提交中的某个文件（已提交到仓库区的文件）" class="headerlink" title="4. 撤销提交中的某个文件（已提交到仓库区的文件）"></a>4. 撤销提交中的某个文件（已提交到仓库区的文件）</h3><p>某次提交了多个文件，但是想将其中的某一个文件的修改撤回。这种情况，流程是这样的，首先需要确定文件需要回退到哪次提交的状态，比如，想撤回提交ID为C1中对文件的修改，那么也就是说，文件需要回到C1上一次的提交。然后，Git会列出目标状态之后的所有改动，只要放弃这些改动，那么文件便回到了目标状态。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看与该文件相关的所有历史提交，用哪个都可以</span></span><br><span class="line">git log file.name</span><br><span class="line">git log --oneline file.name</span><br><span class="line">git reflog file.name</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将文件的追踪状态回到某个提交</span></span><br><span class="line">git reset commitId file.name</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 此时，该文件在commitId之后的改动都在工作区，只要放弃这些修改，就会回撤到commitId状态</span></span><br><span class="line">git restore file.name</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 提交即可，可单独提交，也可以追加到上次提交</span></span><br><span class="line">git commit -am &#x27;reset file.name&#x27;</span><br><span class="line">git commit --amend --allow-empty</span><br></pre></td></tr></table></figure>
-<p>经过我的实践发现，当执行完<code>git reset id file.name</code>之后，这个文件会处于一种分离状态，即存在于工作区，也存在于暂存区，这个时候，不管是通过<code>git add</code>命令将工作区的文件添加到暂存区，还是通过<code>git restore --staged</code>将暂存区的文件退回到工作区，使这个文件只存在一种状态，那么<code>git reset</code>命令的效果就会消失，就像是无事发生。</p>
-<p>只有通过<code>git restore file.name</code>放弃工作区的修改，才可以。</p>
-<h3 id="附加1-git-reset-和-git-revert"><a href="#附加1-git-reset-和-git-revert" class="headerlink" title="附加1: git reset 和 git revert"></a>附加1: git reset 和 git revert</h3><p><code>reset</code>不会产生新的提交，只是将分支的指针指向目标提交，而<code>revert</code>则是将某次提交的修改反向回撤，会在工作区，需要将新的变动再次提交至仓库区。</p>
+<p>当执行完<code>git reset id file.name</code>之后，这个文件既存在于工作区，也存在于暂存区，工作区是最新的状态，暂存区是目标状态。这个时候，不管是通过<code>git add</code>命令将工作区的文件添加到暂存区，还是通过<code>git restore --staged</code>将暂存区的文件退回到工作区，最终都会使得这个文件变成最新状态，那么<code>git reset</code>命令的效果就会消失，就像是无事发生。</p>
+<p>只有通过<code>git restore file.name</code>放弃工作区的最新状态，将暂存区的目标状态提交至仓库区，才可达到目的。</p>
+<h3 id="附加1-git-reset-和-git-revert"><a href="#附加1-git-reset-和-git-revert" class="headerlink" title="附加1: git reset 和 git revert"></a>附加1: git reset 和 git revert</h3><p><code>git reset</code>还可用来将分支的指针HEAD指向之前的某个提交，对于这个提交之后的所有改动，有3种处理方式：放到工作区、放到暂存区和直接丢弃。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 放到工作区mixed（默认方式），两种写法是等同的</span></span><br><span class="line">git reset commitId</span><br><span class="line">git reset --mixed commitId</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 放到暂存区</span></span><br><span class="line">git reset --soft commitId</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 直接丢弃</span></span><br><span class="line">git reset --hard commitId</span><br></pre></td></tr></table></figure>
+
+<p>而<code>git revert</code>用来反向修改某个提交的所有改动，然后和当前HEAD所在的提交进行合并，所以，反向修改后的内容，和最新状态的内容可能会出现冲突，这个时候需要处理冲突，然后再提交</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert commitId</span><br></pre></td></tr></table></figure>
+
+<p>当使用<code>git reset</code>恢复文件时，不用，也不能指定方式，只能手动处理。</p>
 <h3 id="附加2-git-clean"><a href="#附加2-git-clean" class="headerlink" title="附加2: git clean"></a>附加2: git clean</h3><p>这个命令只能清理工作区中未被追踪过的文件，必须同时满足这两个条件。同时，这个名字无法指定文件，是针对所有符合这两个条件的文件无差别攻击，所以，一般操作是将不需要被清理的文件先添加至暂存区避难。</p>
 <ul>
 <li><p>删除 untracked files</p>
