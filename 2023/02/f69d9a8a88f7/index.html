@@ -30,7 +30,7 @@
 <meta property="og:description" content="日常开发中，经常会遇到需要将做了一些修改的文件恢复原状的需求，在这里，尽量用简洁的描述来总结一些 Git 中不同状态下的文件如何撤销修改。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-18T06:09:29.000Z">
-<meta property="article:modified_time" content="2023-02-18T15:49:37.161Z">
+<meta property="article:modified_time" content="2023-02-18T15:52:38.504Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
@@ -304,8 +304,8 @@
 <p>而<code>git revert</code>用来反向修改某个提交的所有改动，然后和当前HEAD所在的提交进行合并，所以，反向修改后的内容，和最新状态的内容可能会出现冲突，这个时候需要处理冲突，然后再提交</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert commitId</span><br></pre></td></tr></table></figure>
 
-<p>当使用<code>git reset</code>恢复文件时，不用，也不能指定方式，只能手动处理。</p>
-<h3 id="附加2-git-clean"><a href="#附加2-git-clean" class="headerlink" title="附加2: git clean"></a>附加2: git clean</h3><p>这个命令只能清理工作区中未被追踪过的文件，必须同时满足这两个条件。同时，这个名字无法指定文件，是针对所有符合这两个条件的文件无差别攻击，所以，一般操作是将不需要被清理的文件先添加至暂存区避难。</p>
+<p>当使用<code>git reset</code>恢复文件时，不用，也不能指定方式，对于目标状态之后的所有改动，只能手动处理。</p>
+<h3 id="附加2-git-clean"><a href="#附加2-git-clean" class="headerlink" title="附加2: git clean"></a>附加2: git clean</h3><p>这个命令只能清理工作区中未被追踪过的文件，必须同时满足这两个条件。同时，这个命令无法指定文件，是针对所有符合这两个条件的文件无差别攻击，所以，一般操作是将不需要被清理的文件先添加至暂存区避难。</p>
 <ul>
 <li><p>删除 untracked files</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git clean -f</span></span><br></pre></td></tr></table></figure></li>
