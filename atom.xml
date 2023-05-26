@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2023-05-22T01:21:18.410Z</updated>
+  <updated>2023-05-26T02:00:53.440Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PyPDF2中关于EOF问题</title>
+    <link href="https://oynix.github.io/2023/05/8e6c3dc2f5b4/"/>
+    <id>https://oynix.github.io/2023/05/8e6c3dc2f5b4/</id>
+    <published>2023-05-26T00:57:32.000Z</published>
+    <updated>2023-05-26T02:00:53.440Z</updated>
+    
+    <content type="html"><![CDATA[<p>问题是这样的，装了一个破解版的Photoshop，正常来说是可以用的，但是打开之后它会联网发几个请求，请求成功之后就弹出来一个醒目的红色框框，就不太能用了，所以，想到的办法就是禁止它联网。</p><span id="more"></span><p>Photoshop一共有两个域名的请求：</p><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adobe.com</span><br><span class="line">adobe.<span class="built_in">io</span></span><br></pre></td></tr></table></figure><p>禁掉域名请求，首先想到的就是修改hosts文件，在<code>/etc/hosts</code>下：</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0.0.1</span> adobe.com</span><br><span class="line"><span class="number">127.0.0.1</span> adobe.io</span><br></pre></td></tr></table></figure><p>这样，当请求这两个域名的时候，就会转到本地地址了。</p><p>但是，在Clash代理下，hosts不生效，于是我开始找如何在Clash下让hosts生效，但都没什么效果，那个醒目的红色框框在不断的向我招手。</p><p>在查看Clash配置文件时，发现其实里面是支持禁止域名的，绕了一大圈，总算找到了正确方向。不同的代理商的配置文件可能会有所不同，但大致对于域名的处理方式都包括这三种：</p><ul><li>DIRECT：直接请求</li><li>REJECT：拒绝请求</li><li>PROXY：通过代理请求</li></ul><p>所以，对于目标域名，使用REJECT即可。对于目标域名，有三种匹配模式：</p><ul><li>DOMAIN: 全匹配</li><li>DOMAIN-KEYWORD: 关键字匹配</li><li>DOMAIN-SUFFIX: 后缀匹配</li></ul><p>综上，将配置文件中关于adobe的修改成如下值，就可以正常使用了：</p><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">DOMAIN-SUFFIX,adobe.com,REJECT</span></span><br><span class="line"><span class="string">DOMAIN-SUFFIX,adobe.io,REJECT</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;问题是这样的，装了一个破解版的Photoshop，正常来说是可以用的，但是打开之后它会联网发几个请求，请求成功之后就弹出来一个醒目的红色框框，就不太能用了，所以，想到的办法就是禁止它联网。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="MacOS" scheme="https://oynix.github.io/categories/MacOS/"/>
+    
+    
+    <category term="MacOS" scheme="https://oynix.github.io/tags/MacOS/"/>
+    
+    <category term="Clash" scheme="https://oynix.github.io/tags/Clash/"/>
+    
+  </entry>
   
   <entry>
     <title>PyPDF2中关于EOF问题</title>
