@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://s2.loli.net/2023/02/23/NYTPURE8jaHh3Zx.png">
 <meta property="og:image" content="https://s2.loli.net/2023/02/26/uoASCwtV14paMbX.png">
 <meta property="article:published_time" content="2023-02-20T10:57:32.000Z">
-<meta property="article:modified_time" content="2023-05-22T01:17:15.064Z">
+<meta property="article:modified_time" content="2023-06-18T10:16:11.052Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="Addressables">
@@ -296,7 +296,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Window -&gt; Asset Management -&gt; Addressables -&gt; Groups</span><br></pre></td></tr></table></figure>
 
 <p>首次打开时，需要点击初始化按钮，之后便会在Assets下看到生成了一个名字是AddressableAssetData的目录，这里面放的就是Addressables本身的一些配置文件，以及各个group的配置文件，</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- AddressableAssetSettings.aaset</span><br><span class="line">  Addressables自身的配置</span><br><span class="line">  </span><br><span class="line">- AssetGroups: </span><br><span class="line">  这里面是所有group的配置</span><br><span class="line">  </span><br><span class="line">- AssetGroupTemplates:</span><br><span class="line">  group的配置模版</span><br><span class="line"></span><br><span class="line">- DataBuilders:</span><br><span class="line">  Addressables的运行模式</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- AddressableAssetSettings.asset</span><br><span class="line">  Addressables自身的配置</span><br><span class="line">  </span><br><span class="line">- AssetGroups: </span><br><span class="line">  这里面是所有group的配置</span><br><span class="line">  </span><br><span class="line">- AssetGroupTemplates:</span><br><span class="line">  group的配置模版</span><br><span class="line"></span><br><span class="line">- DataBuilders:</span><br><span class="line">  Addressables的运行模式</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-创建group"><a href="#3-创建group" class="headerlink" title="3. 创建group"></a>3. 创建group</h3><p>点设置窗口左上角的New按钮，便可以看到所有的group配置模版，选择一个便可以使用其创建一个group，等下再说配置模版是什么。如下图，一共有5个group，其中Built In Data是不可修改的，Default Local Group是缺省的group，剩下的3个是我新创建的。</p>
 <p><img src="https://s2.loli.net/2023/02/22/4mYoW3CrsLwBOVn.png"></p>
