@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="现在市面上的游戏热更新方案主要有两种，一个是L#，一个是ILRuntime，前者较为成熟，后者随着更新，也可在多数游戏上有着不错的性价比。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity接入ILRuntime和使用">
+<meta property="og:url" content="https://oynix.github.io/2023/05/cc732eb32258/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="现在市面上的游戏热更新方案主要有两种，一个是L#，一个是ILRuntime，前者较为成熟，后者随着更新，也可在多数游戏上有着不错的性价比。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-17T10:57:32.000Z">
+<meta property="article:modified_time" content="2023-06-18T04:41:43.703Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="ILRuntime">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.github.io/2023/05/cc732eb32258/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Unity接入ILRuntime和使用 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">105</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">138</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2023/05/cc732eb32258/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity接入ILRuntime和使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-17 18:57:32" itemprop="dateCreated datePublished" datetime="2023-05-17T18:57:32+08:00">2023-05-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>现在市面上的游戏热更新方案主要有两种，一个是L#，一个是ILRuntime，前者较为成熟，后者随着更新，也可在多数游戏上有着不错的性价比。</p>
+<span id="more"></span>
+
+<p><span class="exturl" data-url="aHR0cHM6Ly9vdXJwYWxtLmdpdGh1Yi5pby9JTFJ1bnRpbWU=">官网地址<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="1-环境"><a href="#1-环境" class="headerlink" title="1. 环境"></a>1. 环境</h3><ul>
+<li>System：MacOS Monterey 12.5，M1 Pro</li>
+<li>Unity Editor： 2022.2.7f1</li>
+<li>JetBrains Rider： 2023.1</li>
+</ul>
+<p>我的环境如上，以下的介绍，均是基于此环境。在不同环境下，一些操作上的细节可能会有所差别。</p>
+<h3 id="2-导入包"><a href="#2-导入包" class="headerlink" title="2. 导入包"></a>2. 导入包</h3><p>可以尝试在Package Manager中直接搜索，能不能搜索到就要看Unity Editor的版本，如果是国内特供版是可以搜到的，如果是国际版则搜不到。</p>
+<p>我就没有搜到，按照文档，在项目的Packages/manifest.json中，添加ILRuntime的源信息，在这个文件的dependencies节点前增加以下代码，然后就可以搜到了，目前最新的版本是<code>2.1.0</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scopedRegistries&quot;</span>: [  </span><br><span class="line">  &#123;  </span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;ILRuntime&quot;</span>,  </span><br><span class="line">    <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;https://registry.npmjs.org&quot;</span>,  </span><br><span class="line">    <span class="attr">&quot;scopes&quot;</span>: [  </span><br><span class="line">      <span class="string">&quot;com.ourpalm&quot;</span>  </span><br><span class="line">    ]  </span><br><span class="line">  &#125;  </span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>在Package Manager中选中ILRuntime， 右边详细页面中有Samples，点击右方的<code>Import to project</code>可以将ILRuntime的示例Demo直接导入当前工程。如果报错，内容关于<code>unsafe code</code>，那么在PlayerSettings里的OtherSettings里找到Allow unsafe code，勾选上即可。</p>
+<h3 id="3-委托适配器和委托转换器"><a href="#3-委托适配器和委托转换器" class="headerlink" title="3. 委托适配器和委托转换器"></a>3. 委托适配器和委托转换器</h3><p>委托，即delegate，如果只在ILRuntime，也就是热更DLL内部使用，则与通常无异。但如果传递到外部，也就是DLL里调用Unity主工程的方法时，传递了委托类型的参数，则需要给委托注册一个适配器。</p>
+<p>一般来说，需要委托的地方，直接使用系统的Action和Func就可以满足绝大部分需求，不需要自己去定义新的delegate，这样的话，注册适配器就很简单。</p>
+<p>这是注册不带返回值的Action类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Action&lt;int, float&gt; act;</span><br><span class="line"></span><br><span class="line">appDomain.DelegateManager.RegisterMethodDelegate&lt;int, float&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>这是注册带返回值的Func类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Func&lt;int, float, bool&gt; act;</span><br><span class="line"></span><br><span class="line">appDomain.DelegateManager.RegisterFunctionDelegate&lt;int, float, bool&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>但是，当你没有使用Action或者Func这个自带的委托，而是自己定义了一个委托，那么就还需要再注册一个转换器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">delegate void CustomAction(int a, float b);</span><br><span class="line"></span><br><span class="line">app.DelegateManager.RegisterDelegateConvertor&lt;CustomAction&gt;((action) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    return new CustomAction((a, b) =&gt; &#123; return ((Action&lt;int, float&gt;)action)(a, b); &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这个转换器，自定义的delegate和系统自带的Action或Func之间的强制转换。换言之，即ILRuntime是认识Action和Func，如果你不用这两种，那么就强制转换一下，因为不管自定义了什么delegate，最终肯定能转换成Action或Func。所以作者他也建议，非必要的话，使用Action和Func即可。</p>
+<p>这些个适配器和转换器，要提前注册到代码里，如果遗漏了也不要紧，因为在用到的时候代码会报错，报错信息里就会告诉你需要注册的类型，可以直接复制粘贴。</p>
+<h3 id="4-CLR重定向和CLR绑定"><a href="#4-CLR重定向和CLR绑定" class="headerlink" title="4. CLR重定向和CLR绑定"></a>4. CLR重定向和CLR绑定</h3><p>对于无法直接调用的方法，如在Unity主工程中，通过<code>new T()</code>创建热更DLL中的类型的实例，ILRuntime给出的方案就是CLR重定向，通俗来讲，就是给目标方法创建一个影子方法，当IL解译器发现需要调用目标方法时，会将调用重定向到创建的影子方法。</p>
+<p>例如，Activator.CreateInstance，它里面就是调用了刚刚说到的<code>new T()</code>，它的影子方法，也就是重定向方法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static StackObject* CreateInstance(ILIntepreter intp, StackObject* esp, List&lt;object&gt; mStack, CLRMethod method, bool isNewObj)  </span><br><span class="line">&#123;  </span><br><span class="line">    //获取泛型参数&lt;T&gt;的实际类型  </span><br><span class="line">    IType[] genericArguments = method.GenericArguments;  </span><br><span class="line">    if (genericArguments != null &amp;&amp; genericArguments.Length == 1)  </span><br><span class="line">    &#123;  </span><br><span class="line">        var t = genericArguments[0];  </span><br><span class="line">        if (t is ILType)//如果T是热更DLL里的类型  </span><br><span class="line">        &#123;  </span><br><span class="line">            //通过ILRuntime的接口来创建实例  </span><br><span class="line">            return ILIntepreter.PushObject(esp, mStack, ((ILType)t).Instantiate());  </span><br><span class="line">        &#125;  </span><br><span class="line">        else  </span><br><span class="line">            return ILIntepreter.PushObject(esp, mStack, Activator.CreateInstance(t.TypeForCLR));//通过系统反射接口创建实例  </span><br><span class="line">    &#125;  </span><br><span class="line">    else  </span><br><span class="line">        throw new EntryPointNotFoundException();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注册重定向：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">foreach (var i in typeof(System.Activator).GetMethods())  </span><br><span class="line">&#123;  </span><br><span class="line">    //找到名字为CreateInstance，并且是泛型方法的方法定义  </span><br><span class="line">    if (i.Name == &quot;CreateInstance&quot; &amp;&amp; i.IsGenericMethodDefinition)  </span><br><span class="line">    &#123;  </span><br><span class="line">        appdomain.RegisterCLRMethodRedirection(i, CreateInstance);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面只是重定向一个方法的例子。通常情况下，如果要从热更DLL中调用Unity主工程或者Unity的接口，都需要给目标方法做重定向处理，不单单是处理一个方法，而是处理一个类。对于目标类，生成一个影子类，在影子类里，按需对其方法分别生成重定向方法，最后再将这些方法注册到ILRuntime中，这就是CLR绑定。</p>
+<p>但是，如果想写出上面这样的代码，需要对ILRuntime底层实现机制有着清晰度的了解，对此，作者提供了一个代码生成工具来自动生成这些重定向的代码，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">static void GenerateCLRBindingByAnalysis()  </span><br><span class="line">&#123;  </span><br><span class="line">     //用新的分析热更dll调用引用来生成绑定代码  </span><br><span class="line">     var domain = new ILRuntime.Runtime.Enviorment.AppDomain();  </span><br><span class="line">     using (var fs = new System.IO.FileStream(&quot;Assets/StreamingAssets/HotFix_Project.dll&quot;, System.IO.FileMode.Open, System.IO.FileAccess.Read))  </span><br><span class="line">     &#123;  </span><br><span class="line">         domain.LoadAssembly(fs);  </span><br><span class="line">  </span><br><span class="line">         //Crossbind Adapter is needed to generate the correct binding code  </span><br><span class="line">         InitILRuntime(domain);  </span><br><span class="line">         ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, &quot;Assets/ILRuntime/Generated&quot;);  </span><br><span class="line">     &#125;  </span><br><span class="line">  </span><br><span class="line">     AssetDatabase.Refresh();  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain domain)  </span><br><span class="line">&#123;  </span><br><span class="line">    //这里需要注册所有热更DLL中用到的跨域继承Adapter，否则无法正确抓取引用  </span><br><span class="line">    domain.RegisterCrossBindingAdaptor(new MonoBehaviourAdapter());  </span><br><span class="line">    domain.RegisterCrossBindingAdaptor(new CoroutineAdapter());  </span><br><span class="line">    domain.RegisterCrossBindingAdaptor(new TestClassBaseAdapter());  </span><br><span class="line">    domain.RegisterValueTypeBinder(typeof(Vector3), new Vector3Binder());  </span><br><span class="line">    domain.RegisterValueTypeBinder(typeof(Vector2), new Vector2Binder());  </span><br><span class="line">    domain.RegisterValueTypeBinder(typeof(Quaternion), new QuaternionBinder());  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个代码很直观：先注册跨域继承适配器（这个一会就说），再提供了一个DLL文件的路径，然后调用GenerateBindingCode方法，随后就会有Binding代码文件输出到目标路径下。生成的代码文件的命名格式一般如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace_className_Binding.cs</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-跨域继承"><a href="#5-跨域继承" class="headerlink" title="5. 跨域继承"></a>5. 跨域继承</h3><p>这里的继承方向指的是热更DLL中的类，继承Unity主工程中的类，或者实现Unity主工程的接口，这里需要在Unity主工程中实现一个继承适配器。简单来说，就是DLL中的类，不能和主工程中的类或接口直接接触，中间需要一个适配器来调和。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">public class TestClass2Adapter : CrossBindingAdaptor  </span><br><span class="line">    &#123;  </span><br><span class="line">	    //定义访问方法的方法信息  </span><br><span class="line">        static CrossBindingMethodInfo mVMethod1_0 = new CrossBindingMethodInfo(&quot;VMethod1&quot;);  </span><br><span class="line">        static CrossBindingFunctionInfo&lt;System.Boolean&gt; mVMethod2_1 = new CrossBindingFunctionInfo&lt;System.Boolean&gt;(&quot;VMethod2&quot;);  </span><br><span class="line">        static CrossBindingMethodInfo mAbMethod1_3 = new CrossBindingMethodInfo(&quot;AbMethod1&quot;);  </span><br><span class="line">        static CrossBindingFunctionInfo&lt;System.Int32, System.Single&gt; mAbMethod2_4 = new CrossBindingFunctionInfo&lt;System.Int32, System.Single&gt;(&quot;AbMethod2&quot;);  </span><br><span class="line">        public override Type BaseCLRType  </span><br><span class="line">        &#123;  </span><br><span class="line">            get  </span><br><span class="line">            &#123;  </span><br><span class="line">                return typeof(ILRuntimeTest.TestFramework.TestClass2);//这里是你想继承的类型  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        public override Type AdaptorType  </span><br><span class="line">        &#123;  </span><br><span class="line">            get  </span><br><span class="line">            &#123;  </span><br><span class="line">                return typeof(Adapter);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        public override object CreateCLRInstance(ILRuntime.Runtime.Enviorment.AppDomain appdomain, ILTypeInstance instance)  </span><br><span class="line">        &#123;  </span><br><span class="line">            return new Adapter(appdomain, instance);  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        public class Adapter : ILRuntimeTest.TestFramework.TestClass2, CrossBindingAdaptorType  </span><br><span class="line">        &#123;  </span><br><span class="line">            ILTypeInstance instance;  </span><br><span class="line">            ILRuntime.Runtime.Enviorment.AppDomain appdomain;  </span><br><span class="line">  </span><br><span class="line">            //必须要提供一个无参数的构造函数  </span><br><span class="line">            public Adapter()  </span><br><span class="line">            &#123;  </span><br><span class="line">  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            public Adapter(ILRuntime.Runtime.Enviorment.AppDomain appdomain, ILTypeInstance instance)  </span><br><span class="line">            &#123;  </span><br><span class="line">                this.appdomain = appdomain;  </span><br><span class="line">                this.instance = instance;  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            public ILTypeInstance ILInstance &#123; get &#123; return instance; &#125; &#125;  </span><br><span class="line">  </span><br><span class="line">            //下面将所有虚函数都重载一遍，并中转到热更内  </span><br><span class="line">            public override void VMethod1()  </span><br><span class="line">            &#123;  </span><br><span class="line">                if (mVMethod1_0.CheckShouldInvokeBase(this.instance))  </span><br><span class="line">                    base.VMethod1();  </span><br><span class="line">                else  </span><br><span class="line">                    mVMethod1_0.Invoke(this.instance);  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            public override System.Boolean VMethod2()  </span><br><span class="line">            &#123;  </span><br><span class="line">                if (mVMethod2_1.CheckShouldInvokeBase(this.instance))  </span><br><span class="line">                    return base.VMethod2();  </span><br><span class="line">                else  </span><br><span class="line">                    return mVMethod2_1.Invoke(this.instance);  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            protected override void AbMethod1()  </span><br><span class="line">            &#123;  </span><br><span class="line">                mAbMethod1_3.Invoke(this.instance);  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            public override System.Single AbMethod2(System.Int32 arg1)  </span><br><span class="line">            &#123;  </span><br><span class="line">                return mAbMethod2_4.Invoke(this.instance, arg1);  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            public override string ToString()  </span><br><span class="line">            &#123;  </span><br><span class="line">                IMethod m = appdomain.ObjectType.GetMethod(&quot;ToString&quot;, 0);  </span><br><span class="line">                m = instance.Type.GetVirtualMethod(m);  </span><br><span class="line">                if (m == null || m is ILMethod)  </span><br><span class="line">                &#123;  </span><br><span class="line">                    return instance.ToString();  </span><br><span class="line">                &#125;  </span><br><span class="line">                else  </span><br><span class="line">                    return instance.Type.FullName;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-值类型绑定"><a href="#6-值类型绑定" class="headerlink" title="6. 值类型绑定"></a>6. 值类型绑定</h3><p>Vector3等Unity常用值类型如果不做任何处理，在ILRuntime中使用会产生较多额外的CPU开销和GC Alloc。我们通过值类型绑定可以解决这个问题，只有Unity主工程的值类型才需要此处理，热更DLL内定义的值类型不需要任何处理。</p>
+<p>ILRuntime的示例代码里写了三个值类型的绑定：Vector2、Vector3和Quaternion。常用的也就这几个，直接拿过来用即可。</p>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>总的来看，ILRuntime的接入相对简单，主要两个问题：</p>
+<ul>
+<li>DLL调用Unity主工程的方法：需要生成重定向的方法，ILRuntime提供了代码生成工具；如果参数有delegate类型，则需要注册委托适配器；如果delegate的类型不是Action和Func，则还需要注册一个委托转换器。</li>
+<li>DLL继承或实现Unity主工程的方法或接口：需要创建一个跨域继承的适配器，因为过于特殊，所以ILRuntime没有提供代码生成的工具。</li>
+</ul>
+<h3 id="8-创建Hotfix工程"><a href="#8-创建Hotfix工程" class="headerlink" title="8. 创建Hotfix工程"></a>8. 创建Hotfix工程</h3><p>热更工程本质上就是一个独立的工程。</p>
+<p>.Net的项目里，有两个概念，一个是Solution，一个是Project。Solution是一个独立的工程，里面可以包含一个或者多个Project，我们编写代码是在Project里，但是Project不能独立存在，需要依附在一个Solution里。它们之间的关系就像Android工程和里面的Module。</p>
+<p>所以，需要先创建一个Solution，然后在Solution里添加一个Project。Project的类型有十几种，这里需要的是Framework下的Class Library，中文名叫做类库。</p>
+<h3 id="9-添加依赖"><a href="#9-添加依赖" class="headerlink" title="9. 添加依赖"></a>9. 添加依赖</h3><p>在主工程中，Unity相关的依赖是自动添加的，比如GameObject、UnityWebRequest等。但是在Hotfix工程中，这些依赖则需要我们手动添加（依赖即为DLL文件）。这里的依赖按照位置可以分为两种，一种是Unity自带的，一种是我们生成或添加的。前者在Editor的安装路径下，后在在主工程路径下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;Editor安装路径&#125;<span class="regexp">/Managed/</span>UnityEngine/&#123;依赖名字.dll&#125;</span><br><span class="line"></span><br><span class="line">&#123;Unity主工程&#125;<span class="regexp">/Library/</span>ScriptAssemblies/&#123;依赖名字.dll&#125;</span><br></pre></td></tr></table></figure>
+<p>需要什么依赖库文件，就去这两个目录下找，然后添加到Hotfix的Dependencies里即可。一般而言，有三个是一定会需要的：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;Editor安装路径&#125;/Managed/UnityEngine/<span class="module-access"><span class="module"><span class="identifier">UnityEngine</span>.</span></span>dll</span><br><span class="line">&#123;Editor安装路径&#125;/Managed/UnityEngine/<span class="module-access"><span class="module"><span class="identifier">UnityEngine</span>.</span><span class="module"><span class="identifier">CoreModule</span>.</span></span>dll</span><br><span class="line"></span><br><span class="line">&#123;Unity主工程&#125;/Library/ScriptAssemblies/Assembly-<span class="module-access"><span class="module"><span class="identifier">CSharp</span>.</span></span>dll</span><br></pre></td></tr></table></figure>
+<p>前两个是常用到的基本库文件，第三个则是主工程的代码库，我们在主工程中写的代码最终会被编译到Assembly-CSharp.dll。</p>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><ul>
+<li>问题1: Failed to resolve assembly: ILRuntime.Mono.Cecil<br>使用工具自动分析DLL文件并生成binding文件时，报了一个这样的错误，以前从来没有遇到过，我试过将Hotfix工程里所有的依赖都删掉，但错误依然在。之后将Burst升级到最新版本1.8.7后，问题又消失了。莫名其妙的来，莫名其妙的走。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2023/05/cc732eb32258/" title="Unity接入ILRuntime和使用">https://oynix.github.io/2023/05/cc732eb32258/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/ILRuntime/" rel="tag"># ILRuntime</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/746a488dd815/" rel="prev" title="Unity Addressables 的使用">
+      <i class="fa fa-chevron-left"></i> Unity Addressables 的使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/23d18905bbb6/" rel="next" title="PyPDF2中关于EOF问题">
+      PyPDF2中关于EOF问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%8E%AF%E5%A2%83"><span class="nav-text">1. 环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AF%BC%E5%85%A5%E5%8C%85"><span class="nav-text">2. 导入包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A7%94%E6%89%98%E9%80%82%E9%85%8D%E5%99%A8%E5%92%8C%E5%A7%94%E6%89%98%E8%BD%AC%E6%8D%A2%E5%99%A8"><span class="nav-text">3. 委托适配器和委托转换器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-CLR%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8CCLR%E7%BB%91%E5%AE%9A"><span class="nav-text">4. CLR重定向和CLR绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%B7%A8%E5%9F%9F%E7%BB%A7%E6%89%BF"><span class="nav-text">5. 跨域继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%80%BC%E7%B1%BB%E5%9E%8B%E7%BB%91%E5%AE%9A"><span class="nav-text">6. 值类型绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%80%BB%E7%BB%93"><span class="nav-text">7. 总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%88%9B%E5%BB%BAHotfix%E5%B7%A5%E7%A8%8B"><span class="nav-text">8. 创建Hotfix工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="nav-text">9. 添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95"><span class="nav-text">附录</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">105</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">446k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:46</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '14ad66b27e038312a2d6a5307c9f2726',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
