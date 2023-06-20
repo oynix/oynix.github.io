@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="前文提过，Addressables是Unity中常用的资源管理工具，是AssetBundle的第二代产品。在Addressables中，各类资源是以group问单位划分的，每个group至少会生成一个bundle，这篇来大概说一说常用的group划分形式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity接入ILRuntime和使用">
+<meta property="og:url" content="https://oynix.github.io/2023/06/ba689e5e1c9c/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="前文提过，Addressables是Unity中常用的资源管理工具，是AssetBundle的第二代产品。在Addressables中，各类资源是以group问单位划分的，每个group至少会生成一个bundle，这篇来大概说一说常用的group划分形式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-20T13:57:32.000Z">
+<meta property="article:modified_time" content="2023-06-20T16:03:32.816Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Addressables">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.github.io/2023/06/ba689e5e1c9c/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Unity接入ILRuntime和使用 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">105</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">139</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2023/06/ba689e5e1c9c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/fbb.jpg">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity接入ILRuntime和使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-20 21:57:32" itemprop="dateCreated datePublished" datetime="2023-06-20T21:57:32+08:00">2023-06-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前文提过，Addressables是Unity中常用的资源管理工具，是AssetBundle的第二代产品。在Addressables中，各类资源是以group问单位划分的，每个group至少会生成一个bundle，这篇来大概说一说常用的group划分形式。</p>
+<span id="more"></span>
+
+<p><a href="https://oynix.github.io/2023/02/746a488dd815/#more">Unity Addressables</a></p>
+<p>这篇对Addressables做了一个基本的介绍，如果需要可以先看看这篇。</p>
+<h3 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h3><p>每一个被Addressables管理的资源，Texture也好，Prefab也罢，或是其他的资源，最终都会被分配一个address，然后打包进一个bundle中，需要使用的时候，根据address找到对应的bundle包并加载。</p>
+<p>对于group，可按照位置划分为2种，一种是Local Assets，这种group生成的bundle包会被打进apk/aab中，随着应用一起发布；还有一种是Remote Assets，这种group生成的bundle需要放到远程的资源服务器上，程序运行时会按需从资源服务器下载到本地。</p>
+<p>同时，如果按照是否可更新这个角度看，也可以将group划分为2种，一种是可以更新的group，也叫Dynamic Assets，一种是不可更新的group，也叫Static Assets。这两种的区别在于，当某个group发生改变时，如增加了资源文件、减少了资源文件，或是修改了资源文件，这些操作都会导致资源所在的group发生改变。当基于之前的状态打包时，如果这个group是可更新的，则会打一个新的bundle出来，如果这个group是不可更新的，那么这些发生变动的资源会被单独抽出来，统一打到一个名叫ContentUpdate的bundle中。</p>
+<p>所以，Local Assets和Remote Assets，以及Dynamic Assets和Static Assets，两两组合下，就有了4种可能的group：</p>
+<ul>
+<li>LocalStaticAssets：本地静态资源</li>
+<li>LocalDynamicAssets：本地动态资源</li>
+<li>RemoteStaticAssets：远程静态资源</li>
+<li>RemoteDynamicAssets：远程动态资源</li>
+</ul>
+<p>但是在实际使用中，Local一般都按Static处理，当有变动时，将变动的资源打入ContentUpdate的补丁bundle中；而Remote都按Dynamic处理，如果有变动则重新打整个bundle即可。这种处理方式，可以应对大部分使用场景，前提是在一个合理的group划分的前提下，这样一来，就只剩下2种类型的group：</p>
+<ul>
+<li>LocalStaticAssets</li>
+<li>RemoteDynamicAssets</li>
+</ul>
+<h3 id="2-group自动划分工具"><a href="#2-group自动划分工具" class="headerlink" title="2. group自动划分工具"></a>2. group自动划分工具</h3><p>将一个资源加入到Addressables中管理的方式是，在这个资源的Inspector页面顶部，有个Addressables的复选框，勾选上就会被Addressables管理，同时会分配一个缺省的address，在Addressas Group管理页面还可以调整资源所在的group。</p>
+<p>可修改address，也可调整group，基本可以满足使用需求。但是一个一个操作，还是有点麻烦的，而且容易出错，所以，一般是写一个自动化的工具，一键更新资源的address，以及所在的分组。</p>
+<h3 id="3-如何划分group"><a href="#3-如何划分group" class="headerlink" title="3. 如何划分group"></a>3. 如何划分group</h3><p>以下的这种划分方式，是我在实际使用中不断调整修改后，得出的一种较为方便的方式。换句话说，是可以满足多数需求的一种方式，如果有不同的新的需求进来，可能还需要在此基础上进一步调整。</p>
+<p>在Assets下新建一个目录，所有在这个目录下的资源，都将会被Addressables管理，所以可以取名为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Assets/AddressableAssets</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的分析得出，group共有2种，所以还需要再创建2个目录，Local下的是本地静态资源，Remote下的是远程动态资源：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Assets<span class="regexp">/AddressableAssets/</span>Local</span><br><span class="line">Assets<span class="regexp">/AddressableAssets/</span>Remote</span><br></pre></td></tr></table></figure>
+
+<p>Local或者Remote下的每个目录，作为一个独立的group，比如游戏中常见的登录功能，就可以放到Local下，而每个关卡，就可以放到Remote中：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Assets</span><br><span class="line"><span class="string">|--AddressableAssets</span></span><br><span class="line">   <span class="string">|--Local</span></span><br><span class="line">      <span class="string">|--Login</span></span><br><span class="line">         <span class="string">|--UILogin.prefab</span></span><br><span class="line">         <span class="string">|--LoginAtlas.spriteatlas</span></span><br><span class="line">         <span class="string">|--LoginImage.png</span></span><br><span class="line">   <span class="string">|--Remote</span></span><br><span class="line">      <span class="string">|--Level1</span></span><br><span class="line">         <span class="string">|--UILevel1.prefab</span></span><br><span class="line">         <span class="string">|--Level1Atlas.spriteatlas</span></span><br><span class="line">         <span class="string">|--Level1Image.png</span></span><br><span class="line">      <span class="string">|--Level2</span></span><br><span class="line">         <span class="string">|--UILevel2.prefab</span></span><br><span class="line">         <span class="string">|--Level2Atlas.spriteatlas</span></span><br><span class="line">         <span class="string">|--Level2Image.png</span></span><br></pre></td></tr></table></figure>
+
+<p>如此一来，就会有3个group：</p>
+<ul>
+<li>LocalLoginGroup</li>
+<li>RemoteLevel1Group</li>
+<li>RemoteLevel2Group</li>
+</ul>
+<p>Local的bundle会打进安装包中，Remote的bundle放到远程资源服务器。</p>
+<h3 id="4-特殊目录"><a href="#4-特殊目录" class="headerlink" title="4. 特殊目录"></a>4. 特殊目录</h3><p>如上这种方式，可满足一部分需求的情况。为了便于管理，相似的功能都会放到同一个目录下，如果按照上面的方式，同一个目录下都会被打进一个bundle中，但实际中又希望它们独立，这样在修改某个资源之后，将影响范围降到最小，减小热更bundle的大小；同时，有些资源并不是直接被Addressas管理，而是被某个被Addressas管理的资源所引用，比如一个图集Atlas中有10张图片，只有Atlas需要address，而其中的10张图片并不需要。</p>
+<p>为处理这2种情况，在以上的划分基础上，增加了2个特殊目录，一个是带<code>+</code>号前缀的目录，一个是带<code>_</code>下线的目录。</p>
+<p>带<code>+</code>号的目录表示，该目录不单独成为group，其下的每个子目录作为独立的group；而带<code>_</code>下线的目录表示，该目录以及其下的所有资源，都不被Addressables管理，即没有address。</p>
+<p>在此基础上，对上面的结构稍作调整：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Assets</span><br><span class="line"><span class="string">|--AddressableAssets</span></span><br><span class="line">   <span class="string">|--Local</span></span><br><span class="line">      <span class="string">|--Login</span></span><br><span class="line">         <span class="string">|--UILogin.prefab</span></span><br><span class="line">         <span class="string">|--LoginAtlas.spriteatlas</span></span><br><span class="line">         <span class="string">|--LoginImage.png</span></span><br><span class="line">   <span class="string">|--Remote</span></span><br><span class="line">      <span class="string">|--Config</span></span><br><span class="line">         <span class="string">|--Level1Config.xml</span></span><br><span class="line">         <span class="string">|--Level2Config.xml</span></span><br><span class="line">      <span class="string">|--+Levels</span></span><br><span class="line">         <span class="string">|--Level1</span></span><br><span class="line">            <span class="string">|--UILevel1.prefab</span></span><br><span class="line">            <span class="string">|--Level1Atlas.spriteatlas</span></span><br><span class="line">            <span class="string">|--_Texture</span></span><br><span class="line">               <span class="string">|--Level1Image.png</span></span><br><span class="line">         <span class="string">|--Level2</span></span><br><span class="line">            <span class="string">|--UILevel2.prefab</span></span><br><span class="line">            <span class="string">|--Level2Atlas.spriteatlas</span></span><br><span class="line">            <span class="string">|--_Texture</span></span><br><span class="line">               <span class="string">|--Level2Image.png</span></span><br></pre></td></tr></table></figure>
+<p>Remote下新增一个管理所有关卡config的group，和一个名为<code>+Level</code>的目录，这个目录下有2个group，一个是Level1的group，一个是Level2的group。Level1下增加一个名为<code>_Texture</code>的目录，里面是Level1Atlas图集中的图片，这些图片不需要address。</p>
+<h3 id="5-Profile"><a href="#5-Profile" class="headerlink" title="5. Profile"></a>5. Profile</h3><p>不管是Local的group，还是Remote的group，在将这些group打包成bundle时，都需要2个path，一个是buildPath，还有一个是loadPath。打包好的bundle将会放到buildPath下，程序运行时，若需要某个bundle则会去loadPath下加载。</p>
+<p>一般来说，Local的path比较固定，Remote的buildPath可以设置成一个固定的路径，但是loadPath就不固定了，Remote的bundle需要到远程资源服务器上加载，所以这个loadPath就对应一个远程资源服务器，开发阶段使用开发服务器，测试阶段使用测试服务器，上线后就要使用正式的服务器。</p>
+<p>在Addressables中，它使用Profile来管理这个path。按需创建多个Profile，每个Profile都有Local的buildPath、loadPath，和Remote的buildPath、loadPath，只是不同的Profile中的值可能会有所不同。我们按需激活所需的Profile即可。</p>
+<h3 id="6-group-template"><a href="#6-group-template" class="headerlink" title="6. group template"></a>6. group template</h3><p>对于划分出的每个group，都需要与之创建一个配置文件，在这个文件中指明这个group是Local的还是Remote的，是Static的还是Dynamic的。一般是按需创建好group的配置模版，等到使用的时候，给group指定对应的模版即可。</p>
+<p>根据上面的分析，group的类型一共有4种情况，所以我们提前创建好4个模版即可：</p>
+<ul>
+<li>LocalStaticAssetsGroupTemplate</li>
+<li>LocalDynamicAssetsGroupTemplate</li>
+<li>RemoteStaticAssetsGroupTemplate</li>
+<li>RemoteDynamicAssetsGroupTemplate</li>
+</ul>
+<p>但实际上，我们只会需要其中的2个，所以也可以只创建2个。以免日后有其他需求，可能会使用其他类型的group，这里提前创建出来也无妨。</p>
+<h3 id="7-Addressables结构"><a href="#7-Addressables结构" class="headerlink" title="7. Addressables结构"></a>7. Addressables结构</h3><h4 id="AddressableAssetSettings"><a href="#AddressableAssetSettings" class="headerlink" title="- AddressableAssetSettings"></a>- AddressableAssetSettings</h4><p>这是大总管，管理所有内容，包括Profiles、Groups、GroupTemplates、DataBuilders、Labels、Entries，等等。虽然很多，但是我们只需要其中的几个，其余的暂时也用不到</p>
+<h4 id="AddressableAssetGroup"><a href="#AddressableAssetGroup" class="headerlink" title="- AddressableAssetGroup"></a>- AddressableAssetGroup</h4><p>这个是group的配置文件，一个group对应一个配置文件，这里面可以配置group的位置，以及是否可以更新。一般不会单独修改某个group的配置的值，而是通过模版直接赋值。</p>
+<h4 id="AddressableAssetEntry"><a href="#AddressableAssetEntry" class="headerlink" title="- AddressableAssetEntry"></a>- AddressableAssetEntry</h4><p>每个group里会有一个或多个资源，而每个资源则对应一个Entry。一般只需要修改Entry的名字即可。</p>
+<h3 id="8-最后，上代码"><a href="#8-最后，上代码" class="headerlink" title="8. 最后，上代码"></a>8. 最后，上代码</h3><p>有了上面这些基础和铺垫，就可以写自动生成group的代码了。简单来说，思路就是，遍历AddressableAssets目录，判断其下的每个目录，是否需要划分为独立的group，如果需要，再判断里面那些资源需要加到Addressables的管理中，即分配address。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.IO;</span><br><span class="line">using System.Linq;</span><br><span class="line">using UnityEditor;</span><br><span class="line">using UnityEditor.AddressableAssets;</span><br><span class="line">using UnityEditor.AddressableAssets.Settings;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">namespace Editor</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// v1</span><br><span class="line">    /// 默认Local使用Static，Remote使用Dynamic</span><br><span class="line">    /// </span><br><span class="line">    /// Local使用static，当发生修改后，资源会被打到UpdatePatch的bundle中</span><br><span class="line">    /// Remote使用dynamic，当发生修改后，直接更新原bundle</span><br><span class="line">    ///</span><br><span class="line">    /// group划分规则</span><br><span class="line">    /// 默认Local下的每个目录作为一个独立的group，Remote同理</span><br><span class="line">    ///</span><br><span class="line">    /// 特殊情况</span><br><span class="line">    /// +开头的目录：自身不作为group，但是每个子目录作为一个独立的group</span><br><span class="line">    /// _开头的目录：自身和子目录都不作为group</span><br><span class="line">    ///</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public static class AddressableTools</span><br><span class="line">    &#123;</span><br><span class="line">        private const string AssetPathPrefix = &quot;Assets/AddressableAssets/&quot;;</span><br><span class="line"></span><br><span class="line">        private const string LocalAssetsPath = &quot;Assets/AddressableAssets/Local&quot;;</span><br><span class="line">        private const string RemoteAssetsPath = &quot;Assets/AddressableAssets/Remote&quot;;</span><br><span class="line"></span><br><span class="line">        public enum ProfileName</span><br><span class="line">        &#123;</span><br><span class="line">            Default,</span><br><span class="line">            ProfileDev</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private enum TemplateName</span><br><span class="line">        &#123;</span><br><span class="line">            LocalStaticAssets,</span><br><span class="line">            LocalDynamicAssets,</span><br><span class="line">            RemoteStaticAssets,</span><br><span class="line">            RemoteDynamicAssets,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static readonly List&lt;string&gt; GroupTemplateNames = new()</span><br><span class="line">        &#123;</span><br><span class="line">            $&quot;&#123;TemplateName.LocalStaticAssets&#125;.asset&quot;,</span><br><span class="line">            $&quot;&#123;TemplateName.LocalDynamicAssets&#125;.asset&quot;,</span><br><span class="line">            $&quot;&#123;TemplateName.RemoteStaticAssets&#125;.asset&quot;,</span><br><span class="line">            $&quot;&#123;TemplateName.RemoteDynamicAssets&#125;.asset&quot;,</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        [MenuItem(&quot;Tools/刷新Groups&quot;)]</span><br><span class="line">        private static void UpdateGroups()</span><br><span class="line">        &#123;</span><br><span class="line">            AssetDatabase.Refresh();</span><br><span class="line">            var settings = AddressableAssetSettingsDefaultObject.Settings;</span><br><span class="line"></span><br><span class="line">            // group templates</span><br><span class="line">            var templates = settings.GroupTemplateObjects;</span><br><span class="line">            while (templates.Count &gt; 0)</span><br><span class="line">            &#123;</span><br><span class="line">                settings.RemoveGroupTemplateObject(0);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            for (var i = 0; i &lt; GroupTemplateNames.Count; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                var absPath = Path.Join(settings.GroupTemplateFolder, GroupTemplateNames[i]);</span><br><span class="line">                var t = AssetDatabase.LoadAssetAtPath&lt;AddressableAssetGroupTemplate&gt;(absPath);</span><br><span class="line">                settings.AddGroupTemplateObject(t);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // backup groups</span><br><span class="line">            var oldGroups = new List&lt;AddressableAssetGroup&gt;();</span><br><span class="line">            var groups = settings.groups;</span><br><span class="line">            for (var i = groups.Count - 1; i &gt;= 0; --i)</span><br><span class="line">            &#123;</span><br><span class="line">                if (groups[i] == null)</span><br><span class="line">                &#123;</span><br><span class="line">                    groups.RemoveAt(i);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                oldGroups.Add(groups[i]);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                EditorUtility.DisplayProgressBar(&quot;Updating&quot;, &quot;Updating&quot;, 0.5f);</span><br><span class="line">                HandleMultiGroupsDir(settings, oldGroups, LocalAssetsPath, true);</span><br><span class="line">                HandleMultiGroupsDir(settings, oldGroups, RemoteAssetsPath, false);</span><br><span class="line"></span><br><span class="line">                foreach (var group in oldGroups)</span><br><span class="line">                &#123;</span><br><span class="line">                    Debug.Log(&quot;delete group:&quot; + group.Name);</span><br><span class="line">                    settings.RemoveGroup(group);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception e)</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.LogError(e);</span><br><span class="line">            &#125;</span><br><span class="line">            finally</span><br><span class="line">            &#123;</span><br><span class="line">                EditorUtility.ClearProgressBar();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #region add group</span><br><span class="line"></span><br><span class="line">        // 包含多个group的dir，如Local/Remote/+开头的目录</span><br><span class="line">        private static void HandleMultiGroupsDir(AddressableAssetSettings settings, List&lt;AddressableAssetGroup&gt; groups, string dirPath, bool staticAsset)</span><br><span class="line">        &#123;</span><br><span class="line">            var dirs = Directory.GetDirectories(dirPath);</span><br><span class="line">            for (var i = 0; i &lt; dirs.Length; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                var dir = dirs[i];</span><br><span class="line">                var dirName = Path.GetFileName(dir);</span><br><span class="line">                if (dirName.StartsWith(&quot;+&quot;))</span><br><span class="line">                &#123;</span><br><span class="line">                    HandleMultiGroupsDir(settings, groups, dir, staticAsset);</span><br><span class="line">                &#125;</span><br><span class="line">                else if (dirName.StartsWith(&quot;_&quot;))</span><br><span class="line">                &#123;</span><br><span class="line">                    // pass, do nothing</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    HandleGroupDir(settings, groups, dir, staticAsset);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 独立作为一个group的dir</span><br><span class="line">        private static void HandleGroupDir(AddressableAssetSettings settings, List&lt;AddressableAssetGroup&gt; groups, string dirPath, bool staticAsset)</span><br><span class="line">        &#123;</span><br><span class="line">            // 去掉开头和特殊符号，把路径符号用_替代</span><br><span class="line">            var groupName = dirPath.Replace(AssetPathPrefix, &quot;&quot;);</span><br><span class="line">            groupName = groupName.Replace(&quot;+&quot;, &quot;&quot;);</span><br><span class="line">            groupName = groupName.Replace(&quot;/&quot;, &quot;_&quot;);</span><br><span class="line">            groupName = groupName.Replace(&quot;\\&quot;, &quot;_&quot;);</span><br><span class="line"></span><br><span class="line">            var group = settings.FindGroup(groupName);</span><br><span class="line"></span><br><span class="line">            if (group == null)</span><br><span class="line">            &#123;</span><br><span class="line">                var templateIndex = (int) (staticAsset ? TemplateName.LocalStaticAssets : TemplateName.RemoteDynamicAssets);</span><br><span class="line">                var template = settings.GetGroupTemplateObject(templateIndex) as AddressableAssetGroupTemplate;</span><br><span class="line"></span><br><span class="line">                if (template == null)</span><br><span class="line">                &#123;</span><br><span class="line">                    Debug.LogError(&quot;no group template found&quot;);</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                group = settings.CreateGroup(template.Name, false, false, true, null, template.GetTypes());</span><br><span class="line">                template.ApplyToAddressableAssetGroup(group);</span><br><span class="line">                group.Name = groupName;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                groups.Remove(group);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var guids = group.entries.Select(entry =&gt; entry.guid).ToList();</span><br><span class="line"></span><br><span class="line">            foreach (var guid in guids)</span><br><span class="line">            &#123;</span><br><span class="line">                group.RemoveAssetEntry(group.GetAssetEntry(guid));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            AddDirEntry(settings, group, dirPath);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region add entry</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// 这里递归分析出资源文件，实际将资源添加到group里的是AddFileEntry方法</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        /// &lt;param name=&quot;settings&quot;&gt;&lt;/param&gt;</span><br><span class="line">        /// &lt;param name=&quot;group&quot;&gt;&lt;/param&gt;</span><br><span class="line">        /// &lt;param name=&quot;dirPath&quot;&gt;&lt;/param&gt;</span><br><span class="line">        private static void AddDirEntry(AddressableAssetSettings settings, AddressableAssetGroup group, string dirPath)</span><br><span class="line">        &#123;</span><br><span class="line">            var files = Directory.GetFiles(dirPath);</span><br><span class="line">            foreach (var filePath in files)</span><br><span class="line">            &#123;</span><br><span class="line">                AddFileEntry(settings, group, filePath);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var dirs = Directory.GetDirectories(dirPath);</span><br><span class="line">            foreach (var dir in dirs)</span><br><span class="line">            &#123;</span><br><span class="line">                var dirName = Path.GetFileName(dir);</span><br><span class="line">                if (dirName.StartsWith(&quot;_&quot;))</span><br><span class="line">                &#123;</span><br><span class="line">                    // pass, do nothing</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    AddDirEntry(settings, group, dir);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// 将资源添加到group，实际资源路径去掉通用前缀，以及扩展名后，去掉特殊符号，替换路径符号，作为资源的address。</span><br><span class="line">        /// </span><br><span class="line">        /// 例如，</span><br><span class="line">        /// Assets/AddressableAssets/Local/Login/UILogin.prefab</span><br><span class="line">        /// 这是登录页面的预制体，最终它的address是：Local_Login_UILogin</span><br><span class="line">        /// </span><br><span class="line">        /// Assets/AddressableAssets/Remote/+Pages/Page1/UIPage1.prefab</span><br><span class="line">        /// 这是Page1的预制体，最终它的address是:Remote_Pages_Page1_UIPage1</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        /// &lt;param name=&quot;settings&quot;&gt;&lt;/param&gt;</span><br><span class="line">        /// &lt;param name=&quot;group&quot;&gt;&lt;/param&gt;</span><br><span class="line">        /// &lt;param name=&quot;filePath&quot;&gt;&lt;/param&gt;</span><br><span class="line">        private static void AddFileEntry(AddressableAssetSettings settings, AddressableAssetGroup group, string filePath)</span><br><span class="line">        &#123;</span><br><span class="line">            var fileName = Path.GetFileName(filePath);</span><br><span class="line">            if (fileName.EndsWith(&quot;.meta&quot;) || fileName.StartsWith(&quot;.DS_Store&quot;))</span><br><span class="line">            &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var guid = AssetDatabase.AssetPathToGUID(filePath);</span><br><span class="line">            var entry = settings.CreateOrMoveEntry(guid, group);</span><br><span class="line"></span><br><span class="line">            var address = entry.address;</span><br><span class="line">            address = address.Replace(AssetPathPrefix, &quot;&quot;);</span><br><span class="line">            address = address.Replace(&quot;+&quot;, &quot;&quot;);</span><br><span class="line"></span><br><span class="line">            var dotIndex = address.LastIndexOf(&#x27;.&#x27;);</span><br><span class="line">            if (dotIndex &gt; -1)</span><br><span class="line">            &#123;</span><br><span class="line">                var extension = address[dotIndex..];</span><br><span class="line">                address = address.Replace(extension, &quot;&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.Log(&quot;no extension found:&quot; + address);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            entry.address = address;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-group配置的复用"><a href="#9-group配置的复用" class="headerlink" title="9. group配置的复用"></a>9. group配置的复用</h3><p>一个group对应一个配置文件，这些文件在这个目录下，</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Assets<span class="regexp">/AddressableAssetsData/</span>AssetGroups</span><br></pre></td></tr></table></figure>
+<p>在自动划分group时，最简单直接的做法是，删除当前所有的group配置，然后根据目录结构重新划分。但实际上这种方式只有在第一次划分的时候可行，其他时候，如资源变动后更新group信息，则不适用。</p>
+<p>因为当一个group的配置文件删除后，再次重新生成，即便是其中的资源未发生变动，那么打出来的bundle也是一个全新的id，也就是整个group都发生了变动。换句话说就是，即便是修改了一个图片，若是以这种方式更新group，那么对于用户来说，则是所有的group下的所有资源，都发生了变化，都需要更细。</p>
+<p>所以，这里就涉及到了一个group配置的复用问题。上面的代码中也有说说明，当更新group划分时，应先备份当前的所有group，如果划分出的group的配置已经存在，则应当复用，如果没有则须新增，如果存在的配置对应的group不存在，则还须及时将对应的配置删除。</p>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.github.io/2023/06/ba689e5e1c9c/" title="Unity接入ILRuntime和使用">https://oynix.github.io/2023/06/ba689e5e1c9c/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/Addressables/" rel="tag"># Addressables</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/da23d74be8e6/" rel="prev" title="Unity接入ILRuntime和使用">
+      <i class="fa fa-chevron-left"></i> Unity接入ILRuntime和使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-text">1. 引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-group%E8%87%AA%E5%8A%A8%E5%88%92%E5%88%86%E5%B7%A5%E5%85%B7"><span class="nav-text">2. group自动划分工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A6%82%E4%BD%95%E5%88%92%E5%88%86group"><span class="nav-text">3. 如何划分group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%89%B9%E6%AE%8A%E7%9B%AE%E5%BD%95"><span class="nav-text">4. 特殊目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Profile"><span class="nav-text">5. Profile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-group-template"><span class="nav-text">6. group template</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Addressables%E7%BB%93%E6%9E%84"><span class="nav-text">7. Addressables结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AddressableAssetSettings"><span class="nav-text">- AddressableAssetSettings</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AddressableAssetGroup"><span class="nav-text">- AddressableAssetGroup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AddressableAssetEntry"><span class="nav-text">- AddressableAssetEntry</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%9C%80%E5%90%8E%EF%BC%8C%E4%B8%8A%E4%BB%A3%E7%A0%81"><span class="nav-text">8. 最后，上代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-group%E9%85%8D%E7%BD%AE%E7%9A%84%E5%A4%8D%E7%94%A8"><span class="nav-text">9. group配置的复用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/fbb.jpg">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">105</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">461k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:59</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '21cdf697460329d3f305e033884db797',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
