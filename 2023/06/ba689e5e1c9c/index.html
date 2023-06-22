@@ -30,7 +30,7 @@
 <meta property="og:description" content="前文提过，Addressables是Unity中常用的资源管理工具，是AssetBundle的第二代产品。在Addressables中，各类资源是以group问单位划分的，每个group至少会生成一个bundle，这篇来大概说一说常用的group划分形式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-20T13:57:32.000Z">
-<meta property="article:modified_time" content="2023-06-20T16:09:05.859Z">
+<meta property="article:modified_time" content="2023-06-22T02:29:43.311Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="Addressables">
@@ -336,6 +336,11 @@
 <li>RemoteDynamicAssetsGroupTemplate</li>
 </ul>
 <p>但实际上，我们只会需要其中的2个，所以也可以只创建2个。以免日后有其他需求，可能会使用其他类型的group，这里提前创建出来也无妨。</p>
+<p>至于如何创建模版，就很简单了。在工程里有一个缺省的模版，</p>
+<blockquote>
+<p>Assets/AddressableAssetsData/AssetGroupTemplates/Packed Assets.asset</p>
+</blockquote>
+<p>直接复制这个文件，然后按需修改里面的两个内容，一个是Local/Remote，一个是是否可更新，即可。</p>
 <h3 id="7-Addressables结构"><a href="#7-Addressables结构" class="headerlink" title="7. Addressables结构"></a>7. Addressables结构</h3><h4 id="AddressableAssetSettings"><a href="#AddressableAssetSettings" class="headerlink" title="- AddressableAssetSettings"></a>- AddressableAssetSettings</h4><p>这是大总管，管理所有内容，包括Profiles、Groups、GroupTemplates、DataBuilders、Labels、Entries，等等。虽然很多，但是我们只需要其中的几个，其余的暂时也用不到</p>
 <h4 id="AddressableAssetGroup"><a href="#AddressableAssetGroup" class="headerlink" title="- AddressableAssetGroup"></a>- AddressableAssetGroup</h4><p>这个是group的配置文件，一个group对应一个配置文件，这里面可以配置group的位置，以及是否可以更新。一般不会单独修改某个group的配置的值，而是通过模版直接赋值。</p>
 <h4 id="AddressableAssetEntry"><a href="#AddressableAssetEntry" class="headerlink" title="- AddressableAssetEntry"></a>- AddressableAssetEntry</h4><p>每个group里会有一个或多个资源，而每个资源则对应一个Entry。一般只需要修改Entry的名字即可。</p>
