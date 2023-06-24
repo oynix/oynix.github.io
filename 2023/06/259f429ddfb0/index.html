@@ -30,7 +30,7 @@
 <meta property="og:description" content="ssh是访问GitHub仓库最常用的方式。 通过ssh-keygen命令可以生成ssh的密钥对，每次会生成两个文件，一个是id_rsa，一个是id_rsa.pub，当你尝试把公钥信息，即id_ras.pub中内容添加到多个GitHub账号后台时，会发现这样无法行得通，对于一个公钥，GitHub只允许存在于一个账号配置里，添加到第二个账号时，它便会提示已经存在。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-24T14:17:32.000Z">
-<meta property="article:modified_time" content="2023-06-24T15:28:57.994Z">
+<meta property="article:modified_time" content="2023-06-24T15:30:12.126Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="MacOS">
 <meta property="article:tag" content="GitHub">
@@ -299,7 +299,7 @@
 <p>然后，再增加ssh的配置，让一些地址的访问使用id_rsa2，而不是默认的id_rsa。在<code>~/.ssh</code>下创建一个名为config的文件，向里面添加这几行内容：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host github2.com</span><br><span class="line">HostName github.com</span><br><span class="line">User git</span><br><span class="line">Port 22</span><br><span class="line">IdentityFile ~/.ssh/id_rsa2</span><br></pre></td></tr></table></figure>
 <p>其中Host指的是我们访问的地址中的Host，而HostName则是真正去请求的地址，User和Port不用说了，IdentityFile则是这次请求中要使用的密钥对文件。其中，Host的值写什么都可以，只要和用的值匹配即可。</p>
-<p>这个时候，当我们需要拉取使用id_rsa2配置文件的仓库时，仓库地址要修改一下，原地址如果时这样的：</p>
+<p>这个时候，当我们需要拉取使用id_rsa2配置文件的仓库时，仓库地址要修改一下，原地址如果是这样的：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> git@github.com/oynix/repo.git</span></span><br></pre></td></tr></table></figure>
 <p>那么新地址就是这样的：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git cloen git@github2.com/oynix/repo.git</span></span><br></pre></td></tr></table></figure>
