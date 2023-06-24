@@ -30,7 +30,7 @@
 <meta property="og:description" content="ssh是访问GitHub仓库最常用的方式。 通过ssh-keygen命令可以生成ssh的密钥对，每次会生成两个文件，一个是id_rsa，一个是id_rsa.pub，当你尝试把公钥信息，即id_ras.pub中内容添加到多个GitHub账号后台时，会发现这样无法行得通，对于一个公钥，GitHub只允许存在于一个账号配置里，添加到第二个账号时，它便会提示已经存在。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-24T14:17:32.000Z">
-<meta property="article:modified_time" content="2023-06-24T15:25:08.066Z">
+<meta property="article:modified_time" content="2023-06-24T15:28:57.994Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="MacOS">
 <meta property="article:tag" content="GitHub">
@@ -293,7 +293,7 @@
 <p>ssh-keygen命令参数说明：</p>
 <ul>
 <li>t：type，密钥对类型，默认是rsa，可以省略</li>
-<li>C：commit，注释说明，一般写邮箱即可</li>
+<li>C：comment，注释说明，一般写邮箱即可</li>
 <li>f：file，目标位置，一般放在<code>~/.ssh</code>路径下</li>
 </ul>
 <p>然后，再增加ssh的配置，让一些地址的访问使用id_rsa2，而不是默认的id_rsa。在<code>~/.ssh</code>下创建一个名为config的文件，向里面添加这几行内容：</p>
