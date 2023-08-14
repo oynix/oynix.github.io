@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://s2.loli.net/2023/08/13/nsPBeTVaWiM5Cjx.png">
 <meta property="og:image" content="https://s2.loli.net/2023/08/13/7tsIjLnpUNBF9ku.png">
 <meta property="article:published_time" content="2023-08-13T14:17:32.000Z">
-<meta property="article:modified_time" content="2023-08-13T15:31:14.390Z">
+<meta property="article:modified_time" content="2023-08-14T01:23:33.217Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Github">
 <meta property="article:tag" content="CloudFlare">
@@ -263,7 +263,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -298,18 +298,24 @@
 <h4 id="选择付费计划"><a href="#选择付费计划" class="headerlink" title="选择付费计划"></a>选择付费计划</h4><p>下一步会让选择付费计划，不同的价格对应不同的服务，最下面有个Free的，选这个就可以了，除此之外还有Pro、Business和Enterprise，如果有需要，也可以按需选择。</p>
 <h4 id="替换域名服务器"><a href="#替换域名服务器" class="headerlink" title="替换域名服务器"></a>替换域名服务器</h4><p>这一步，CloudFlare会提供两个域名解析服务器的地址。域名解析这件事，是在域名解析服务器上做的，每个域名服务商都有自己的域名解析服务器，CloudFlare自身也是个域名服务商。如果想通过CloudFlare加速网站访问，那么就需要让CloudFlare接管域名解析这个事。</p>
 <p>具体的操作方式是，用CloudFlare提供的域名解析服务器，替换掉购买域名的服务商的域名解析服务器。打开域名服务商的后台，找到域名服务器地址管理页面，删掉现有的，把CloudFlare提供的复制进去，即可。</p>
-<p>此时，我们就可以在CloudFlare里管理域名的DNS记录了。在我们进行这步操作的同时，CloudFlare可能已经把原有的DNS记录扫描并添加进去，</p>
+<p>此时，我们就可以在CloudFlare里管理域名的DNS记录了。在我们进行这步操作的同时，CloudFlare可能已经把原有的DNS记录扫描并添加进去。</p>
 <h4 id="添加A记录"><a href="#添加A记录" class="headerlink" title="添加A记录"></a>添加A记录</h4><p>上面我们已经添加过一条类型是CNAME的DNS记录，主机名是www，意思是现在可以解析这个域名：<span class="exturl" data-url="aHR0cDovL3d3dy5veW5peC5uZXQuLw==">www.oynix.net。<i class="fa fa-external-link-alt"></i></span></p>
 <p>但我们日常输入地址时，为了方便，会直接输入根域名。为了可以直接解析根域名，我们也可以为根域名添加DNS记录。根域名的主机名用@表示，按理说，直接再添加一条CNAME，同样也指向oynix.github.io即可。</p>
 <p>在CloudFlare中，这么设置是可以的，它会自动拉平。但是不推荐，对于根域名，推荐的方式是添加类型是A的DNS记录，也就是将根域名指向某个IP地址，根据Github的文档，Pages的服务器有4个IP地址，将每一条分别加到DNS记录里即可</p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">185.199.108.153</span></span><br><span class="line"><span class="number">185.199.109.153</span></span><br><span class="line"><span class="number">185.199.110.153</span></span><br><span class="line"><span class="number">185.199.111.153</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="开启SSL-TSL"><a href="#开启SSL-TSL" class="headerlink" title="开启SSL/TSL"></a>开启SSL/TSL</h4><p>在左边，可以看到一个SSL/TSL的选项卡，打开之后，可以看到如下的内容<br><img src="https://s2.loli.net/2023/08/13/7tsIjLnpUNBF9ku.png"><br>如果选择的不是最后一个：完全（严格），英文是：Full(Strict)，那么则需要选中它。否则，可以会遇到一个多次重定向的问题，导致网站打不开。如果加密，则使用https，如果不加密，则使用的是http。</p>
-<p>如果设置了不加密到源服务器的请求，当我们访问<span class="exturl" data-url="aHR0cHM6Ly9veW5peC5uZXTml7YsY2xvdWRmbGFyZeaOpeaUtuWIsOivt+axguWQjizkvJror7fmsYLmupDmnI3liqHlmags5Y2zb3luaXguZ2l0aHViLmlvLOWboOS4uuiuvue9ruS6huS4jeWKoOWvhizmiYDku6XkvJrkvb/nlKhodHRw55qE5pa55byPLOS9huaYr3BhZ2Vz6YeM6K6+572u5LqGZW5mb3JjZS8=">https://oynix.net时，CloudFlare接收到请求后，会请求源服务器，即oynix.github.io，因为设置了不加密，所以会使用http的方式，但是Pages里设置了Enforce<i class="fa fa-external-link-alt"></i></span> HTTPS，这个请求就会重定向到https，客户端便会再次请求https，导致重复上面这个过程，不停的重定向，导致无法打开网站。</p>
+<p>如果设置了不加密到源服务器的请求，当我们访问<code>https://oynix.net</code>时，CloudFlare接收到请求后，会请求源服务器，即<code>oynix.github.io</code>，因为设置了不加密，所以会使用http的方式，但是Pages里设置了Enforce HTTPS，这个请求就会重定向到https，客户端便会再次请求https，导致重复上面这个过程，不停的重定向，导致无法打开网站。</p>
 <h3 id="6-添加CNAME文件"><a href="#6-添加CNAME文件" class="headerlink" title="6. 添加CNAME文件"></a>6. 添加CNAME文件</h3><p>上面提到过，当在Pages设置Custom Domain后，会在仓库根目录生成一个CNAME文件，但是我是通过Hexo管理这个静态网站，包括生成和部署，部署过一次后，远程仓库的这个文件就没有了，所以需要在本地生成一个，具体的路径是：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog<span class="regexp">/source/</span>CNAME</span><br></pre></td></tr></table></figure>
 <p>CNAME是一个纯文本文件，内容就是域名，例如我的便是：oynix.net</p>
 <p>至此，所有的操作都完成了。</p>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><h4 id="A、CNAME、AAAA的区别"><a href="#A、CNAME、AAAA的区别" class="headerlink" title="A、CNAME、AAAA的区别"></a>A、CNAME、AAAA的区别</h4><p>DNS记录，英文名是DNS Records，这三种是常用到的</p>
+<ul>
+<li>A：Address，指向一个IPv4的地址</li>
+<li>AAAA：Address，指向一个IPv6的地址</li>
+<li>CNAME：Canonical Name，指向一个主机域名</li>
+</ul>
 
     </div>
 
@@ -457,7 +463,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%9F%E5%90%8D"><span class="nav-text">1. 域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-DNS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">2. DNS服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0DNS%E8%AE%B0%E5%BD%95"><span class="nav-text">3. 添加DNS记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%BE%E7%BD%AEPages%E7%9A%84%E5%AE%9A%E5%88%B6%E5%9F%9F%E5%90%8D"><span class="nav-text">4. 设置Pages的定制域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%BE%E7%BD%AECloudFlare"><span class="nav-text">5. 设置CloudFlare</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E7%82%B9"><span class="nav-text">添加站点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E4%BB%98%E8%B4%B9%E8%AE%A1%E5%88%92"><span class="nav-text">选择付费计划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">替换域名服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0A%E8%AE%B0%E5%BD%95"><span class="nav-text">添加A记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%90%AFSSL-TSL"><span class="nav-text">开启SSL&#x2F;TSL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B7%BB%E5%8A%A0CNAME%E6%96%87%E4%BB%B6"><span class="nav-text">6. 添加CNAME文件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%9F%E5%90%8D"><span class="nav-text">1. 域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-DNS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">2. DNS服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0DNS%E8%AE%B0%E5%BD%95"><span class="nav-text">3. 添加DNS记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%BE%E7%BD%AEPages%E7%9A%84%E5%AE%9A%E5%88%B6%E5%9F%9F%E5%90%8D"><span class="nav-text">4. 设置Pages的定制域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%BE%E7%BD%AECloudFlare"><span class="nav-text">5. 设置CloudFlare</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E7%82%B9"><span class="nav-text">添加站点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E4%BB%98%E8%B4%B9%E8%AE%A1%E5%88%92"><span class="nav-text">选择付费计划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">替换域名服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0A%E8%AE%B0%E5%BD%95"><span class="nav-text">添加A记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%90%AFSSL-TSL"><span class="nav-text">开启SSL&#x2F;TSL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B7%BB%E5%8A%A0CNAME%E6%96%87%E4%BB%B6"><span class="nav-text">6. 添加CNAME文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95"><span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A%E3%80%81CNAME%E3%80%81AAAA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">A、CNAME、AAAA的区别</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -540,12 +546,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">483k</span>
+    <span title="站点总字数">484k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:19</span>
+    <span title="站点阅读时长">7:20</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
