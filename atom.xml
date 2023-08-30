@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2023-08-26T08:31:31.192Z</updated>
+  <updated>2023-08-30T14:25:48.964Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://oynix.github.io/2023/08/04648d3461d3/"/>
     <id>https://oynix.github.io/2023/08/04648d3461d3/</id>
     <published>2023-08-26T03:17:32.000Z</published>
-    <updated>2023-08-26T08:31:31.192Z</updated>
+    <updated>2023-08-30T14:25:48.964Z</updated>
     
-    <content type="html"><![CDATA[<p>对于MacOS来说，Unity层出不穷的闪退，我想这是不够友好的。2020年及以前的版本，只支持Intel芯片，要想在Silicon芯片的机器上运行，还需要通过Rosetta，但2021及之后的版本同时支持Intel和苹果的Silicon芯片，但不管哪个版本，在Silicon上闪退都已经是常事。</p><span id="more"></span><p>这几天尝试把一个使用2020的项目，升级到了2022，在经历数不清的闪退之后，大概总结到了一点经验，也就是版本号，依赖的版本号、插件的版本号。</p><h3 id="1-依赖package的版本"><a href="#1-依赖package的版本" class="headerlink" title="1. 依赖package的版本"></a>1. 依赖package的版本</h3><p>打开Window中的Package Manager，这里是项目用的到Package，多数Package对于一个特定版本的Editor，都有一个推荐的版本，在版本号上面会提示，这里最好接受它的推荐，即便是升级到新版本后，原有的代码可能需要调整修改。</p><p>这里除了官方提供的Package，还会有其他方式导入的，比如Git仓库，还比如放到和Assets同级别的Packages目录中的依赖库，这些的版本号都需要确认。</p><h3 id="2-插件的版本"><a href="#2-插件的版本" class="headerlink" title="2. 插件的版本"></a>2. 插件的版本</h3><p>除了上面的1，项目还会通过UnityPackage文件导入一些依赖库，这种依赖就需要去查和当前的Editor最匹配的版本号，因为我升级到的2022是相对较新的版本，所以依赖库我直接升级到了最新。</p><p>有的插件可以在Assets Store中找到，但有的可能已经找不到了，这里有个Asset网站，可能会有用：<span class="exturl" data-url="aHR0cHM6Ly91bml0eWFzc2V0Y29sbGVjdGlvbi5jb20v">Unity Asset Collection<i class="fa fa-external-link-alt"></i></span></p><h3 id="3-解决打开Editor就闪退"><a href="#3-解决打开Editor就闪退" class="headerlink" title="3. 解决打开Editor就闪退"></a>3. 解决打开Editor就闪退</h3><p>打开Editor后，会自动编译一下Assembly，如果编译过程不通过，那就会闪退，然后再次打开Editor，就形成了一个循环，Editor会一直开了退，退了开。这个时候，就需要打开项目中的随便一个Script脚本文件，在里面随便改一下，让他无法编译，然后再打开Editor，就可以操作了。</p><h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><p>在成功解决掉这些版本问题，项目可以正常运行后，需要将所有功能整体测试。有些新版本依赖库虽然编译可通过，但调用的结果可能和预期有一定差别。</p>]]></content>
+    <content type="html"><![CDATA[<p>对于MacOS来说，Unity层出不穷的闪退，我想这是不够友好的。2020年及以前的版本，只支持Intel芯片，要想在Apple Silicon的机器上运行，还需要通过Rosetta，但2021及之后的版本同时支持Intel和Apple Silicon，但不管哪个版本，在Silicon上闪退都已经是常事。</p><span id="more"></span><p>这几天尝试把一个使用2020的项目，升级到了2022，在经历数不清的闪退之后，大概总结到了一点经验，主要问题都是关于版本号的，即依赖的版本号、插件的版本号。</p><h3 id="1-依赖package的版本"><a href="#1-依赖package的版本" class="headerlink" title="1. 依赖package的版本"></a>1. 依赖package的版本</h3><p>打开Window中的Package Manager，这里是项目用的到Package，多数Package对于一个特定版本的Editor，都有一个推荐的版本，在版本号上面会提示，这里最好接受它的推荐，即便是升级到新版本后，原有的代码可能需要调整修改。</p><p>这里除了官方提供的Package，还会有其他方式导入的，比如Git仓库，还比如放到和Assets同级别的Packages目录中的Custom依赖库，这些的版本号都需要确认。</p><h3 id="2-插件的版本"><a href="#2-插件的版本" class="headerlink" title="2. 插件的版本"></a>2. 插件的版本</h3><p>除了上面的1，项目还会通过UnityPackage文件导入一些依赖库，这种依赖就需要去查和当前的Editor最匹配的版本号，因为我升级到的2022是相对较新的版本，所以依赖库我直接升级到了最新，比如DOTween等。</p><p>有的插件可以在Assets Store中找到，但有的可能已经找不到了，这里有个Asset资源网站，可能会有用：<span class="exturl" data-url="aHR0cHM6Ly91bml0eWFzc2V0Y29sbGVjdGlvbi5jb20v">Unity Asset Collection<i class="fa fa-external-link-alt"></i></span></p><h3 id="3-解决打开Editor就闪退"><a href="#3-解决打开Editor就闪退" class="headerlink" title="3. 解决打开Editor就闪退"></a>3. 解决打开Editor就闪退</h3><p>打开Editor后，会自动编译一下Assembly，如果编译过程不通过，那就会闪退，然后再次打开Editor后还会这样，就形成了一个循环，Editor会一直开了退，退了开。这个时候，就需要打开项目中的随便一个Script脚本文件，在里面随便改一下，让他报错无法编译，然后再打开Editor，就可以操作了。</p><h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><p>在成功解决掉这些版本问题，项目可以正常运行后，需要将所有功能整体测试。有些新版本依赖库虽然编译可通过，但调用的结果可能和预期有一定差别。</p>]]></content>
     
     
-    <summary type="html">&lt;p&gt;对于MacOS来说，Unity层出不穷的闪退，我想这是不够友好的。2020年及以前的版本，只支持Intel芯片，要想在Silicon芯片的机器上运行，还需要通过Rosetta，但2021及之后的版本同时支持Intel和苹果的Silicon芯片，但不管哪个版本，在Silicon上闪退都已经是常事。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;对于MacOS来说，Unity层出不穷的闪退，我想这是不够友好的。2020年及以前的版本，只支持Intel芯片，要想在Apple Silicon的机器上运行，还需要通过Rosetta，但2021及之后的版本同时支持Intel和Apple Silicon，但不管哪个版本，在Silicon上闪退都已经是常事。&lt;/p&gt;</summary>
     
     
     
