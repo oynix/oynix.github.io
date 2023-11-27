@@ -6,7 +6,7 @@
   <link href="https://oynix.github.io/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.github.io/"/>
-  <updated>2023-11-26T04:42:43.873Z</updated>
+  <updated>2023-11-27T15:03:36.841Z</updated>
   <id>https://oynix.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Unity使用VideoPlayer</title>
+    <link href="https://oynix.github.io/2023/11/aacc07153e25/"/>
+    <id>https://oynix.github.io/2023/11/aacc07153e25/</id>
+    <published>2023-11-27T14:17:32.000Z</published>
+    <updated>2023-11-27T15:03:36.841Z</updated>
+    
+    <content type="html"><![CDATA[<p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnVuaXR5M2QuY29tL2NuLzIwMjEuMS9NYW51YWwvY2xhc3MtVmlkZW9QbGF5ZXIuaHRtbA==">https://docs.unity3d.com/cn/2021.1/Manual/class-VideoPlayer.html<i class="fa fa-external-link-alt"></i></span></p><p>官方使用文档，参数不多，且介绍的很详细，一般来说，都是使用VideoClip的方式，照着文档来就可以正常走通。但是，如果把视频资源打进AssetBundle里，当在Android 9及更低版本的手机上时，就会一片黑色，无法正常播放。</p><span id="more"></span><p>查看系统log，会找到一个报错，说的是无法找到该视频。这大概是控件自身的兼容问题，在更高版本的系统上是可以正常播放的。虽然这个版本的设备已经很少，在我们的产品里，只占零点几个点，但还是要兼容一下。</p><p>这个时候就不能使用VideoPlay的方式。而是将视频文件以.bytes扩展名打进AssetBundle中，在播放的时候，以TextAsset的形式把视频文件提取出来，再以.mp4的扩展存储到本地一份，然后通过VideoPlayer控件的URL模式来播放本地的视频文件，这样就正常了。</p><p>示例代码：</p><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取组件</span></span><br><span class="line"><span class="keyword">public</span> RenderTexture texture;</span><br><span class="line"><span class="keyword">public</span> VideoPlayer videoPlayer;</span><br><span class="line"><span class="keyword">public</span> RawImage rawImage;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 视频资源name.bytes的地址</span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> videoPath = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> IEnumerator <span class="title">Play</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// 初始化组件</span></span><br><span class="line"><span class="keyword">var</span> rect = (RectTransform) rawImage.transform;</span><br><span class="line">texture = RenderTexture.GetTemporary((<span class="built_in">int</span>) rect.width, (<span class="built_in">int</span>) rect.height);</span><br><span class="line">videoPlayer.targetTexture = _texture;</span><br><span class="line">rawImage.texture = _texture;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载图片资源</span></span><br><span class="line"><span class="keyword">var</span> h = Addressables.LoadAssetAsync&lt;TextAsset&gt;(videoPaty);</span><br><span class="line"><span class="keyword">yield</span> <span class="keyword">return</span> h;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 转换到本地</span></span><br><span class="line"><span class="keyword">var</span> path = Path.Combine(Application.persitentDataPath, <span class="string">&quot;LocalVideo.mp4&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (!File.Exists(path))</span><br><span class="line">&#123;</span><br><span class="line">File.WriteAllBytes(path, h.Result.bytes);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Addressables.Release(h);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 播放本地视频文件</span></span><br><span class="line">videoPlayer.url = url;</span><br><span class="line">videoPlayer.isLooping = <span class="literal">false</span>;</span><br><span class="line">videoPlayer.loopPointReached += OnFinish;</span><br><span class="line">videoPlayer.Play();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnFinish</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">RenderTexture.ReleaseTemporary(texture);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>（完）</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly9kb2NzLnVuaXR5M2QuY29tL2NuLzIwMjEuMS9NYW51YWwvY2xhc3MtVmlkZW9QbGF5ZXIuaHRtbA==&quot;&gt;https://docs.unity3d.com/cn/2021.1/Manual/class-VideoPlayer.html&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;官方使用文档，参数不多，且介绍的很详细，一般来说，都是使用VideoClip的方式，照着文档来就可以正常走通。但是，如果把视频资源打进AssetBundle里，当在Android 9及更低版本的手机上时，就会一片黑色，无法正常播放。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Unity" scheme="https://oynix.github.io/categories/Unity/"/>
+    
+    
+    <category term="Unity" scheme="https://oynix.github.io/tags/Unity/"/>
+    
+  </entry>
   
   <entry>
     <title>StaggeredAdapter列表适配器</title>
