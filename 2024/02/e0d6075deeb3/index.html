@@ -22,22 +22,21 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="Android 系统默认的 ImageView 是矩形，但有时页面上需要展示圆形的图片，如头像。这里提供一种最简单的实现思路。">
+  <meta name="description" content="当通过代码调用其他系统命令或者程序时，需要弹出一个新的终端窗口，并在这个窗口中执行命令，命令执行完成后，这个窗口则会自动关闭。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CircleImageView">
-<meta property="og:url" content="https://oynix.github.io/2020/02/79bebe7bce6d/index.html">
+<meta property="og:title" content="CSharp使用代码在新Terminal窗口执行命令">
+<meta property="og:url" content="https://oynix.github.io/2024/02/e0d6075deeb3/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="Android 系统默认的 ImageView 是矩形，但有时页面上需要展示圆形的图片，如头像。这里提供一种最简单的实现思路。">
+<meta property="og:description" content="当通过代码调用其他系统命令或者程序时，需要弹出一个新的终端窗口，并在这个窗口中执行命令，命令执行完成后，这个窗口则会自动关闭。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-16T08:26:24.000Z">
-<meta property="article:modified_time" content="2021-07-19T02:07:15.000Z">
+<meta property="article:published_time" content="2024-02-24T12:17:32.000Z">
+<meta property="article:modified_time" content="2024-02-26T01:54:58.696Z">
 <meta property="article:author" content="oynix">
-<meta property="article:tag" content="Android">
-<meta property="article:tag" content="Widget">
-<meta property="article:tag" content="CircleImageView">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="CSharp">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://oynix.github.io/2020/02/79bebe7bce6d/">
+<link rel="canonical" href="https://oynix.github.io/2024/02/e0d6075deeb3/">
 
 
 <script id="page-configurations">
@@ -50,7 +49,7 @@
   };
 </script>
 
-  <title>CircleImageView | oynix</title>
+  <title>CSharp使用代码在新Terminal窗口执行命令 | oynix</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
@@ -213,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2020/02/79bebe7bce6d/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2024/02/e0d6075deeb3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/p.png">
@@ -226,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CircleImageView
+          CSharp使用代码在新Terminal窗口执行命令
         </h1>
 
         <div class="post-meta">
@@ -236,7 +235,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-02-16 16:26:24" itemprop="dateCreated datePublished" datetime="2020-02-16T16:26:24+08:00">2020-02-16</time>
+              <time title="创建时间：2024-02-24 20:17:32" itemprop="dateCreated datePublished" datetime="2024-02-24T20:17:32+08:00">2024-02-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -244,7 +243,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
                 </span>
             </span>
 
@@ -261,14 +260,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -280,12 +279,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Android 系统默认的 ImageView 是矩形，但有时页面上需要展示圆形的图片，如头像。这里提供一种最简单的实现思路。</p>
+        <p>当通过代码调用其他系统命令或者程序时，需要弹出一个新的终端窗口，并在这个窗口中执行命令，命令执行完成后，这个窗口则会自动关闭。</p>
 <span id="more"></span>
-<p>将圆形遮罩当作目标（DST），图片当作源（SRC）<br>先画的是destination，后画的是source</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CircleImageView</span> <span class="keyword">extends</span> <span class="title">AppCompatImageView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Paint mPaint;</span><br><span class="line">    <span class="keyword">private</span> Xfermode mXfermodeDstOut;</span><br><span class="line">    <span class="keyword">private</span> Path mPath;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CircleImageView</span><span class="params">(Context context, <span class="meta">@Nullable</span> AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mPaint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);</span><br><span class="line">        mPaint.setStyle(Paint.Style.FILL);</span><br><span class="line">        mXfermodeDstOut = <span class="keyword">new</span> PorterDuffXfermode(PorterDuff.Mode.DST_OUT);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mPath == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> w = getWidth();</span><br><span class="line">            <span class="keyword">int</span> h = getHeight();</span><br><span class="line">            <span class="keyword">int</span> cx = w / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> cy = h / <span class="number">2</span>;</span><br><span class="line">            mPath = <span class="keyword">new</span> Path();</span><br><span class="line">            mPath.moveTo(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            mPath.lineTo(w, <span class="number">0</span>);</span><br><span class="line">            mPath.lineTo(w, h);</span><br><span class="line">            mPath.lineTo(<span class="number">0</span>, h);</span><br><span class="line">            mPath.addCircle(cx, cy, Math.min(cx, cy), Path.Direction.CCW);</span><br><span class="line">        &#125;</span><br><span class="line">        canvas.saveLayer(<span class="number">0</span>, <span class="number">0</span>, getWidth(), getHeight(), mPaint, Canvas.ALL_SAVE_FLAG);</span><br><span class="line">        <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line">        mPaint.setXfermode(mXfermodeDstOut);</span><br><span class="line">        canvas.drawPath(mPath, mPaint);</span><br><span class="line">        mPaint.setXfermode(<span class="keyword">null</span>);</span><br><span class="line">        canvas.restore();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4L3dpZGdldGxpYi9ibG9iL21hc3Rlci93aWRnZXQvc3JjL21haW4vamF2YS9jb20vb3luaXgvd2lkZ2V0L0NpcmNsZUltYWdlVmlldy5qYXZh">源文件<i class="fa fa-external-link-alt"></i></span></p>
 
+<h4 id="1-Windows"><a href="#1-Windows" class="headerlink" title="1. Windows"></a>1. Windows</h4><p>在Windows中，直接使用Process即可，dotnet对Windows的适配还是可以的，不需要什么额外的操作就可以达到目标效果，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">InvokCommand</span>(<span class="params"><span class="built_in">string</span> cmd, <span class="built_in">string</span> args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> proc = <span class="keyword">new</span> Process();</span><br><span class="line">    proc.StartInfo.FileName = cmd;</span><br><span class="line">    proc.StartInfo.Arguments = args;</span><br><span class="line">    proc.CreateNoWindow = <span class="literal">false</span>;</span><br><span class="line">    proc.UseShellExecute = <span class="literal">true</span>;</span><br><span class="line">    proc.Start();</span><br><span class="line">    proc.WaitForExit();</span><br><span class="line">    proc.Close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>FileName</code>是命令的路径，这里需要写绝对路径，这样可以不用关心所用的环境变量，而<code>Arguments</code>是命令的参数，比如要查看<code>phthon</code>的版本，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cmd = <span class="string">@&quot;C:\Program Files/Python312/python.exe&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> args = <span class="string">&quot;--version&quot;</span>;</span><br><span class="line"></span><br><span class="line">InvokeCommand(cmd, args);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-Mac"><a href="#2-Mac" class="headerlink" title="2. Mac"></a>2. Mac</h4><p>经过多角度尝试，发现单单使用Process的方式是无法弹出新的终端窗口的，命令确实会执行，但是不会弹出新终端窗口，所以需要通过其他方式辅助实现。</p>
+<p>Mac系统自带一个<code>osascript</code>命令，这个命令是用来执行Apple Script的，可以基于Mac系统本身实现多种效果，所以是可以实现弹出新终端窗口目的的，所以我们需要写一个Apple Script，实现开启新窗口执行命令，然后再通过<code>Process</code>调用Apple Script即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tell application &quot;Terminal&quot;</span><br><span class="line">activate</span><br><span class="line">do script &quot;[cmmand] [options]&quot;</span><br><span class="line">end tell</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>command</code>即为我们需要执行的命令，同样建议使用绝对路径，可以不用管环境变量。在执行<code>Process</code>前，完善Apple Script，然后调用即可，其扩展名为<code>.scpt</code>，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">InvokeCommand</span>(<span class="params">stirng cmd, <span class="built_in">string</span> args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> appleScriptPath = <span class="string">&quot;path/to/save/apple/script.scpt&quot;</span></span><br><span class="line">    <span class="keyword">var</span> scriptTemplate = <span class="string">@&quot;tell application &quot;&quot;Terminal&quot;&quot;</span></span><br><span class="line"><span class="string">activate</span></span><br><span class="line"><span class="string">do script &quot;&quot;&#123;0&#125; &#123;1&#125;&quot;&quot;</span></span><br><span class="line"><span class="string">end tell&quot;</span>;</span><br><span class="line">    <span class="keyword">var</span> script = <span class="built_in">string</span>.Format(scriptTemplate, cmd, args);</span><br><span class="line">    File.WriteAllText(appleScriptPath, script);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> proc = <span class="keyword">new</span> Process();</span><br><span class="line">    proc.StartInfo.FileName = <span class="string">&quot;/usr/bin/osascript&quot;</span>;</span><br><span class="line">    proc.StartInfo.Arguments = appleScriptPath;</span><br><span class="line">    proc.StartInfo.CreateNoWindow = <span class="literal">false</span>;</span><br><span class="line">    proc.StartInfo.UseShellExecute = <span class="literal">true</span>;</span><br><span class="line">    proc.Start();</span><br><span class="line">    proc.WaitForExit();</span><br><span class="line">    proc.Close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-异步执行"><a href="#3-异步执行" class="headerlink" title="3. 异步执行"></a>3. 异步执行</h4><p>如果在代码中不需要等待命令行执行结束，去掉Wait和Close，便可异步执行命令，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> proc = <span class="keyword">new</span> Process();</span><br><span class="line">.....</span><br><span class="line">proc.Start();</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -329,7 +340,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2020/02/79bebe7bce6d/" title="CircleImageView">https://oynix.github.io/2020/02/79bebe7bce6d/</a>
+    <a href="https://oynix.github.io/2024/02/e0d6075deeb3/" title="CSharp使用代码在新Terminal窗口执行命令">https://oynix.github.io/2024/02/e0d6075deeb3/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -359,9 +370,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Android/" rel="tag"># Android</a>
-              <a href="/tags/Widget/" rel="tag"># Widget</a>
-              <a href="/tags/CircleImageView/" rel="tag"># CircleImageView</a>
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/CSharp/" rel="tag"># CSharp</a>
           </div>
 
         
@@ -370,12 +380,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/04b64dfbe9a2/" rel="prev" title="Paint常用方法说明">
-      <i class="fa fa-chevron-left"></i> Paint常用方法说明
+    <a href="/2024/02/c47887e5b021/" rel="prev" title="在代码中通过MSBuild编译CSharp项目">
+      <i class="fa fa-chevron-left"></i> 在代码中通过MSBuild编译CSharp项目
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/06/56ea6b63b2f8/" rel="next" title="管理 MacOS 上的 Python 环境版本">
-      管理 MacOS 上的 Python 环境版本 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/02/634010e2a2fb/" rel="next" title="Unity导出XCode Workspace项目">
+      Unity导出XCode Workspace项目 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -436,6 +446,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Windows"><span class="nav-text">1. Windows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Mac"><span class="nav-text">2. Mac</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%BC%82%E6%AD%A5%E6%89%A7%E8%A1%8C"><span class="nav-text">3. 异步执行</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -617,7 +628,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'oynix.github.io',
       owner       : 'oynix',
       admin       : ['oynix'],
-      id          : 'edb37824a546708c8b3767ff0155374d',
+      id          : '2503779a2e4fdb20e764dcd4c4605d25',
         language: '',
       distractionFreeMode: true
     });
