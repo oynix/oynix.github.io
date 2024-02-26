@@ -22,23 +22,21 @@
     var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="原文地址">
+  <meta name="description" content="当使用XmlDocument给Xml中的标签增加带前缀的属性时，需要明确指定namespace uri，如果使用root的，或是其他节点的，不会生效，简单在此做个记录。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Fragment">
-<meta property="og:url" content="https://oynix.github.io/2021/09/8810331e150a/index.html">
+<meta property="og:title" content="XmlDocument里的NamespaceURI">
+<meta property="og:url" content="https://oynix.github.io/2024/01/1560442f4681/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="原文地址">
+<meta property="og:description" content="当使用XmlDocument给Xml中的标签增加带前缀的属性时，需要明确指定namespace uri，如果使用root的，或是其他节点的，不会生效，简单在此做个记录。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/09/19/YHsuRZOc6TSxVJA.png">
-<meta property="article:published_time" content="2021-09-19T12:00:21.000Z">
-<meta property="article:modified_time" content="2022-04-14T08:25:30.000Z">
+<meta property="article:published_time" content="2024-01-20T14:17:32.000Z">
+<meta property="article:modified_time" content="2024-02-26T06:28:57.718Z">
 <meta property="article:author" content="oynix">
-<meta property="article:tag" content="Android">
-<meta property="article:tag" content="Fragment">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="CSharp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/09/19/YHsuRZOc6TSxVJA.png">
 
-<link rel="canonical" href="https://oynix.github.io/2021/09/8810331e150a/">
+<link rel="canonical" href="https://oynix.github.io/2024/01/1560442f4681/">
 
 
 <script id="page-configurations">
@@ -51,7 +49,7 @@
   };
 </script>
 
-  <title>Android Fragment | oynix</title>
+  <title>XmlDocument里的NamespaceURI | oynix</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
@@ -214,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2021/09/8810331e150a/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2024/01/1560442f4681/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/p.png">
@@ -227,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Android Fragment
+          XmlDocument里的NamespaceURI
         </h1>
 
         <div class="post-meta">
@@ -237,7 +235,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-09-19 20:00:21" itemprop="dateCreated datePublished" datetime="2021-09-19T20:00:21+08:00">2021-09-19</time>
+              <time title="创建时间：2024-01-20 22:17:32" itemprop="dateCreated datePublished" datetime="2024-01-20T22:17:32+08:00">2024-01-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,7 +243,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
                 </span>
             </span>
 
@@ -262,14 +260,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -281,30 +279,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uY24vcG9zdC83MDA2OTcwODQ0NTQyOTI2ODU1">原文地址<i class="fa fa-external-link-alt"></i></span></p>
+        <p>当使用XmlDocument给Xml中的标签增加带前缀的属性时，需要明确指定namespace uri，如果使用root的，或是其他节点的，不会生效，简单在此做个记录。</p>
 <span id="more"></span>
 
-<p>原作者的slogan是，喜欢写又臭又长的文章。这篇文章确实长的很，洋洋洒洒上万字，就这字数就过滤掉了很大一部分人，但是我喜欢。写的很好，里面内容有旧也有新，担心哪天点开这链接弹出来个404，所以摘抄点出来。</p>
-<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><p>Fragment中有两个生命周期，一个自身的生命周期，另一个是其所包含的View的生命周期，其中的View是可以多次被创建和销毁的，所以在使用ViewModel时，要将数据与View的生命周期相关联。<br><img src="https://i.loli.net/2021/09/19/YHsuRZOc6TSxVJA.png"></p>
-<h3 id="回退栈"><a href="#回退栈" class="headerlink" title="回退栈"></a>回退栈</h3><p>增加/移除/替换Fragment都是基于事务进行的，当提交事务时，将事务添加到了回退栈，那么在将事务从回退栈中弹出时，FragmentManager就会reverse its operation，反向执行事务的操作，也就是恢复成该事务执行之前的状态。按下返回键，如果回退栈不为空，则回退栈就会弹出事务来响应返回按钮事件。当然，也可以不将事务加到回退栈中。相关接口：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FragmentTransaction.addToBackStack</span><br><span class="line">FragmentTransaction.popBackStack</span><br><span class="line">FragmentTransaction.disallowAddToBackStack</span><br></pre></td></tr></table></figure>
+<p>举个例子，比如操作AndroidManifest.xml文件，向application中增加一个meta-data的标签，</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- GENERATED BY UNITY. REMOVE THIS COMMENT TO PREVENT OVERWRITING WHEN EXPORTING AGAIN--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span> <span class="attr">package</span>=<span class="string">&quot;com.unity3d.player&quot;</span> <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="registerForActivityResult"><a href="#registerForActivityResult" class="headerlink" title="registerForActivityResult"></a>registerForActivityResult</h3><p><code>startActivityForResult</code>和<code>onActivityResult</code>都已经废弃，<code>registerForActivityResult</code>是官方推荐的从Activity获取数据的方式，新方式变得灵活了不少，如下：</p>
-<ul>
-<li>创建<code>ActivityResultContract&lt;I, O&gt;</code>的实例，声明输入/输出数据，需要实现里面的抽象方法。<code>createIntent</code>方法用来获取跳转的Intent，<code>parseResult</code>用来处理返回的数据</li>
-<li>创建<code>ActivityResultCallback&lt;O&gt;</code>接口实例，用来处理返回的数据，里面只有一个方法<code>onActivityResult</code></li>
-<li>最后调用ComponentActivity中方法<code>registerForActivityResult(contract, callback)</code>把前两步创建的参数传入即可</li>
-</ul>
-<h3 id="Fragment-Result"><a href="#Fragment-Result" class="headerlink" title="Fragment Result"></a>Fragment Result</h3><p>在FragmentManager有这样一组方法，可以进行数据通信：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setFragmentResultListener</span><span class="params">(String requestKey, LifecycleOwner lifecycleOwner, FragmentResultListener listener)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setFragmentResult</span><span class="params">(String requestKey, Bundle result)</span></span></span><br></pre></td></tr></table></figure>
-<p>简单说，就是在观察者模式的基础上，加上了生命周期的管理，不管是Activity还是Fragment，只要能获取到同一个FragmentManager就可以通信。需要注意的是，里面保存key和listener用的是<code>Map&lt;String, FragmentResultListener&gt;</code>，所以一个key只能有一个listener，后面的会把前面的覆盖。</p>
-<h3 id="Fragment中监听返回按键"><a href="#Fragment中监听返回按键" class="headerlink" title="Fragment中监听返回按键"></a>Fragment中监听返回按键</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlaceholderFragment</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> sectionNumber: <span class="built_in">Int</span>) :</span><br><span class="line">    Fragment(R.layout.fragment_placeholder) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> onBackPressedCallback = <span class="keyword">object</span> : OnBackPressedCallback(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleOnBackPressed</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="comment">//TODO       </span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onAttach</span><span class="params">(context: <span class="type">Context</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onAttach(context)</span><br><span class="line">        requireActivity().onBackPressedDispatcher.addCallback(<span class="keyword">this</span>, onBackPressedCallback)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先需要先Load这个文件，然后获取到application节点，然后创建一个meta-data节点，最后将其加入到application中，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> doc = <span class="keyword">new</span> XmlDocument();</span><br><span class="line">doc.Load(<span class="string">&quot;path/to/xml/file&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里需要明确制定</span></span><br><span class="line"><span class="keyword">var</span> metaNode = doc.CreatElement(<span class="string">&quot;meta-data&quot;</span>);</span><br><span class="line">metaNode.SetAttribute(<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span>, <span class="string">&quot;name&quot;</span>, <span class="string">&quot;Channel&quot;</span>);</span><br><span class="line">metaNode.SetAttribute(<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span>, <span class="string">&quot;value&quot;</span>, <span class="string">&quot;Mainland&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rootNode = doc.DocumentElement;</span><br><span class="line">rootNode.AppendChild(metaNode);</span><br><span class="line"></span><br><span class="line">doc.Save(<span class="string">&quot;path/to/xml/file&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<h3 id="其他用途"><a href="#其他用途" class="headerlink" title="其他用途"></a>其他用途</h3><ul>
-<li>Fragment可设置内部的UI View，也可以不设置。当不设置时，可用其来监听生命周期，其中LifeCycle、Glide用的便是这种方式。</li>
-<li>也可以用作方法代理，请求权限，可将请求与处理放到一起处理，而不是像<code>registerForActivityResult</code>分开处理。FragmentTransaction的<code>add</code>方法都有多个重载方法，支持只添加一个Fragment，若此Fragment无View，则对用户来说是无感的，但对于我们来讲可以在其中处理一些业务。</li>
-</ul>
-
+<p>结果如下，如果使用父节点或是跟节点的NamespaceURI属性，那么属性将没有android前缀。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- GENERATED BY UNITY. REMOVE THIS COMMENT TO PREVENT OVERWRITING WHEN EXPORTING AGAIN--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span> <span class="attr">package</span>=<span class="string">&quot;com.unity3d.player&quot;</span> <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">application</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span> <span class="attr">android:name</span>=<span class="string">&quot;Channel&quot;</span> <span class="attr">android:value</span>=<span class="string">&quot;Mainland&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -348,7 +333,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2021/09/8810331e150a/" title="Android Fragment">https://oynix.github.io/2021/09/8810331e150a/</a>
+    <a href="https://oynix.github.io/2024/01/1560442f4681/" title="XmlDocument里的NamespaceURI">https://oynix.github.io/2024/01/1560442f4681/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -378,8 +363,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Android/" rel="tag"># Android</a>
-              <a href="/tags/Fragment/" rel="tag"># Fragment</a>
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/CSharp/" rel="tag"># CSharp</a>
           </div>
 
         
@@ -388,12 +373,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/09/10f3f5637578/" rel="prev" title="Android之检查知否开了代理">
-      <i class="fa fa-chevron-left"></i> Android之检查知否开了代理
+    <a href="/2023/11/aacc07153e25/" rel="prev" title="Unity使用VideoPlayer">
+      <i class="fa fa-chevron-left"></i> Unity使用VideoPlayer
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/09/3907d4e375b5/" rel="next" title="Android适配">
-      Android适配 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/01/d426654a2b3e/" rel="next" title="DateTime的DateTimeKind参数">
+      DateTime的DateTimeKind参数 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -454,7 +439,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E9%80%80%E6%A0%88"><span class="nav-text">回退栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#registerForActivityResult"><span class="nav-text">registerForActivityResult</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fragment-Result"><span class="nav-text">Fragment Result</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fragment%E4%B8%AD%E7%9B%91%E5%90%AC%E8%BF%94%E5%9B%9E%E6%8C%89%E9%94%AE"><span class="nav-text">Fragment中监听返回按键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%94%A8%E9%80%94"><span class="nav-text">其他用途</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -636,7 +620,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'oynix.github.io',
       owner       : 'oynix',
       admin       : ['oynix'],
-      id          : '30b4a9bcdf21778ac84b0ca44fff5235',
+      id          : '7dff57f7c4aa258ef3be881ebf493880',
         language: '',
       distractionFreeMode: true
     });
