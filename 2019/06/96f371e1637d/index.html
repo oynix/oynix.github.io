@@ -19,13 +19,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+    var CONFIG = {"hostname":"oynix.net","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
   <meta name="description" content="摆理论和套公式其实也是为了说明问题，解释原理，不过有时却适得其反。  前一个主题介绍了整数在计算机里的存储形式，浮点数，即小数，例如 3.14、2.71828 等，看起来和整数相近，而二者在计算机中存储的形式大为不同，作为一种常用的数据类型，来了解了解其中的本质，这个主题我们一起来摸摸「浮点数」的底。 浮点数有多种类型，但是我们写代码时常用到的有两种，按照所占长度分为：一个是单精度，占用 32">
 <meta property="og:type" content="article">
 <meta property="og:title" content="摸摸「浮点数」的底">
-<meta property="og:url" content="https://oynix.github.io/2019/06/96f371e1637d/index.html">
+<meta property="og:url" content="https://oynix.net/2019/06/96f371e1637d/index.html">
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="摆理论和套公式其实也是为了说明问题，解释原理，不过有时却适得其反。  前一个主题介绍了整数在计算机里的存储形式，浮点数，即小数，例如 3.14、2.71828 等，看起来和整数相近，而二者在计算机中存储的形式大为不同，作为一种常用的数据类型，来了解了解其中的本质，这个主题我们一起来摸摸「浮点数」的底。 浮点数有多种类型，但是我们写代码时常用到的有两种，按照所占长度分为：一个是单精度，占用 32">
 <meta property="og:locale" content="zh_CN">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="浮点数">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://oynix.github.io/2019/06/96f371e1637d/">
+<link rel="canonical" href="https://oynix.net/2019/06/96f371e1637d/">
 
 
 <script id="page-configurations">
@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">161</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">162</span></a>
 
   </li>
         <li class="menu-item menu-item-message">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2019/06/96f371e1637d/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.net/2019/06/96f371e1637d/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/p.png">
@@ -374,7 +374,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2019/06/96f371e1637d/" title="摸摸「浮点数」的底">https://oynix.github.io/2019/06/96f371e1637d/</a>
+    <a href="https://oynix.net/2019/06/96f371e1637d/" title="摸摸「浮点数」的底">https://oynix.net/2019/06/96f371e1637d/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -496,7 +496,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -563,7 +563,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">520k</span>
+    <span title="站点总字数">521k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

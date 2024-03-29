@@ -19,13 +19,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"oynix.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+    var CONFIG = {"hostname":"oynix.net","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
   <meta name="description" content="早前写过几篇有关Shell使用的零碎知识点，为便于查看，将其汇总于此。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell相关汇总">
-<meta property="og:url" content="https://oynix.github.io/2022/08/8d305fafd271/index.html">
+<meta property="og:url" content="https://oynix.net/2022/08/8d305fafd271/index.html">
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="早前写过几篇有关Shell使用的零碎知识点，为便于查看，将其汇总于此。">
 <meta property="og:locale" content="zh_CN">
@@ -38,7 +38,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png">
 
-<link rel="canonical" href="https://oynix.github.io/2022/08/8d305fafd271/">
+<link rel="canonical" href="https://oynix.net/2022/08/8d305fafd271/">
 
 
 <script id="page-configurations">
@@ -147,7 +147,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">161</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">162</span></a>
 
   </li>
         <li class="menu-item menu-item-message">
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.github.io/2022/08/8d305fafd271/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.net/2022/08/8d305fafd271/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/p.png">
@@ -392,11 +392,11 @@
 <p>31m表示的是红色，0m表示不修改，也就是恢复。跟在<code>\033[31m</code>后面的内容都会变成红色，因为只想改变这一条log的颜色，所以在结束后还要把颜色改回来，避免影响下面的输出。其中，-e表示解释转义字符，即<code>\033</code>，否则将原样输出。</p>
 <p>31之前的值，我挨着试了一遍，没有什么特别醒目的改变，后面的几个变化较为明显，光说是说不出来，还说上个图吧<br><img src="https://s2.loli.net/2022/05/17/wZXnPDcp5zuflFU.png"></p>
 <p>总的来说，31、32和33就是标准的红绿黄，可以用来输出error、debug和warn级别的log。剩下的也就35和36看上去还算直观，可以用来输出一些需要特别关注的log。</p>
-<h3 id="13-cat命令"><a href="#13-cat命令" class="headerlink" title="13. cat命令"></a>13. cat命令</h3><p><a href="https://oynix.github.io/2021/12/4c4e081a5efb/">cat命令</a></p>
-<h3 id="14-sed命令"><a href="#14-sed命令" class="headerlink" title="14. sed命令"></a>14. sed命令</h3><p><a href="https://oynix.github.io/2022/05/77d2d6fd37d2/">sed命令</a></p>
-<h3 id="15-tr命令"><a href="#15-tr命令" class="headerlink" title="15. tr命令"></a>15. tr命令</h3><p><a href="https://oynix.github.io/2022/05/61d4af8f9d77/">tr命令</a></p>
-<h3 id="16-xargs命令"><a href="#16-xargs命令" class="headerlink" title="16. xargs命令"></a>16. xargs命令</h3><p><a href="https://oynix.github.io/2022/05/4a93513ce45a/">xargs命令</a></p>
-<h3 id="17-vim使用"><a href="#17-vim使用" class="headerlink" title="17. vim使用"></a>17. vim使用</h3><p><a href="https://oynix.github.io/2022/04/46f76ab08387/">vim使用</a></p>
+<h3 id="13-cat命令"><a href="#13-cat命令" class="headerlink" title="13. cat命令"></a>13. cat命令</h3><p><a target="_blank" rel="noopener" href="https://oynix.github.io/2021/12/4c4e081a5efb/">cat命令</a></p>
+<h3 id="14-sed命令"><a href="#14-sed命令" class="headerlink" title="14. sed命令"></a>14. sed命令</h3><p><a target="_blank" rel="noopener" href="https://oynix.github.io/2022/05/77d2d6fd37d2/">sed命令</a></p>
+<h3 id="15-tr命令"><a href="#15-tr命令" class="headerlink" title="15. tr命令"></a>15. tr命令</h3><p><a target="_blank" rel="noopener" href="https://oynix.github.io/2022/05/61d4af8f9d77/">tr命令</a></p>
+<h3 id="16-xargs命令"><a href="#16-xargs命令" class="headerlink" title="16. xargs命令"></a>16. xargs命令</h3><p><a target="_blank" rel="noopener" href="https://oynix.github.io/2022/05/4a93513ce45a/">xargs命令</a></p>
+<h3 id="17-vim使用"><a href="#17-vim使用" class="headerlink" title="17. vim使用"></a>17. vim使用</h3><p><a target="_blank" rel="noopener" href="https://oynix.github.io/2022/04/46f76ab08387/">vim使用</a></p>
 
     </div>
 
@@ -441,7 +441,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.github.io/2022/08/8d305fafd271/" title="Shell相关汇总">https://oynix.github.io/2022/08/8d305fafd271/</a>
+    <a href="https://oynix.net/2022/08/8d305fafd271/" title="Shell相关汇总">https://oynix.net/2022/08/8d305fafd271/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -563,7 +563,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -630,7 +630,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">520k</span>
+    <span title="站点总字数">521k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
