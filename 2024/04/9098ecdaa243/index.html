@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/p.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/p.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/p.png">
+  <link rel="mask-icon" href="/images/p.png" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.net","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="使用Editor导出或者直接编译Android工程时，需要借助几个外部工具，JDK、SDK、NDK和Gradle，在Preferences中的External Tools中可以看到它们。每个版本的Editor，绑定了固定版本的外部工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用非绑定版本的Gradle自动编译UnityEditor导出的Android工程">
+<meta property="og:url" content="https://oynix.net/2024/04/9098ecdaa243/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="使用Editor导出或者直接编译Android工程时，需要借助几个外部工具，JDK、SDK、NDK和Gradle，在Preferences中的External Tools中可以看到它们。每个版本的Editor，绑定了固定版本的外部工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-20T14:17:32.000Z">
+<meta property="article:modified_time" content="2024-04-22T07:59:14.578Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.net/2024/04/9098ecdaa243/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用非绑定版本的Gradle自动编译UnityEditor导出的Android工程 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">112</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">163</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.net/2024/04/9098ecdaa243/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/p.png">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用非绑定版本的Gradle自动编译UnityEditor导出的Android工程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-20 22:17:32" itemprop="dateCreated datePublished" datetime="2024-04-20T22:17:32+08:00">2024-04-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>使用Editor导出或者直接编译Android工程时，需要借助几个外部工具，JDK、SDK、NDK和Gradle，在Preferences中的External Tools中可以看到它们。每个版本的Editor，绑定了固定版本的外部工具。</p>
+<span id="more"></span>
+
+<p>比如2020.3.41f1版本的Editor，所依赖的外部工具版本是，</p>
+<ul>
+<li>JDK：1.8.0</li>
+<li>SDK：根据build.gradle按需</li>
+<li>NDK：19.0.5232133</li>
+<li>Gradle：6.1.1</li>
+</ul>
+<p>当在External Tools中配置了这些对应版本的工具，并且这些版本可以满足项目的需求时，这两个条件需同时存在，这个时候是可以通过Editor导出工程，也可以直接打包（APK/AAB）。</p>
+<p>当工程中引用了较新版本的第三方库依赖时，其他工具还好，6.1.1版本的Gradle就无法满足需求了。</p>
+<p>比如16.0的Facebook，最低需要4.2.1的Gradle Plugin编译，而这个版本的Plugin，需要最低6.7的Gradle，Editor绑定的6.1的Gradle无法编译通过。</p>
+<p>对于自动化编译打包流程，需要对此情况做个处理。</p>
+<h3 id="1-策略"><a href="#1-策略" class="headerlink" title="1. 策略"></a>1. 策略</h3><p>直线不可行，曲线救国就好。</p>
+<p>绑定版本的Gradle不可用，那么便只通过Editor导出Android工程，在自动化流程中增加一步，将导出的工程编译打包成对应的文件，APK/AAB，即可。</p>
+<p>过程：导出工程 -&gt; 添加编译脚本 -&gt; 执行脚本</p>
+<h3 id="2-Gradle-Plugin和Gradle"><a href="#2-Gradle-Plugin和Gradle" class="headerlink" title="2. Gradle Plugin和Gradle"></a>2. Gradle Plugin和Gradle</h3><p>Gradle常用来编译项目，Android通过Gradle Plugin来使用Gradle，这两者的版本之间也有一定的关联。比如上面所提到的，4.0.1的Gradle Plugin可以配合6.1.1的Gradle使用，而4.2.1的Gradle Plugin最低需要配合6.7的Gradle使用。</p>
+<p>如果确认所需的版本，需要结合项目中引入的依赖Dependency，建议使用可用版本中最低的，高版本中的新特性可能会导致一些未可知的问题。</p>
+<h3 id="3-配置Gradle-Plugin版本"><a href="#3-配置Gradle-Plugin版本" class="headerlink" title="3. 配置Gradle Plugin版本"></a>3. 配置Gradle Plugin版本</h3><p>开启Player Settings中Publishing Settings下的Custom Base Gradle Template选项，然后可以在Assets/Plugins/Android路径看到一个名为<code>baseProjectTemplate.gradle</code>的文件，这个文件里可以配置Gradle Plugin的版本。</p>
+<p>不同版本的Editor，这个文件的内容有所区别，较老版本的里面是这样的（省略了其他与此无关的配置代码），</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classpath &#x27;com.android.tools.build:gradle:4.2.1&#x27;</span><br></pre></td></tr></table></figure>
+<p>较新版本的里面是这样的（省略了其他与此无关的配置代码）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id &#x27;com.android.application&#x27; version &#x27;4.2.1&#x27; apply false</span><br><span class="line">id &#x27;com.android.library&#x27; version &#x27;4.2.1&#x27; apply false</span><br></pre></td></tr></table></figure>
+
+<p>形式不影响本质，按需修改即可。</p>
+<p>以上方式是在导出Android工程前修改，除此之外，也可以在导出工程后修改：直接修改导出工程根目录下的<code>build.gradle</code>文件即可，内容一致。</p>
+<h3 id="4-配置Gradle版本"><a href="#4-配置Gradle版本" class="headerlink" title="4. 配置Gradle版本"></a>4. 配置Gradle版本</h3><p>与Plugin不同，这个版本只能在导出工程之后修改，配置文件具体位置如下，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExportProjectRoot/gradle/wrapper/gradle-wrapper.properties</span><br></pre></td></tr></table></figure>
+<p>看后缀便可知，这是个纯文本文件，里面有一行是这样的，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https\://services.gradle.org/distributions/gradle-6.7.1-bin.zip</span><br><span class="line">// 或者</span><br><span class="line">distributionUrl=https\://services.gradle.org/distributions/gradle-6.7.1-all.zip</span><br></pre></td></tr></table></figure>
+<p>将末尾修改成需要的版本即可，一般有两种形式，区别在于从gradle官网下载的文件不同，使用上无区别，建议使用all，都下载下来。</p>
+<h3 id="5-增加执行编译命令的jar包"><a href="#5-增加执行编译命令的jar包" class="headerlink" title="5. 增加执行编译命令的jar包"></a>5. 增加执行编译命令的jar包</h3><p>通过gradle编译、构建Android工程非常简洁，每种操作只需要一个命令。比如，<code>assembleRelease</code>命令可以输出Release的APK安装包，<code>bundleRelease</code>命令可以输出Release的AAB安装包，同样<code>assembleDebug</code>命令可以输出Debug的APK安装包，等等，gradle plugin同时支持了很多常用的构建命令。</p>
+<p>而<code>gradle-wrapper.jar</code>则是解析并处理这些构建命令的，所以我们需要把这个工具jar包放到导出的Android里。一般通过Android Studio创建的Android工程里面已经存在了这个jar包，但是通过Editor导出的Android工程中并不存在这个jar包。每个版本的gradle都包含这个jar文件，找到对应版本的jar文件，放到Android工程这个路径下即可，注意文件名需要保持一致</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExportProjectRoot/gradle/wrapper/gradle-wrapper.jar</span><br></pre></td></tr></table></figure>
+
+<p>那么，去哪找<code>gradle-wrapper.jar</code>呢？</p>
+<p>通常情况下，可以到GRADLE_USER_HOME下找到本机中存在的所有版本的gradle，这个路径在这里，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.gradle/wrapper/dists/</span><br></pre></td></tr></table></figure>
+<p>找到了可以直接用，找不到也没关系，去官网下载也可以，地址是：<span class="exturl" data-url="aHR0cHM6Ly9ncmFkbGUub3JnL3JlbGVhc2VzLw==">https://gradle.org/releases/<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>注意，需要找到对应版本的gradle，比如我说的这个例子中，涉及的版本是6.7.1。</p>
+<p>不论是本机的，还是刚下载的，里面都会有一个<code>lib</code>的目录，这个目录下有很多jar文件，我们只需要找到包含版本名的wrapper文件，比如，6.7.1版本对应的是<code>gradle-wrapper-6.7.1.jar</code>。虽然命令有点和上面我们所需要的jar文件类似，但这个并不是，我们需要给它解压，通过以下命令，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar -xvf gradle-wrapper.6.7.1.jar</span><br></pre></td></tr></table></figure>
+<p>这个操作很快，完成之后，就可以看到我们需要的<code>gradle-wrapper.jar</code>文件了，每个版本的gradle对应的这个wrapper文件是固定的，所以这个操作只需要执行一次，获取到之后就可以一直重复用了。</p>
+<h3 id="6-编译脚本"><a href="#6-编译脚本" class="headerlink" title="6. 编译脚本"></a>6. 编译脚本</h3><p>简单来说，这个脚本就是用来调用gradle-wrapper.jar的。正如上面所提到的，使用AndroidStudio创建的工程，也会自动创建脚本，所有的工程创建出来的都是一样的，可以复用。</p>
+<p>Windows使用<code>gradlew.bat</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">@rem</span><br><span class="line">@rem Copyright 2015 the original author or authors.</span><br><span class="line">@rem</span><br><span class="line">@rem Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="line">@rem you may not use this file except in compliance with the License.</span><br><span class="line">@rem You may obtain a copy of the License at</span><br><span class="line">@rem</span><br><span class="line">@rem      https://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line">@rem</span><br><span class="line">@rem Unless required by applicable law or agreed to in writing, software</span><br><span class="line">@rem distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="line">@rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">@rem See the License for the specific language governing permissions and</span><br><span class="line">@rem limitations under the License.</span><br><span class="line">@rem</span><br><span class="line"></span><br><span class="line">@if &quot;%DEBUG%&quot; == &quot;&quot; @echo off</span><br><span class="line">@rem ##########################################################################</span><br><span class="line">@rem</span><br><span class="line">@rem  Gradle startup script for Windows</span><br><span class="line">@rem</span><br><span class="line">@rem ##########################################################################</span><br><span class="line"></span><br><span class="line">@rem Set local scope for the variables with windows NT shell</span><br><span class="line">if &quot;%OS%&quot;==&quot;Windows_NT&quot; setlocal</span><br><span class="line"></span><br><span class="line">set DIRNAME=%~dp0</span><br><span class="line">if &quot;%DIRNAME%&quot; == &quot;&quot; set DIRNAME=.</span><br><span class="line">set APP_BASE_NAME=%~n0</span><br><span class="line">set APP_HOME=%DIRNAME%</span><br><span class="line"></span><br><span class="line">@rem Resolve any &quot;.&quot; and &quot;..&quot; in APP_HOME to make it shorter.</span><br><span class="line">for %%i in (&quot;%APP_HOME%&quot;) do set APP_HOME=%%~fi</span><br><span class="line"></span><br><span class="line">@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.</span><br><span class="line">set DEFAULT_JVM_OPTS=&quot;-Xmx64m&quot; &quot;-Xms64m&quot;</span><br><span class="line"></span><br><span class="line">@rem Find java.exe</span><br><span class="line">if defined JAVA_HOME goto findJavaFromJavaHome</span><br><span class="line"></span><br><span class="line">set JAVA_EXE=java.exe</span><br><span class="line"><span class="meta">%</span><span class="bash">JAVA_EXE% -version &gt;NUL 2&gt;&amp;1</span></span><br><span class="line">if &quot;%ERRORLEVEL%&quot; == &quot;0&quot; goto execute</span><br><span class="line"></span><br><span class="line">echo.</span><br><span class="line">echo ERROR: JAVA_HOME is not set and no &#x27;java&#x27; command could be found in your PATH.</span><br><span class="line">echo.</span><br><span class="line">echo Please set the JAVA_HOME variable in your environment to match the</span><br><span class="line">echo location of your Java installation.</span><br><span class="line"></span><br><span class="line">goto fail</span><br><span class="line"></span><br><span class="line">:findJavaFromJavaHome</span><br><span class="line">set JAVA_HOME=%JAVA_HOME:&quot;=%</span><br><span class="line">set JAVA_EXE=%JAVA_HOME%/bin/java.exe</span><br><span class="line"></span><br><span class="line">if exist &quot;%JAVA_EXE%&quot; goto execute</span><br><span class="line"></span><br><span class="line">echo.</span><br><span class="line">echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%</span><br><span class="line">echo.</span><br><span class="line">echo Please set the JAVA_HOME variable in your environment to match the</span><br><span class="line">echo location of your Java installation.</span><br><span class="line"></span><br><span class="line">goto fail</span><br><span class="line"></span><br><span class="line">:execute</span><br><span class="line">@rem Setup the command line</span><br><span class="line"></span><br><span class="line">set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@rem Execute Gradle</span><br><span class="line">&quot;%JAVA_EXE%&quot; %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% &quot;-Dorg.gradle.appname=%APP_BASE_NAME%&quot; -classpath &quot;%CLASSPATH%&quot; org.gradle.wrapper.GradleWrapperMain %*</span><br><span class="line"></span><br><span class="line">:end</span><br><span class="line">@rem End local scope for the variables with windows NT shell</span><br><span class="line">if &quot;%ERRORLEVEL%&quot;==&quot;0&quot; goto mainEnd</span><br><span class="line"></span><br><span class="line">:fail</span><br><span class="line">rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of</span><br><span class="line">rem the _cmd.exe /c_ return code!</span><br><span class="line">if  not &quot;&quot; == &quot;%GRADLE_EXIT_CONSOLE%&quot; exit 1</span><br><span class="line">exit /b 1</span><br><span class="line"></span><br><span class="line">:mainEnd</span><br><span class="line">if &quot;%OS%&quot;==&quot;Windows_NT&quot; endlocal</span><br><span class="line"></span><br><span class="line">:omega</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>非Windows使用<code>gradlew</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env sh</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment"># Copyright 2015 the original author or authors.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> you may not use this file except <span class="keyword">in</span> compliance with the License.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> You may obtain a copy of the License at</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment">#      https://www.apache.org/licenses/LICENSE-2.0</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> distributed under the License is distributed on an <span class="string">&quot;AS IS&quot;</span> BASIS,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> See the License <span class="keyword">for</span> the specific language governing permissions and</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> limitations under the License.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"></span><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#############################################################################</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#  Gradle start up script for UN*X</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#############################################################################</span></span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Attempt to <span class="built_in">set</span> APP_HOME</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Resolve links: <span class="variable">$0</span> may be a link</span></span><br><span class="line">PRG=&quot;$0&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> Need this <span class="keyword">for</span> relative symlinks.</span></span><br><span class="line">while [ -h &quot;$PRG&quot; ] ; do</span><br><span class="line">    ls=`ls -ld &quot;$PRG&quot;`</span><br><span class="line">    link=`expr &quot;$ls&quot; : &#x27;.*-&gt; \(.*\)$&#x27;`</span><br><span class="line">    if expr &quot;$link&quot; : &#x27;/.*&#x27; &gt; /dev/null; then</span><br><span class="line">        PRG=&quot;$link&quot;</span><br><span class="line">    else</span><br><span class="line">        PRG=`dirname &quot;$PRG&quot;`&quot;/$link&quot;</span><br><span class="line">    fi</span><br><span class="line">done</span><br><span class="line">SAVED=&quot;`pwd`&quot;</span><br><span class="line">cd &quot;`dirname \&quot;$PRG\&quot;`/&quot; &gt;/dev/null</span><br><span class="line">APP_HOME=&quot;`pwd -P`&quot;</span><br><span class="line">cd &quot;$SAVED&quot; &gt;/dev/null</span><br><span class="line"></span><br><span class="line">APP_NAME=&quot;Gradle&quot;</span><br><span class="line">APP_BASE_NAME=`basename &quot;$0&quot;`</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.</span></span><br><span class="line">DEFAULT_JVM_OPTS=&#x27;&quot;-Xmx64m&quot; &quot;-Xms64m&quot;&#x27;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Use the maximum available, or <span class="built_in">set</span> MAX_FD != -1 to use that value.</span></span><br><span class="line">MAX_FD=&quot;maximum&quot;</span><br><span class="line"></span><br><span class="line">warn () &#123;</span><br><span class="line">    echo &quot;$*&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">die () &#123;</span><br><span class="line">    echo</span><br><span class="line">    echo &quot;$*&quot;</span><br><span class="line">    echo</span><br><span class="line">    exit 1</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> OS specific support (must be <span class="string">&#x27;true&#x27;</span> or <span class="string">&#x27;false&#x27;</span>).</span></span><br><span class="line">cygwin=false</span><br><span class="line">msys=false</span><br><span class="line">darwin=false</span><br><span class="line">nonstop=false</span><br><span class="line">case &quot;`uname`&quot; in</span><br><span class="line">  CYGWIN* )</span><br><span class="line">    cygwin=true</span><br><span class="line">    ;;</span><br><span class="line">  Darwin* )</span><br><span class="line">    darwin=true</span><br><span class="line">    ;;</span><br><span class="line">  MINGW* )</span><br><span class="line">    msys=true</span><br><span class="line">    ;;</span><br><span class="line">  NONSTOP* )</span><br><span class="line">    nonstop=true</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br><span class="line"></span><br><span class="line">CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Determine the Java <span class="built_in">command</span> to use to start the JVM.</span></span><br><span class="line">if [ -n &quot;$JAVA_HOME&quot; ] ; then</span><br><span class="line">    if [ -x &quot;$JAVA_HOME/jre/sh/java&quot; ] ; then</span><br><span class="line">        # IBM&#x27;s JDK on AIX uses strange locations for the executables</span><br><span class="line">        JAVACMD=&quot;$JAVA_HOME/jre/sh/java&quot;</span><br><span class="line">    else</span><br><span class="line">        JAVACMD=&quot;$JAVA_HOME/bin/java&quot;</span><br><span class="line">    fi</span><br><span class="line">    if [ ! -x &quot;$JAVACMD&quot; ] ; then</span><br><span class="line">        die &quot;ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME</span><br><span class="line"></span><br><span class="line">Please set the JAVA_HOME variable in your environment to match the</span><br><span class="line">location of your Java installation.&quot;</span><br><span class="line">    fi</span><br><span class="line">else</span><br><span class="line">    JAVACMD=&quot;java&quot;</span><br><span class="line">    which java &gt;/dev/null 2&gt;&amp;1 || die &quot;ERROR: JAVA_HOME is not set and no &#x27;java&#x27; command could be found in your PATH.</span><br><span class="line"></span><br><span class="line">Please set the JAVA_HOME variable in your environment to match the</span><br><span class="line">location of your Java installation.&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Increase the maximum file descriptors <span class="keyword">if</span> we can.</span></span><br><span class="line">if [ &quot;$cygwin&quot; = &quot;false&quot; -a &quot;$darwin&quot; = &quot;false&quot; -a &quot;$nonstop&quot; = &quot;false&quot; ] ; then</span><br><span class="line">    MAX_FD_LIMIT=`ulimit -H -n`</span><br><span class="line">    if [ $? -eq 0 ] ; then</span><br><span class="line">        if [ &quot;$MAX_FD&quot; = &quot;maximum&quot; -o &quot;$MAX_FD&quot; = &quot;max&quot; ] ; then</span><br><span class="line">            MAX_FD=&quot;$MAX_FD_LIMIT&quot;</span><br><span class="line">        fi</span><br><span class="line">        ulimit -n $MAX_FD</span><br><span class="line">        if [ $? -ne 0 ] ; then</span><br><span class="line">            warn &quot;Could not set maximum file descriptor limit: $MAX_FD&quot;</span><br><span class="line">        fi</span><br><span class="line">    else</span><br><span class="line">        warn &quot;Could not query maximum file descriptor limit: $MAX_FD_LIMIT&quot;</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> For Darwin, add options to specify how the application appears <span class="keyword">in</span> the dock</span></span><br><span class="line">if $darwin; then</span><br><span class="line">    GRADLE_OPTS=&quot;$GRADLE_OPTS \&quot;-Xdock:name=$APP_NAME\&quot; \&quot;-Xdock:icon=$APP_HOME/media/gradle.icns\&quot;&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> For Cygwin or MSYS, switch paths to Windows format before running java</span></span><br><span class="line">if [ &quot;$cygwin&quot; = &quot;true&quot; -o &quot;$msys&quot; = &quot;true&quot; ] ; then</span><br><span class="line">    APP_HOME=`cygpath --path --mixed &quot;$APP_HOME&quot;`</span><br><span class="line">    CLASSPATH=`cygpath --path --mixed &quot;$CLASSPATH&quot;`</span><br><span class="line"></span><br><span class="line">    JAVACMD=`cygpath --unix &quot;$JAVACMD&quot;`</span><br><span class="line"></span><br><span class="line">    # We build the pattern for arguments to be converted via cygpath</span><br><span class="line">    ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2&gt;/dev/null`</span><br><span class="line">    SEP=&quot;&quot;</span><br><span class="line">    for dir in $ROOTDIRSRAW ; do</span><br><span class="line">        ROOTDIRS=&quot;$ROOTDIRS$SEP$dir&quot;</span><br><span class="line">        SEP=&quot;|&quot;</span><br><span class="line">    done</span><br><span class="line">    OURCYGPATTERN=&quot;(^($ROOTDIRS))&quot;</span><br><span class="line">    # Add a user-defined pattern to the cygpath arguments</span><br><span class="line">    if [ &quot;$GRADLE_CYGPATTERN&quot; != &quot;&quot; ] ; then</span><br><span class="line">        OURCYGPATTERN=&quot;$OURCYGPATTERN|($GRADLE_CYGPATTERN)&quot;</span><br><span class="line">    fi</span><br><span class="line">    # Now convert the arguments - kludge to limit ourselves to /bin/sh</span><br><span class="line">    i=0</span><br><span class="line">    for arg in &quot;$@&quot; ; do</span><br><span class="line">        CHECK=`echo &quot;$arg&quot;|egrep -c &quot;$OURCYGPATTERN&quot; -`</span><br><span class="line">        CHECK2=`echo &quot;$arg&quot;|egrep -c &quot;^-&quot;`                                 ### Determine if an option</span><br><span class="line"></span><br><span class="line">        if [ $CHECK -ne 0 ] &amp;&amp; [ $CHECK2 -eq 0 ] ; then                    ### Added a condition</span><br><span class="line">            eval `echo args$i`=`cygpath --path --ignore --mixed &quot;$arg&quot;`</span><br><span class="line">        else</span><br><span class="line">            eval `echo args$i`=&quot;\&quot;$arg\&quot;&quot;</span><br><span class="line">        fi</span><br><span class="line">        i=`expr $i + 1`</span><br><span class="line">    done</span><br><span class="line">    case $i in</span><br><span class="line">        0) set -- ;;</span><br><span class="line">        1) set -- &quot;$args0&quot; ;;</span><br><span class="line">        2) set -- &quot;$args0&quot; &quot;$args1&quot; ;;</span><br><span class="line">        3) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; ;;</span><br><span class="line">        4) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; &quot;$args3&quot; ;;</span><br><span class="line">        5) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; &quot;$args3&quot; &quot;$args4&quot; ;;</span><br><span class="line">        6) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; &quot;$args3&quot; &quot;$args4&quot; &quot;$args5&quot; ;;</span><br><span class="line">        7) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; &quot;$args3&quot; &quot;$args4&quot; &quot;$args5&quot; &quot;$args6&quot; ;;</span><br><span class="line">        8) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; &quot;$args3&quot; &quot;$args4&quot; &quot;$args5&quot; &quot;$args6&quot; &quot;$args7&quot; ;;</span><br><span class="line">        9) set -- &quot;$args0&quot; &quot;$args1&quot; &quot;$args2&quot; &quot;$args3&quot; &quot;$args4&quot; &quot;$args5&quot; &quot;$args6&quot; &quot;$args7&quot; &quot;$args8&quot; ;;</span><br><span class="line">    esac</span><br><span class="line">fi</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Escape application args</span></span><br><span class="line">save () &#123;</span><br><span class="line">    for i do printf %s\\n &quot;$i&quot; | sed &quot;s/&#x27;/&#x27;\\\\&#x27;&#x27;/g;1s/^/&#x27;/;\$s/\$/&#x27; \\\\/&quot; ; done</span><br><span class="line">    echo &quot; &quot;</span><br><span class="line">&#125;</span><br><span class="line">APP_ARGS=`save &quot;$@&quot;`</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Collect all arguments <span class="keyword">for</span> the java <span class="built_in">command</span>, following the shell quoting and substitution rules</span></span><br><span class="line">eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS &quot;\&quot;-Dorg.gradle.appname=$APP_BASE_NAME\&quot;&quot; -classpath &quot;\&quot;$CLASSPATH\&quot;&quot; org.gradle.wrapper.GradleWrapperMain &quot;$APP_ARGS&quot;</span><br><span class="line"></span><br><span class="line">exec &quot;$JAVACMD&quot; &quot;$@&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>将这两个文件放到导出项目根目录下即可，注意保持文件名一致。</p>
+<h3 id="7-编译"><a href="#7-编译" class="headerlink" title="7. 编译"></a>7. 编译</h3><p>一般情况下，输出文件的类型会从两个维度区别，一个是Release/Debug，一个是APK/AAB，两两组合下，就会有4个命令：</p>
+<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 输出Release APK</span></span><br><span class="line">gradlew.bat assembleRelease</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Debug APK</span></span><br><span class="line">gradlew.bat assembleDebug</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Release AAB</span></span><br><span class="line">gradlew.bat bundleRelease</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Debug AAB</span></span><br><span class="line">gradlew.bat bundleDebug</span><br></pre></td></tr></table></figure>
+
+<h4 id="非Windows"><a href="#非Windows" class="headerlink" title="非Windows"></a>非Windows</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 输出Release APK</span></span><br><span class="line">gradlew assembleRelease</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Debug APK</span></span><br><span class="line">gradlew assembleDebug</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Release AAB</span></span><br><span class="line">gradlew bundleRelease</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Debug AAB</span></span><br><span class="line">gradlew bundleDebug</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a>8. 总结</h3><p>如上所述，由Editor直接编译输出安装包，到只由Editor导出工程后，手动编译输出安装包，中间增加了修改配置文件、增加编译工具的步骤，将这几个步骤集成到自动化流程中，便可以一步出包了。</p>
+<h3 id="附录一：Windows-CMD不识别转义控制字符-033"><a href="#附录一：Windows-CMD不识别转义控制字符-033" class="headerlink" title="附录一：Windows CMD不识别转义控制字符\033"></a>附录一：Windows CMD不识别转义控制字符<code>\033</code></h3><p>gradle编译过程中，会使用转义控制字符<code>\033</code>来完成一些操作，比如清屏、控制输出光标位置等等。直接通过CMD窗口执行bat脚本，显示是没有问题的，但是如果通过<code>Process</code>类调用，存在不识别转义字符的可能，以至于控制台输出十分杂乱。</p>
+<p>通过在注册表中增加一条配置，可解决这个问题：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f</span><br></pre></td></tr></table></figure>
+<p>如果想把这个值恢复为0，可通过以下命令，当然也可以直接<code>regedit</code>，找到这个配置然后删除</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="附录二：下载历史版本的NDK"><a href="#附录二：下载历史版本的NDK" class="headerlink" title="附录二：下载历史版本的NDK"></a>附录二：下载历史版本的NDK</h3><p>开头提到过，Editor的版本和NDK的版本是绑定的，比如2020.3.41f1的Editor，需要19.0.5232133版本的NDK，这个可以在External Tools中看到。去到NDK的官网下载，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FuZHJvaWQvbmRrL3dpa2kvVW5zdXBwb3J0ZWQtRG93bmxvYWRz">https://github.com/android/ndk/wiki/Unsupported-Downloads<i class="fa fa-external-link-alt"></i></span>，可以看到19版本的NDK只有一个r19c，也就是19.2.5345600，我需要的是r19b，也就是上一个版本。</p>
+<p>虽然页面不提供，但是历史文件是存在的，复制一下r19c的下载链接，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://dl.google.com/android/repository/android-ndk-r19c-darwin-x86_64.zip</span><br></pre></td></tr></table></figure>
+<p>只需要将链接中的r19c，改成r19b，即可。下载完成之后，可以看到解压后的根目录下有个source.properties文件，其中记录的版本即为需要的版本19.0.5232133。用同样的方法，也可以下载其他历史版本的NDK。</p>
+<h3 id="附录三：执行不支持Apple-Silicon的NDK"><a href="#附录三：执行不支持Apple-Silicon的NDK" class="headerlink" title="附录三：执行不支持Apple Silicon的NDK"></a>附录三：执行不支持Apple Silicon的NDK</h3><p>有些较老版本的NDK，在Apple Silicon上执行时会报错，说该NDK不支持Applie Silicon。可通过修改ndk-build文件来解决这个问题，这个文件在NDK解压后的根目录，以文本文件的形式打开即可，其中内容很简洁，如下，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><br><span class="line"><span class="meta">$</span><span class="bash">DIR/build/ndk-build <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>修改如下即可，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><br><span class="line">arch -x86_64 $DIR/build/ndk-build &quot;$@&quot;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.net/2024/04/9098ecdaa243/" title="使用非绑定版本的Gradle自动编译UnityEditor导出的Android工程">https://oynix.net/2024/04/9098ecdaa243/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/168b4c071736/" rel="prev" title="MacOS输入法输出当前时间">
+      <i class="fa fa-chevron-left"></i> MacOS输入法输出当前时间
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AD%96%E7%95%A5"><span class="nav-text">1. 策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Gradle-Plugin%E5%92%8CGradle"><span class="nav-text">2. Gradle Plugin和Gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AEGradle-Plugin%E7%89%88%E6%9C%AC"><span class="nav-text">3. 配置Gradle Plugin版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AEGradle%E7%89%88%E6%9C%AC"><span class="nav-text">4. 配置Gradle版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%A2%9E%E5%8A%A0%E6%89%A7%E8%A1%8C%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4%E7%9A%84jar%E5%8C%85"><span class="nav-text">5. 增加执行编译命令的jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%BC%96%E8%AF%91%E8%84%9A%E6%9C%AC"><span class="nav-text">6. 编译脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%BC%96%E8%AF%91"><span class="nav-text">7. 编译</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9EWindows"><span class="nav-text">非Windows</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%80%BB%E7%BB%93"><span class="nav-text">8. 总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95%E4%B8%80%EF%BC%9AWindows-CMD%E4%B8%8D%E8%AF%86%E5%88%AB%E8%BD%AC%E4%B9%89%E6%8E%A7%E5%88%B6%E5%AD%97%E7%AC%A6-033"><span class="nav-text">附录一：Windows CMD不识别转义控制字符\033</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95%E4%BA%8C%EF%BC%9A%E4%B8%8B%E8%BD%BD%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%E7%9A%84NDK"><span class="nav-text">附录二：下载历史版本的NDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95%E4%B8%89%EF%BC%9A%E6%89%A7%E8%A1%8C%E4%B8%8D%E6%94%AF%E6%8C%81Apple-Silicon%E7%9A%84NDK"><span class="nav-text">附录三：执行不支持Apple Silicon的NDK</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/p.png">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">112</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">537k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:08</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '6cdc098c2c6a1b844c6ae95c4e9ebb51',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
