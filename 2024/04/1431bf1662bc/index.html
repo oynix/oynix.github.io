@@ -30,7 +30,7 @@
 <meta property="og:description" content="升级了一个项目的依赖的一些第三方SDK的版本，导出XCode工程后，打包上传的时候失败了，报错如下：  App Store Connect Operation Error  Invalid Bundle. The bundle at ‘xxx&#x2F;Frameworks&#x2F;UnityFramework.framework’ contains disallowed file ‘Framework’.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-04-04T14:17:32.000Z">
-<meta property="article:modified_time" content="2024-05-16T06:23:24.320Z">
+<meta property="article:modified_time" content="2024-05-16T06:26:41.530Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="Apple">
@@ -261,7 +261,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -295,6 +295,9 @@
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pbPath = Path.Combine(request.ExportProjPath, <span class="string">&quot;Unity-iPhone.xcodeproj&quot;</span>, <span class="string">&quot;project.pbxproj&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (File.Exists(pbPath))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> proj = <span class="keyword">new</span> PBXProject();</span><br><span class="line">    proj.ReadFromFile(pbPath);</span><br><span class="line">    <span class="comment">// 一个Project中有多个Target，我们需要修改的是UnityFramework Target</span></span><br><span class="line">    <span class="keyword">var</span> t = proj.GetUnityFrameworkTargetGuid();</span><br><span class="line">    proj.SetBuildProperty(t, <span class="string">&quot;ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES&quot;</span>, <span class="string">&quot;NO&quot;</span>);</span><br><span class="line">    proj.WriteToFile(pbPath);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如果没有自动化流程，也可以通过 PostProcessBuildAttribute 注解来修饰函数，达到同样的目的。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS9xdWVzdGlvbnMvNzM5MDI0MDYvdW5pdHlmcmFtZXdvcmstZnJhbWV3b3JrLWNvbnRhaW5zLWRpc2FsbG93ZWQtZmlsZS1mcmFtZXdvcmtzLWdldHRpbmctdGhpcy1lcnI=">UnityFramework.framework contains disallowed file ‘Frameworks’. Getting this error while getting Unity IOS build<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
 
     </div>
 
@@ -446,7 +449,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Xcode%E4%B8%AD%E4%BF%AE%E6%94%B9"><span class="nav-text">Xcode中修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%87%B3%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%81%E7%A8%8B"><span class="nav-text">添加至自动化流程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Xcode%E4%B8%AD%E4%BF%AE%E6%94%B9"><span class="nav-text">Xcode中修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%87%B3%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%81%E7%A8%8B"><span class="nav-text">添加至自动化流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
