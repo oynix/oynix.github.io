@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>oynix</title>
   
-  <subtitle>人生需要一些摸鱼时刻，做什么都可以，不做什么也可以</subtitle>
+  <subtitle>技术解决的问题终归有限</subtitle>
   <link href="https://oynix.net/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.net/"/>
