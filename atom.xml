@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>oynix</title>
   
-  <subtitle>技术解决的问题终归有限</subtitle>
+  <subtitle>技术解决的问题终归有限，但需要解决的问题同样有限</subtitle>
   <link href="https://oynix.net/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.net/"/>
