@@ -6,7 +6,7 @@
   <link href="https://oynix.net/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.net/"/>
-  <updated>2024-05-16T06:32:34.303Z</updated>
+  <updated>2024-05-21T04:53:17.763Z</updated>
   <id>https://oynix.net/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>禁止nsurlsessiond偷跑流量</title>
+    <link href="https://oynix.net/2024/05/9e1b7252d9a6/"/>
+    <id>https://oynix.net/2024/05/9e1b7252d9a6/</id>
+    <published>2024-05-05T14:17:32.000Z</published>
+    <updated>2024-05-21T04:53:17.763Z</updated>
+    
+    <content type="html"><![CDATA[<p>偶然注意到的，下行网速一直处于满载状态，打开监视器发现，是一个叫做nsurlsessiond的进程在跑，这个进程主要用来下载新版本的系统或补丁包，如果不需要升级则不必下载。从稳定考虑，一般使用大版本最后几个小版本的系统是较好的选择，而从性能方面考虑，机器买来时自带的版本的系统，是较为合适的选择。</p><span id="more"></span><p>关闭的方式有多种，比如禁止自动更新、自动下载，这种改起来有点麻烦，还有种方式是通过禁止URL，将这个进程访问的URL都禁掉，也能达到同样的目的。</p><p>相比之下，这种方式比较方便灵活，如果有需要，也可随时取消这些URL禁止规则，再次开启。</p><h4 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h4><p>网上查来的URL共有这几个，</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">swdist.apple.com</span><br><span class="line">swscan.apple.com</span><br><span class="line">swcdn.apple.com</span><br><span class="line"></span><br><span class="line">gdmf.apple.com</span><br><span class="line">xp.apple.com</span><br><span class="line"></span><br><span class="line">mesu.apple.com</span><br></pre></td></tr></table></figure><p>实践之后，发现还有一个漏网之鱼，</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">updates.cdn-apple.com</span><br></pre></td></tr></table></figure><h4 id="更改hosts"><a href="#更改hosts" class="headerlink" title="更改hosts"></a>更改hosts</h4><p>如果机器上没有开代理，那么把这些加到hosts文件里就可以，具体位置在<code>/etc/hosts</code></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 swdist.apple.com</span><br><span class="line">127.0.0.1 swscan.apple.com</span><br><span class="line">127.0.0.1 swcdn.apple.com</span><br><span class="line"> </span><br><span class="line">127.0.0.1 gdmf.apple.com</span><br><span class="line">127.0.0.1 xp.apple.com</span><br><span class="line"> </span><br><span class="line">127.0.0.1 mesu.apple.com</span><br><span class="line">127.0.0.1 updates.cdn-apple.com</span><br></pre></td></tr></table></figure><h4 id="增加代理规则"><a href="#增加代理规则" class="headerlink" title="增加代理规则"></a>增加代理规则</h4><p>如果开了代理，增加几条REJECT规则就可以，</p><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,swdist.apple.com,REJECT</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,swscan.apple.com,REJECT</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,swcdn.apple.com,REJECT</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,gdmf.apple.com,REJECT</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,xp.apple.com,REJECT</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,mesu.apple.com,REJECT</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">DOMAIN-SUFFIX,updates.cdn-apple.com,REJECT</span></span><br></pre></td></tr></table></figure><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul><li><span class="exturl" data-url="aHR0cHM6Ly9zeXNpbi5vcmcvYmxvZy9kaXNhYmxlLW1hY29zLW1vbnRlcmV5LXVwZGF0ZS8=">如何彻底禁止 macOS Monterey 自动更新，去除更新标记和通知<i class="fa fa-external-link-alt"></i></span></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;偶然注意到的，下行网速一直处于满载状态，打开监视器发现，是一个叫做nsurlsessiond的进程在跑，这个进程主要用来下载新版本的系统或补丁包，如果不需要升级则不必下载。从稳定考虑，一般使用大版本最后几个小版本的系统是较好的选择，而从性能方面考虑，机器买来时自带的版本的系统，是较为合适的选择。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="MacOS" scheme="https://oynix.net/categories/MacOS/"/>
+    
+    
+    <category term="MacOS" scheme="https://oynix.net/tags/MacOS/"/>
+    
+    <category term="Apple" scheme="https://oynix.net/tags/Apple/"/>
+    
+  </entry>
   
   <entry>
     <title>解决DisallowedUnityFramework问题</title>
