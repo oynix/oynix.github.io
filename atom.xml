@@ -6,7 +6,7 @@
   <link href="https://oynix.net/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.net/"/>
-  <updated>2024-05-24T18:22:42.773Z</updated>
+  <updated>2024-05-25T07:40:28.671Z</updated>
   <id>https://oynix.net/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>理解矩阵乘法</title>
+    <link href="https://oynix.net/2024/05/fb9c55582ea1/"/>
+    <id>https://oynix.net/2024/05/fb9c55582ea1/</id>
+    <published>2024-05-18T14:17:32.000Z</published>
+    <updated>2024-05-25T07:40:28.671Z</updated>
+    
+    <content type="html"><![CDATA[<p>大学时候有一门叫做线性代数的课程，虽然没挂科，但是好像就没学明白过，直到最近在看的计算机图形学，涉及到了相关内容，这么多年没明白的东西，突然好像就明白了。</p><span id="more"></span><p>谷歌上搜索，矩阵乘法的本质是什么，一定会看到这样的答案：线性变换的复合。一个直观看上去很抽象的回答，直到看到这个通俗的解释后，恍然大悟的感觉。<br><img src="https://s2.loli.net/2024/05/25/ldpFU71BX39inwz.png"></p><p>知乎上面看到的，我没登录所以只让看这么多，后面的不让看了，不过这些就已足够。</p><p>原回答在这里：<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzIxMzUxOTY1L2Fuc3dlci8zMTA1MDE0NQ==">矩阵乘法的本质是什么？ - 知乎用户的回答 - 知乎<i class="fa fa-external-link-alt"></i></span></p><p>用他的话来说就是：我们管这种从材料列表转为开销表的过程，就叫做一个线性映射。这也即是矩阵乘法的意义。</p><h4 id="乘法拆分"><a href="#乘法拆分" class="headerlink" title="乘法拆分"></a>乘法拆分</h4><p>这样看更直观一些，但是只适用于右侧是一列的矩阵，也可叫做向量。<br>$$\begin{bmatrix}<br>a&amp;b&amp;c\<br>d&amp;e&amp;f\<br>g&amp;h&amp;k\<br>\end{bmatrix}<br>\begin{bmatrix}<br>x\<br>y\<br>z\<br>\end{bmatrix}<br>=<br>x<br>\begin{bmatrix}<br>a\<br>d\<br>g\<br>\end{bmatrix}<br>+<br>y<br>\begin{bmatrix}<br>b\<br>e\<br>h\<br>\end{bmatrix}<br>+<br>z<br>\begin{bmatrix}<br>c\<br>f\<br>k\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>ax+by+cz\<br>dx+ey+fz\<br>gx+hy+kz\<br>\end{bmatrix}<br>$$</p><p>关于相乘的过程，有个网站做了个动画，这种形式更加清晰。</p><p><span class="exturl" data-url="aHR0cDovL21hdHJpeG11bHRpcGxpY2F0aW9uLnh5ei8=">矩阵乘法动画<i class="fa fa-external-link-alt"></i></span></p><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul><li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0aHNpc2Z1bi5jb20vYWxnZWJyYS9tYXRyaXgtbXVsdGlwbHlpbmcuaHRtbA==">How to Multiply Matrices<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDE1LzA5L21hdHJpeC1tdWx0aXBsaWNhdGlvbi5odG1s">理解矩阵乘法<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly94aWFvY2hhb3dlaS5jb20vMjAxOC8wNC8wMy9Db21wdXRlckdyYXBoaWNzV2l0aE9wZW5HTF8wNy8=">二维几何变换<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xldmlvcGt1L2FydGljbGUvZGV0YWlscy8xMjg5ODM0MzM=">Markdown中插入矩阵乘法<i class="fa fa-external-link-alt"></i></span></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;大学时候有一门叫做线性代数的课程，虽然没挂科，但是好像就没学明白过，直到最近在看的计算机图形学，涉及到了相关内容，这么多年没明白的东西，突然好像就明白了。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CG" scheme="https://oynix.net/categories/CG/"/>
+    
+    
+    <category term="Math" scheme="https://oynix.net/tags/Math/"/>
+    
+    <category term="CG" scheme="https://oynix.net/tags/CG/"/>
+    
+  </entry>
   
   <entry>
     <title>如何在ClashX Pro上优雅地管理多个订阅服务</title>
