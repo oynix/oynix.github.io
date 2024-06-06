@@ -6,7 +6,7 @@
   <link href="https://oynix.net/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.net/"/>
-  <updated>2024-06-06T00:44:48.161Z</updated>
+  <updated>2024-06-06T00:55:37.712Z</updated>
   <id>https://oynix.net/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://oynix.net/2024/05/80196bd2d6d8/"/>
     <id>https://oynix.net/2024/05/80196bd2d6d8/</id>
     <published>2024-05-26T14:17:32.000Z</published>
-    <updated>2024-06-06T00:44:48.161Z</updated>
+    <updated>2024-06-06T00:55:37.712Z</updated>
     
-    <content type="html"><![CDATA[<p>我一直在用一个名为Barbee的软件管理菜单栏图标的显示、隐藏，已经间距的调整，今天偶然发现，如果只需要调整间距，通过自带的命令就可以实现。</p><span id="more"></span><p>命令如下，每次执行完，需要退出登录，然后再进入后，即可生效。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定间距  </span></span><br><span class="line">defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10  </span><br><span class="line"><span class="comment"># 指定内边距  </span></span><br><span class="line">defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 6</span><br><span class="line"><span class="comment"># 当前间距查询  </span></span><br><span class="line">defaults -currentHost <span class="built_in">read</span> -globalDomain NSStatusItemSpacing  </span><br><span class="line">defaults -currentHost <span class="built_in">read</span> -globalDomain NSStatusItemSelectionPadding  </span><br><span class="line"><span class="comment"># 重置  </span></span><br><span class="line">defaults -currentHost delete -globalDomain NSStatusItemSpacing  </span><br><span class="line">defaults -currentHost delete -globalDomain NSStatusItemSelectionPadding  </span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<p>我一直在用一个名为Barbee的软件管理菜单栏图标的显示、隐藏，以及间距的调整，今天偶然发现，如果只需要调整间距，通过自带的命令就可以实现。</p><span id="more"></span><p>命令如下，每次执行完，需要退出登录，然后再进入后，即可生效。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定间距  </span></span><br><span class="line">defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10  </span><br><span class="line"><span class="comment"># 指定内边距  </span></span><br><span class="line">defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 6</span><br><span class="line"><span class="comment"># 当前间距查询  </span></span><br><span class="line">defaults -currentHost <span class="built_in">read</span> -globalDomain NSStatusItemSpacing  </span><br><span class="line">defaults -currentHost <span class="built_in">read</span> -globalDomain NSStatusItemSelectionPadding  </span><br><span class="line"><span class="comment"># 重置  </span></span><br><span class="line">defaults -currentHost delete -globalDomain NSStatusItemSpacing  </span><br><span class="line">defaults -currentHost delete -globalDomain NSStatusItemSelectionPadding  </span><br></pre></td></tr></table></figure>]]></content>
     
     
-    <summary type="html">&lt;p&gt;我一直在用一个名为Barbee的软件管理菜单栏图标的显示、隐藏，已经间距的调整，今天偶然发现，如果只需要调整间距，通过自带的命令就可以实现。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;我一直在用一个名为Barbee的软件管理菜单栏图标的显示、隐藏，以及间距的调整，今天偶然发现，如果只需要调整间距，通过自带的命令就可以实现。&lt;/p&gt;</summary>
     
     
     
