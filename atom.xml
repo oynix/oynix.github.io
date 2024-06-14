@@ -6,7 +6,7 @@
   <link href="https://oynix.net/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.net/"/>
-  <updated>2024-06-06T00:55:37.712Z</updated>
+  <updated>2024-06-14T05:06:01.628Z</updated>
   <id>https://oynix.net/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>解决：aapt2 LoadedArsc.cpp:682] Unknown chunk type &#39;200&#39;问题</title>
+    <link href="https://oynix.net/2024/06/fa7099f2a585/"/>
+    <id>https://oynix.net/2024/06/fa7099f2a585/</id>
+    <published>2024-06-01T14:17:32.000Z</published>
+    <updated>2024-06-14T05:06:01.628Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天本地打包测试时，突然报错提示了这个问题，为什么说是突然呢，因为同样的代码在远程打包机上一切正常。</p><span id="more"></span><p>日常会遇到这样一类问题，特点是在网上查不到什么可行的解决方案，最终一番折腾下来，发现是因为一个极为低级的错误导致的，所以网上很难查到。</p><p>这次，我的第一反应便是如此，这一定是个很低级的错误导致的。但是谷歌上一查发现，有不少人遇到过同样的问题，有的说增加jvm最大内存限制解决了，有的说升级AGP版本解决了，有的说减少打包配置里noCompress文件数量解决了。</p><p>众说纷纭，但是一番折腾下来问题依然在。</p><p>转念一想，换个思路，对比一下打包机导出的项目和本地导出项目有没有什么差别。对比下来，发现原来是targetSdkVersion不同，导出时选择的是设备最高版本，打包机装的最新的SDK Platform版本是33，而我的本地已经装到了34，就这么一点细微差别，修改之后，顺利出包。</p><p>总结下来，还是个常谈的版本互相兼容问题，某些依赖库或是工具升级到某个版本后，配套的可能需要升级一连串的东西。</p><p>下面是我验证过可行的版本搭配：</p><ul><li>Unity Editor: 2020.3.41f1</li><li>Android Gradle Plugin: 4.2.1</li><li>Gradle: 6.7.1</li><li>minSdkVersion: 21</li><li>targetSdkVersion: 33</li><li>buildToolsVersion: 30.0.1</li><li>Ndk Version: r19(19.0.5232133)</li><li>Java: OpenJDK 1.8.0_352</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;今天本地打包测试时，突然报错提示了这个问题，为什么说是突然呢，因为同样的代码在远程打包机上一切正常。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Unity" scheme="https://oynix.net/categories/Unity/"/>
+    
+    
+    <category term="Android" scheme="https://oynix.net/tags/Android/"/>
+    
+    <category term="Unity" scheme="https://oynix.net/tags/Unity/"/>
+    
+  </entry>
   
   <entry>
     <title>调整Mac顶部菜单栏图标间距</title>
