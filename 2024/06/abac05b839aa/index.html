@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/p.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/p.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/p.png">
+  <link rel="mask-icon" href="/images/p.png" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.net","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="查询手册">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader常用API总结">
+<meta property="og:url" content="https://oynix.net/2024/06/abac05b839aa/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="查询手册">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-08T14:17:32.000Z">
+<meta property="article:modified_time" content="2024-06-15T09:55:10.028Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Shader">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://oynix.net/2024/06/abac05b839aa/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Unity Shader常用API总结 | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">于无声处听惊雷，于无色处见繁花</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">118</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">170</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.net/2024/06/abac05b839aa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/p.png">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity Shader常用API总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-08 22:17:32" itemprop="dateCreated datePublished" datetime="2024-06-08T22:17:32+08:00">2024-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>查询手册</p>
+<span id="more"></span>
+<h4 id="源码路径："><a href="#源码路径：" class="headerlink" title="源码路径："></a>源码路径：</h4><ul>
+<li>UnityCG.cginc</li>
+<li>UnityShaderUtilities.cginc</li>
+<li>UnityShaderVariables.cginc</li>
+</ul>
+<h3 id="1-数学函数"><a href="#1-数学函数" class="headerlink" title="1. 数学函数"></a>1. 数学函数</h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dot(A,B)</td>
+<td>点积，结果为标量，主要用于求向量的夹角或B向量在A向量上的投影</td>
+</tr>
+<tr>
+<td>cross(A, B)</td>
+<td>叉积，结果为向量，与这两个向量组成的平面垂直</td>
+</tr>
+<tr>
+<td>mul(M, N)</td>
+<td>矩阵M和矩阵N的积</td>
+</tr>
+<tr>
+<td>mul(M, v)</td>
+<td>矩阵M和列向量v的积</td>
+</tr>
+<tr>
+<td>mul(v, M)</td>
+<td>行向量v和矩阵M的积</td>
+</tr>
+<tr>
+<td>abs(x)</td>
+<td>取绝对值</td>
+</tr>
+<tr>
+<td>rap(x)</td>
+<td>倒数1/x</td>
+</tr>
+<tr>
+<td>staturate(x)</td>
+<td>把x限制在[0,1]之间</td>
+</tr>
+<tr>
+<td>clamp(x, a, b)</td>
+<td>把x限制到[a,b]之间</td>
+</tr>
+<tr>
+<td>pow(x)</td>
+<td>计算幂函数</td>
+</tr>
+<tr>
+<td>sqrt(x)</td>
+<td>x的平方根，x必须大于0</td>
+</tr>
+<tr>
+<td>rsqrt(x)</td>
+<td>x的平方根的倒数，x必须大于0</td>
+</tr>
+<tr>
+<td>all(x)</td>
+<td>所有不为0，返回true，否则返回false</td>
+</tr>
+<tr>
+<td>any(x)</td>
+<td>任何一个不为0，返回true，否则返回false</td>
+</tr>
+<tr>
+<td>lerp(a, b, f)</td>
+<td>返回<code>(1-f)*a + f*b</code>，在下限a和上限b之间进行差值，f表示权重。如果a和b是向量，则f必须是标量或者等长的向量</td>
+</tr>
+<tr>
+<td>ceil(x)</td>
+<td>向上取整</td>
+</tr>
+<tr>
+<td>floor(x)</td>
+<td>向下取整</td>
+</tr>
+<tr>
+<td>round(x)</td>
+<td>返回四舍五入</td>
+</tr>
+<tr>
+<td>step(a, b)</td>
+<td>如果a&gt;b，返回0；如果a&lt;=b，返回1；当a、b是向量时，每个分量独立判断，如：step(fixed2(1,1),fixed(0,2))=(0,1)</td>
+</tr>
+<tr>
+<td>sign(x)</td>
+<td>x大于0返回1；小于0返回-1；否则返回0</td>
+</tr>
+<tr>
+<td>exp(x)</td>
+<td>计算e^x，e=2.71828</td>
+</tr>
+<tr>
+<td>exp2(x)</td>
+<td>计算2^x</td>
+</tr>
+<tr>
+<td>fmod(x, y)</td>
+<td>返回x/y的余数，如果y为0，则结果不可预料</td>
+</tr>
+<tr>
+<td>modf(x, out ip)</td>
+<td>把x分解为整数和分数两部分，每部分都和x有着相同的符号，整数部分保存在ip中，分数部分是返回值</td>
+</tr>
+<tr>
+<td>max(a, b)</td>
+<td>返回最大值</td>
+</tr>
+<tr>
+<td>min(a, b)</td>
+<td>返回最小值</td>
+</tr>
+<tr>
+<td>determinant(M)</td>
+<td>计算矩阵的行列式因子</td>
+</tr>
+<tr>
+<td>transpose(M)</td>
+<td>矩阵M的转置矩阵</td>
+</tr>
+<tr>
+<td>degree(x)</td>
+<td>将弧度值x转化为角度值</td>
+</tr>
+<tr>
+<td>radians(x)</td>
+<td>将角度值x转化为弧度值</td>
+</tr>
+<tr>
+<td>log(x)</td>
+<td>计算ln(x)的值，x必须大于0</td>
+</tr>
+<tr>
+<td>log2(x)</td>
+<td>计算log2^x的值，x必须大于0</td>
+</tr>
+<tr>
+<td>log10(x)</td>
+<td>计算log10^x的值，x必须大于0</td>
+</tr>
+<tr>
+<td>frac(x)</td>
+<td>返回标量或矢量的小数</td>
+</tr>
+<tr>
+<td>frexp(x, out i)</td>
+<td>将浮点数x分解为尾数和指数，即返回m，指数存入i中；如果x为0，则尾数和指数都返回0</td>
+</tr>
+<tr>
+<td>isfinite(x)</td>
+<td>判断标量或者向量中的每个数据是否有限数，是则返回true，否则返回false</td>
+</tr>
+<tr>
+<td>isinf(x)</td>
+<td>判断标量或者向量中的每个数据是否是无限，是则返回true，否则返回false</td>
+</tr>
+<tr>
+<td>isnan(x)</td>
+<td>判断标量或者向量中的每个数据是否是Not a number，如果是返回true，否则返回false</td>
+</tr>
+<tr>
+<td>lit(NdotL, NdotH, m)</td>
+<td>N表示法向量，L表示入射光向量。H表示半角向量。m表示高光向量。函数计算环境光，散射光，镜面光的共享，返回四元向量：X表示环境光的共享，总是1；Y表示散射光的贡献，如果N.L&lt;0，则为0，否则为N.L；Z表示镜面光的贡献，如果N.L&lt;0或者N.H&lt;0，则为0，否则为(N.H)^m；w始终为1</td>
+</tr>
+<tr>
+<td>noise(x)</td>
+<td>根据它的参数类型，这个函数可以是一元、二元或三元噪音函数。返回值在0和1之间，并且通常与给定的输入值一样</td>
+</tr>
+</tbody></table>
+<pre><code>    |ldexp(x, n)|计算`x*(2^n)`的值
+</code></pre>
+<p>|smoothstep(min, max, x)|x位于min和max之间，若x=min返回0；若x=max返回1；否则返回：<code>-2*((x-min)/(max-min))^3+3*((x-min)/(max-min))^2</code><br>|sin(x)|正弦值<br>|cos(x)|余弦值<br>|tan(x)|正切值<br>|asin(x)|反正弦值<br>|acos(x)|反余弦值<br>|atan(x)|反正切值<br>|sinh(x)|计算x的双曲线正弦值<br>|cosh(x)|计算x的双曲线余弦值<br>|tanh(x)|计算x的双曲线切线值<br>|sincos(float x, out s, out c)|同时计算x的sin值和cos值</p>
+<h3 id="2-几何函数"><a href="#2-几何函数" class="headerlink" title="2. 几何函数"></a>2. 几何函数</h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>normalize(v)</td>
+<td>返回向量v的单位向量</td>
+</tr>
+<tr>
+<td>reflect(I, N)</td>
+<td>根据入射光方向I和表面法向量N计算反射向量，仅对三元向量有效</td>
+</tr>
+<tr>
+<td>length(v)</td>
+<td>返回向量v的模，即sqrt(dot(v, v))</td>
+</tr>
+<tr>
+<td>distance(pt1, pt2)</td>
+<td>两点之间的欧几里得距离</td>
+</tr>
+<tr>
+<td>faceforward(N, I, Ng)</td>
+<td>如果dot(I, Ng)&lt;0，返回N；否则返回-N</td>
+</tr>
+<tr>
+<td>reflect(I, N)</td>
+<td>根据入射向量和法线向量，计算反射向量（I和N不需要归一化）</td>
+</tr>
+<tr>
+<td>refrace(I, N, eta)</td>
+<td>根据入射光线I，表面法向量N和折射相对细数eta，计算折射向量。如果对给定的eta，I和N之间的角度太大，返回(0,0,0)。只对三元向量有效</td>
+</tr>
+</tbody></table>
+<h3 id="3-纹理映射函数"><a href="#3-纹理映射函数" class="headerlink" title="3. 纹理映射函数"></a>3. 纹理映射函数</h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tex1D(sampler1D tex, float s)</td>
+<td>一维纹理查询</td>
+</tr>
+<tr>
+<td>tex1D(sampler1D tex, float s, float dsdx, float dsdy)</td>
+<td>使用导数值（derivatives）查询一维纹理</td>
+</tr>
+<tr>
+<td>tex1D(sampler1D tex, float2 sz)</td>
+<td>一维纹理查询，并进行深度值比较</td>
+</tr>
+<tr>
+<td>tex1D(sampler1D tex, float2 sz, float dsdx,float dsdy)</td>
+<td>使用导数值查询一维纹理， 并进行深度值比较</td>
+</tr>
+<tr>
+<td>tex1Dproj(sampler1D tex, float2 sq)</td>
+<td>一维投影纹理查询</td>
+</tr>
+<tr>
+<td>tex1Dproj(sampler1D tex, float3 szq)</td>
+<td>一维投影纹理查询，并比较深度值</td>
+</tr>
+<tr>
+<td>tex2D(sampler2D tex, float2 s)</td>
+<td>二维纹理查询（常用）</td>
+</tr>
+<tr>
+<td>tex2D(sampler2D tex, float2 s, float2 dsdx, float2 dsdy)</td>
+<td>使用导数值查询二维纹理</td>
+</tr>
+<tr>
+<td>tex2D(sampler2D tex, float3 sz)</td>
+<td>二维纹理查询，并进行深度值比较</td>
+</tr>
+<tr>
+<td>tex2D(sampler2D tex, float3 sz, float2 dsdx,float2 dsdy)</td>
+<td>使用导数值查询二维纹理，并进行深度值比较</td>
+</tr>
+<tr>
+<td>tex2Dproj(sampler2D tex, float3 sq)</td>
+<td>二维投影纹理查询</td>
+</tr>
+<tr>
+<td>tex2Dproj(sampler2D tex, float4 szq)</td>
+<td>二维投影纹理查询，并进行深度值比较</td>
+</tr>
+<tr>
+<td>texRECT(samplerRECT tex, float2 s)</td>
+<td>二维非投影矩形纹理查询（OpenGL独有）</td>
+</tr>
+<tr>
+<td>texRECT (samplerRECT tex, float3 sz, float2 dsdx,float2 dsdy)</td>
+<td>二维非投影使用导数的矩形纹理查询（OpenGL独有）</td>
+</tr>
+<tr>
+<td>texRECT (samplerRECT tex, float3 sz)</td>
+<td>二维非投影深度比较矩形纹理查询（OpenGL独有）</td>
+</tr>
+<tr>
+<td>texRECT (samplerRECT tex, float3 sz, float2 dsdx,float2 dsdy)</td>
+<td>二维非投影深度比较并使用导数的矩形纹理查询（OpenGL独有）</td>
+</tr>
+<tr>
+<td>texRECT proj(samplerRECT tex, float3 sq)</td>
+<td>二维投影矩形纹理查询（OpenGL独有）</td>
+</tr>
+<tr>
+<td>texRECT proj(samplerRECT tex, float3 szq)</td>
+<td>二维投影矩形纹理深度比较查询（OpenGL独有）</td>
+</tr>
+<tr>
+<td>tex3D(sampler3D tex, float s)</td>
+<td>三维纹理查询</td>
+</tr>
+<tr>
+<td>tex3D(sampler3D tex, float3 s, float3 dsdx, float3 dsdy)</td>
+<td>结合导数值查询三维纹理</td>
+</tr>
+<tr>
+<td>tex3Dproj(sampler3D tex, float4 szq)</td>
+<td>查询三维投影纹理，并进行深度值比较</td>
+</tr>
+<tr>
+<td>texCUBE(samplerCUBE tex, float3 s)</td>
+<td>查询立方体纹理</td>
+</tr>
+<tr>
+<td>texCUBE (samplerCUBE tex, float3 s, float3 dsdx, float3 dsdy)</td>
+<td>结合导数值查询立方体纹理</td>
+</tr>
+<tr>
+<td>texCUBEproj (samplerCUBE tex, float4 sq)</td>
+<td>查询投影立方体纹理</td>
+</tr>
+</tbody></table>
+<h3 id="4-Shader常量"><a href="#4-Shader常量" class="headerlink" title="4. Shader常量"></a>4. Shader常量</h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#define UNITY_PI</td>
+<td>3.14159265359f</td>
+</tr>
+<tr>
+<td>#define UNITY_TWO_PI</td>
+<td>6.28318530718f</td>
+</tr>
+<tr>
+<td>#define UNITY_FOUR_PI</td>
+<td>12.56637061436f</td>
+</tr>
+<tr>
+<td>#define UNITY_INV_PI</td>
+<td>0.31830988618f</td>
+</tr>
+<tr>
+<td>#define UNITY_INV_TWO_PI</td>
+<td>0.15915494309f</td>
+</tr>
+<tr>
+<td>#define UNITY_INV_FOUR_PI</td>
+<td>0.07957747155f</td>
+</tr>
+<tr>
+<td>#define UNITY_HALF_PI</td>
+<td>1.57079632679f</td>
+</tr>
+<tr>
+<td>#define UNITY_INV_HALF_PI</td>
+<td>0.636619772367f</td>
+</tr>
+</tbody></table>
+<h3 id="5-Shader变量"><a href="#5-Shader变量" class="headerlink" title="5. Shader变量"></a>5. Shader变量</h3><h4 id="时间变量"><a href="#时间变量" class="headerlink" title="时间变量"></a>时间变量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Time (t = time since current level load) values from Unity</span><br><span class="line">float4 _Time; // (t/20, t, t*2, t*3)</span><br><span class="line">float4 _SinTime; // sin(t/8), sin(t/4), sin(t/2), sin(t)</span><br><span class="line">float4 _CosTime; // cos(t/8), cos(t/4), cos(t/2), cos(t)</span><br><span class="line">float4 unity_DeltaTime; // dt, 1/dt, smoothdt, 1/smoothdt</span><br></pre></td></tr></table></figure>
+
+<h4 id="相机和光源的世界坐标"><a href="#相机和光源的世界坐标" class="headerlink" title="相机和光源的世界坐标"></a>相机和光源的世界坐标</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float3 _WorldSpaceCameraPos; // 相机的世界坐标</span><br><span class="line">half4 _WorldSpaceLightPos0; // 光源的世界坐标(当光源是平行光时, _WorldSpaceLightPos0表示灯光照射方向)</span><br></pre></td></tr></table></figure>
+
+<h4 id="远近裁剪平面参数"><a href="#远近裁剪平面参数" class="headerlink" title="远近裁剪平面参数"></a>远近裁剪平面参数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// x = 1 or -1 (-1 if projection is flipped)</span><br><span class="line">// y = near plane</span><br><span class="line">// z = far plane</span><br><span class="line">// w = 1/far plane</span><br><span class="line">float4 _ProjectionParams;</span><br><span class="line"> </span><br><span class="line">// 用于线性化深度, 如: LinearEyeDepth、Linear01Depth函数内部会调用</span><br><span class="line">// x = 1-far/near</span><br><span class="line">// y = far/near</span><br><span class="line">// z = (near-far)/(near*far)</span><br><span class="line">// w = 1/near</span><br><span class="line">// 用于 reversed depth buffer (UNITY_REVERSED_Z is 1)</span><br><span class="line">// x = -1+far/near</span><br><span class="line">// y = 1</span><br><span class="line">// z = (far-near)/(near*far)</span><br><span class="line">// w = 1/far</span><br><span class="line">float4 _ZBufferParams;</span><br></pre></td></tr></table></figure>
+
+<h4 id="屏幕参数"><a href="#屏幕参数" class="headerlink" title="屏幕参数"></a>屏幕参数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// x = width</span><br><span class="line">// y = height</span><br><span class="line">// z = 1 + 1.0/width</span><br><span class="line">// w = 1 + 1.0/height</span><br><span class="line">float4 _ScreenParams;</span><br></pre></td></tr></table></figure>
+
+<h4 id="纹理参数"><a href="#纹理参数" class="headerlink" title="纹理参数"></a>纹理参数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// _MainTex的像素尺寸大小, float4(1/width, 1/height, width, height)</span><br><span class="line">float4 _MainTex_TexelSize;</span><br><span class="line">// _MainTex缩放和偏移</span><br><span class="line">// UV空间是左手坐标系，U轴从左到右，V轴从下到上</span><br><span class="line">float4 _MainTex_ST;</span><br></pre></td></tr></table></figure>
+
+<h4 id="MVP矩阵"><a href="#MVP矩阵" class="headerlink" title="MVP矩阵"></a>MVP矩阵</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">float4x4 UNITY_MATRIX_M, unity_ObjectToWorld; // [模型空间-&gt;世界空间]的变换矩阵M</span><br><span class="line">float4x4 UNITY_MATRIX_V, unity_MatrixV; // [世界空间-&gt;观察空间]的变换矩阵V</span><br><span class="line">float4x4 UNITY_MATRIX_P, glstate_matrix_projection; // [观察空间-&gt;裁剪空间]的变换矩阵P</span><br><span class="line">float4x4 UNITY_MATRIX_MV, unity_MatrixMV; // [模型空间-&gt;观察空间]的变换矩阵MV</span><br><span class="line">float4x4 UNITY_MATRIX_VP, unity_MatrixVP; // [世界空间-&gt;裁剪空间]的变换矩阵VP</span><br><span class="line">float4x4 UNITY_MATRIX_MVP, unity_MatrixMVP; // [模型空间-&gt;裁剪空间]的变换矩阵MVP</span><br><span class="line">float4x4 UNITY_MATRIX_I_V, unity_MatrixInvV; // V矩阵的逆矩阵</span><br><span class="line">float4x4 UNITY_MATRIX_T_MV, unity_MatrixTMV; // MV矩阵的转置</span><br><span class="line">float4x4 UNITY_MATRIX_IT_MV, unity_MatrixITMV; // MV矩阵的逆转矩阵</span><br><span class="line">float4x4 unity_WorldToObject; // [世界空间-&gt;模型空间]的变换矩阵M</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-坐标和向量变换"><a href="#6-坐标和向量变换" class="headerlink" title="6. 坐标和向量变换"></a>6. 坐标和向量变换</h3><h4 id="坐标变换"><a href="#坐标变换" class="headerlink" title="坐标变换"></a>坐标变换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 模型空间-&gt;观察空间</span><br><span class="line">float3 UnityObjectToViewPos(float3 pos) // mul(UNITY_MATRIX_MV, float4(pos, 1.0)).xyz</span><br><span class="line">float3 UnityObjectToViewPos(float4 pos) // UnityObjectToViewPos(pos.xyz)</span><br><span class="line">// 模型空间-&gt;裁剪空间</span><br><span class="line">float4 UnityObjectToClipPos(float3 pos) // mul(UNITY_MATRIX_MVP, float4(pos, 1.0))</span><br><span class="line">float4 UnityObjectToClipPos(float4 pos) // UnityObjectToClipPos(pos.xyz)</span><br><span class="line">// 世界空间-&gt;观察空间</span><br><span class="line">float3 UnityWorldToViewPos(float3 pos) // mul(UNITY_MATRIX_V, float4(pos, 1.0)).xyz</span><br><span class="line">// 世界空间-&gt;裁剪空间</span><br><span class="line">float4 UnityWorldToClipPos(float3 pos) // mul(UNITY_MATRIX_VP, float4(pos, 1.0))</span><br><span class="line">// 观察空间-&gt;裁剪空间</span><br><span class="line">float4 UnityViewToClipPos(float3 pos) // mul(UNITY_MATRIX_P, float4(pos, 1.0))</span><br></pre></td></tr></table></figure>
+
+<h4 id="屏幕空间变换"><a href="#屏幕空间变换" class="headerlink" title="屏幕空间变换"></a>屏幕空间变换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 裁剪空间-&gt;屏幕空间(输入: 裁剪空间坐标, 输出: 屏幕空间坐标)</span><br><span class="line">// o.xy = 0.5 * (pos.xy + pos.w), o.zw = pos.zw</span><br><span class="line">float4 ComputeScreenPos(float4 pos)</span><br><span class="line">float4 ComputeGrabScreenPos(float4 pos)</span><br></pre></td></tr></table></figure>
+
+<h4 id="向量变换"><a href="#向量变换" class="headerlink" title="向量变换"></a>向量变换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 模型空间-&gt;世界空间</span><br><span class="line">float3 UnityObjectToWorldDir(float3 dir) // normalize(mul((float3x3)unity_ObjectToWorld, dir))</span><br><span class="line">// 世界空间-&gt;模型空间</span><br><span class="line">float3 UnityWorldToObjectDir(float3 dir) // normalize(mul((float3x3)unity_WorldToObject, dir))</span><br></pre></td></tr></table></figure>
+
+<h4 id="法线变换"><a href="#法线变换" class="headerlink" title="法线变换"></a>法线变换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 模型空间-&gt;世界空间(已归一化)</span><br><span class="line">float3 UnityObjectToWorldNormal(float3 norm) &#123;</span><br><span class="line">#ifdef UNITY_ASSUME_UNIFORM_SCALING // 统一缩放(x、y、z分量缩放系数一致)</span><br><span class="line">    return UnityObjectToWorldDir(norm); // normalize(mul((float3x3)unity_ObjectToWorld, norm))</span><br><span class="line">#else</span><br><span class="line">    return normalize(mul(norm, (float3x3)unity_WorldToObject)); // mul(IT_M, norm) =&gt; mul(norm, I_M)</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="其他变换"><a href="#其他变换" class="headerlink" title="其他变换"></a>其他变换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 观察空间-&gt;裁剪空间</span><br><span class="line">float2 TransformViewToProjection (float2 v) // mul((float2x2)UNITY_MATRIX_P, v)</span><br><span class="line">float3 TransformViewToProjection (float3 v) // mul((float3x3)UNITY_MATRIX_P, v)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-计算指向相机和光源的向量"><a href="#7-计算指向相机和光源的向量" class="headerlink" title="7. 计算指向相机和光源的向量"></a>7. 计算指向相机和光源的向量</h3><h4 id="计算顶点指向相机的向量"><a href="#计算顶点指向相机的向量" class="headerlink" title="计算顶点指向相机的向量"></a>计算顶点指向相机的向量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// _WorldSpaceCameraPos.xyz - worldPos</span><br><span class="line">float3 ObjSpaceViewDir(float4 v) // 输入: 模型空间坐标, 输出: 模型空间坐标</span><br><span class="line">float3 WorldSpaceViewDir(float4 localPos) // 输入: 模型空间坐标, 输出: 世界空间坐标</span><br><span class="line">float3 UnityWorldSpaceViewDir(float3 worldPos) // 输入: 世界空间坐标, 输出: 世界空间坐标</span><br></pre></td></tr></table></figure>
+
+<h4 id="计算顶点指向光源的向量"><a href="#计算顶点指向光源的向量" class="headerlink" title="计算顶点指向光源的向量"></a>计算顶点指向光源的向量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz - v.xyz</span><br><span class="line">float3 ObjSpaceLightDir(float4 v) // 输入: 模型空间坐标, 输出: 模型空间坐标</span><br><span class="line">float3 WorldSpaceLightDir(float4 localPos) // 输入: 模型空间坐标, 输出: 世界空间坐标</span><br><span class="line">float3 UnityWorldSpaceLightDir(float3 worldPos) // 输入: 世界空间坐标, 输出: 世界空间坐标</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-深度纹理和法线纹理相关函数"><a href="#8-深度纹理和法线纹理相关函数" class="headerlink" title="8. 深度纹理和法线纹理相关函数"></a>8. 深度纹理和法线纹理相关函数</h3><h4 id="深度纹理采样"><a href="#深度纹理采样" class="headerlink" title="深度纹理采样"></a>深度纹理采样</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 非线性的深度(即计算的深度值与实际深度值不是线性关系)</span><br><span class="line">float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv); // tex2D(_CameraDepthTexture, i.uv).r</span><br><span class="line">// 观察空间中的线性的深度, 值域: [Near, Far], 公式: 1.0 / (_ZBufferParams.z * depth + _ZBufferParams.w)</span><br><span class="line">float linearDepth = LinearEyeDepth(depth);</span><br><span class="line">// 观察空间中的线性且归一化的深度, 值域: [0, 1], 公式: 1.0 / (_ZBufferParams.x * depth + _ZBufferParams.y)</span><br><span class="line">float linear01Depth = Linear01Depth(depth);</span><br></pre></td></tr></table></figure>
+
+<p>深度&amp;法线纹理采样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fixed4 tex = tex2D(_CameraDepthNormalsTexture, i.uv);</span><br><span class="line">float depth = DecodeFloatRG(tex.zw); // 观察空间中的线性且归一化的深度</span><br><span class="line">float3 normal = DecodeViewNormalStereo(tex); // 观察空间中的法线向量</span><br><span class="line"></span><br><span class="line">也可以使用DecodeDepthNormal函数获取深度和法线信息：</span><br><span class="line">inline void DecodeDepthNormal(float4 enc, out float depth, out float3 normal)</span><br><span class="line">&#123; // 深度&amp;法线采样, enc为tex2D采样结果, depth、normal为解码后的深度和法线</span><br><span class="line">    depth = DecodeFloatRG(enc.zw); // 观察空间中的线性且归一化的深度</span><br><span class="line">    normal = DecodeViewNormalStereo(enc); // 观察空间中的法线向量</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.net/2024/06/abac05b839aa/" title="Unity Shader常用API总结">https://oynix.net/2024/06/abac05b839aa/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/Shader/" rel="tag"># Shader</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/fa7099f2a585/" rel="prev" title="解决：aapt2 LoadedArsc.cpp:682] Unknown chunk type '200'问题">
+      <i class="fa fa-chevron-left"></i> 解决：aapt2 LoadedArsc.cpp:682] Unknown chunk type '200'问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E8%B7%AF%E5%BE%84%EF%BC%9A"><span class="nav-text">源码路径：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E5%AD%A6%E5%87%BD%E6%95%B0"><span class="nav-text">1. 数学函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%87%A0%E4%BD%95%E5%87%BD%E6%95%B0"><span class="nav-text">2. 几何函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BA%B9%E7%90%86%E6%98%A0%E5%B0%84%E5%87%BD%E6%95%B0"><span class="nav-text">3. 纹理映射函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Shader%E5%B8%B8%E9%87%8F"><span class="nav-text">4. Shader常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Shader%E5%8F%98%E9%87%8F"><span class="nav-text">5. Shader变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%8F%98%E9%87%8F"><span class="nav-text">时间变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E5%92%8C%E5%85%89%E6%BA%90%E7%9A%84%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87"><span class="nav-text">相机和光源的世界坐标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E8%BF%91%E8%A3%81%E5%89%AA%E5%B9%B3%E9%9D%A2%E5%8F%82%E6%95%B0"><span class="nav-text">远近裁剪平面参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E5%8F%82%E6%95%B0"><span class="nav-text">屏幕参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E5%8F%82%E6%95%B0"><span class="nav-text">纹理参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MVP%E7%9F%A9%E9%98%B5"><span class="nav-text">MVP矩阵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%9D%90%E6%A0%87%E5%92%8C%E5%90%91%E9%87%8F%E5%8F%98%E6%8D%A2"><span class="nav-text">6. 坐标和向量变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-text">坐标变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E7%A9%BA%E9%97%B4%E5%8F%98%E6%8D%A2"><span class="nav-text">屏幕空间变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%8F%98%E6%8D%A2"><span class="nav-text">向量变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E7%BA%BF%E5%8F%98%E6%8D%A2"><span class="nav-text">法线变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%8F%98%E6%8D%A2"><span class="nav-text">其他变换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%AE%A1%E7%AE%97%E6%8C%87%E5%90%91%E7%9B%B8%E6%9C%BA%E5%92%8C%E5%85%89%E6%BA%90%E7%9A%84%E5%90%91%E9%87%8F"><span class="nav-text">7. 计算指向相机和光源的向量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E9%A1%B6%E7%82%B9%E6%8C%87%E5%90%91%E7%9B%B8%E6%9C%BA%E7%9A%84%E5%90%91%E9%87%8F"><span class="nav-text">计算顶点指向相机的向量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E9%A1%B6%E7%82%B9%E6%8C%87%E5%90%91%E5%85%89%E6%BA%90%E7%9A%84%E5%90%91%E9%87%8F"><span class="nav-text">计算顶点指向光源的向量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%B7%B1%E5%BA%A6%E7%BA%B9%E7%90%86%E5%92%8C%E6%B3%95%E7%BA%BF%E7%BA%B9%E7%90%86%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-text">8. 深度纹理和法线纹理相关函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E7%BA%B9%E7%90%86%E9%87%87%E6%A0%B7"><span class="nav-text">深度纹理采样</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/p.png">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4QGZveG1haWwuY29t" title="E-Mail → mailto:oynix@foxmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">556k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:25</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : 'ec17bbeba5c9c76024bbed5006f79220',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
