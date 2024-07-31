@@ -19,13 +19,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"oynix.net","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+    var CONFIG = {"hostname":"oynix.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
   <meta name="description" content="volatile是Java的一个关键字，用来修饰变量，被volatile修饰的变量，在每次更新之后会立刻刷新到主内存中，令缓存行无效，其他线程从主内存读取的会是最新值，保证变量的可见性，常用于并发编程中。 这么一说有些抽象，要想说明白这其中原理，还要从Java内存模型说起。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java volatile关键字">
-<meta property="og:url" content="https://oynix.net/2022/03/7fb798f2eef3/index.html">
+<meta property="og:url" content="https://oynix.com/2022/03/7fb798f2eef3/index.html">
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="volatile是Java的一个关键字，用来修饰变量，被volatile修饰的变量，在每次更新之后会立刻刷新到主内存中，令缓存行无效，其他线程从主内存读取的会是最新值，保证变量的可见性，常用于并发编程中。 这么一说有些抽象，要想说明白这其中原理，还要从Java内存模型说起。">
 <meta property="og:locale" content="zh_CN">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://oynix.net/2022/03/7fb798f2eef3/">
+<link rel="canonical" href="https://oynix.com/2022/03/7fb798f2eef3/">
 
 
 <script id="page-configurations">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.net/2022/03/7fb798f2eef3/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.com/2022/03/7fb798f2eef3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/p.png">
@@ -350,7 +350,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.net/2022/03/7fb798f2eef3/" title="Java volatile关键字">https://oynix.net/2022/03/7fb798f2eef3/</a>
+    <a href="https://oynix.com/2022/03/7fb798f2eef3/" title="Java volatile关键字">https://oynix.com/2022/03/7fb798f2eef3/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
