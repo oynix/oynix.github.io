@@ -6,7 +6,7 @@
   <link href="https://oynix.com/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.com/"/>
-  <updated>2024-08-06T13:58:16.722Z</updated>
+  <updated>2024-08-06T14:03:25.940Z</updated>
   <id>https://oynix.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://oynix.com/2024/07/13d065586a3b/"/>
     <id>https://oynix.com/2024/07/13d065586a3b/</id>
     <published>2024-07-13T14:17:32.000Z</published>
-    <updated>2024-08-06T13:58:16.722Z</updated>
+    <updated>2024-08-06T14:03:25.940Z</updated>
     
-    <content type="html"><![CDATA[<p>原本我买了一个net的域名，后来看到org的也可以买了，于是顺手也买了，这几天总是收到推销邮件，告诉我com的域名也可以买了，所以，现在我有了3个域名。</p><span id="more"></span><p>我比较看好com域名，不仅我看好，搜索引擎也看好，喜欢收录这样的。所以我把GitHub Pages的个人站绑定到com的域名上了，剩下的net和org通过CloudFlare解析到com上，如此一来，访问这3个域名，最终都可以访问到Github Pages的静态网站上。</p><h3 id="1-设置DNS解析"><a href="#1-设置DNS解析" class="headerlink" title="1. 设置DNS解析"></a>1. 设置DNS解析</h3><p>如下图，添加两条A记录，常见的是解析这两个地址，也可以按需添加，比如再添加一个blog的也可以。解析到的IP地址随便写就好，因为会全部转发，所以实际上不会用到。此外，橙色云需要开启，这样会使转发规则生效。<br><img src="https://blog-imgs.oynix.com/2024/08/4d8682867c54b8dd836fc533fc04fc88.png"></p><h3 id="2-添加转发规则"><a href="#2-添加转发规则" class="headerlink" title="2. 添加转发规则"></a>2. 添加转发规则</h3><p>如下图，添加一条重定向规则，将进来的所有请求，转发到目标地址即可。<br><img src="https://blog-imgs.oynix.com/2024/08/3796b19499844c2edf6603d058126e9b.png"></p><p>如此一来，当请求以下地址时</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly93d3cub3luaXgub3JnLw==">https://www.oynix.org<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly9veW5peC5vcmcv">https://oynix.org<i class="fa fa-external-link-alt"></i></span><br>都会转发至：<a href="https://oynix.com/">https://oynix.com</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<p>原本我买了一个net的域名，后来看到org的也可以买了，于是顺手也买了，这几天总是收到推销邮件，告诉我com的域名也可以买了，所以，现在我有了3个域名。</p><span id="more"></span><ul><li>oynix.net</li><li>oynix.org</li><li>oynix.com</li></ul><p>我比较看好com域名，不仅我看好，搜索引擎也看好，喜欢收录这样的。所以我把GitHub Pages的个人站绑定到com的域名上了，剩下的net和org通过CloudFlare解析到com上，如此一来，访问这3个域名，最终都可以访问到Github Pages的静态网站上。</p><h3 id="1-设置DNS解析"><a href="#1-设置DNS解析" class="headerlink" title="1. 设置DNS解析"></a>1. 设置DNS解析</h3><p>如下图，添加两条A记录，常见的是解析这两个地址，也可以按需添加，比如再添加一个blog的也可以。解析到的IP地址随便写就好，因为会全部转发，所以实际上不会用到。此外，橙色云需要开启，这样会使转发规则生效。<br><img src="https://blog-imgs.oynix.com/2024/08/4d8682867c54b8dd836fc533fc04fc88.png"></p><h3 id="2-添加转发规则"><a href="#2-添加转发规则" class="headerlink" title="2. 添加转发规则"></a>2. 添加转发规则</h3><p>如下图，添加一条重定向规则，将进来的所有请求，转发到目标地址即可。<br><img src="https://blog-imgs.oynix.com/2024/08/3796b19499844c2edf6603d058126e9b.png"></p><p>如此一来，当请求以下地址时</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly93d3cub3luaXgub3JnLw==">https://www.oynix.org<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly9veW5peC5vcmcv">https://oynix.org<i class="fa fa-external-link-alt"></i></span><br>都会转发至：<a href="https://oynix.com/">https://oynix.com</a></li></ul>]]></content>
     
     
     <summary type="html">&lt;p&gt;原本我买了一个net的域名，后来看到org的也可以买了，于是顺手也买了，这几天总是收到推销邮件，告诉我com的域名也可以买了，所以，现在我有了3个域名。&lt;/p&gt;</summary>
