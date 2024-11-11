@@ -290,7 +290,7 @@
 <p>平常叫惯了内部类，查了查发现这样是不严谨的，严格来说是叫嵌套类，和静态嵌套类，Static Nested Class。</p>
 <h3 id="2-lambda调用外部临时变量"><a href="#2-lambda调用外部临时变量" class="headerlink" title="2. lambda调用外部临时变量"></a>2. lambda调用外部临时变量</h3><p>Java7之前，匿名内部类要想使用外部临时变量，必须是final的，到了Java8，引入了lambda，在匿名内部类和lambda中使用外部的临时变量时，可不加final，但是依然不能修改。原因在于，内部类会被编译成一个新的类，其中保留外部类的引用，以及临时变量的副本，所以内部类修改的是变量的副本，这就会造成歧义，所以禁止修改。但这种问题只局限于基本类型变量，如果是引用型变量，就没有这种问题，引用的地址不变，但其指向的内存的数据是可变的。</p>
 <p>但是，在Kotlin中，lambda外部的基本类型临时变量也能引用并且可以修改，这就和Java有些不同了。非内联的lambda在编译后会生成一个内部类，这一点同Java，但是对于基本类型也会自动包裹一层，kotlin提供了Ref类，例如IntRef、BooleanRef等，这样基本类型就转成了引用类型，所以也可以在内部类中也可以修改。</p>
-<h3 id="3-let-run-apply-also"><a href="#3-let-run-apply-also" class="headerlink" title="3. let/run/apply/also"></a>3. let/run/apply/also</h3><p>还是这4个方法，之前写了<a target="_blank" rel="noopener" href="https://oynix.github.io/2021/08/517bb194f5b9/">一篇文章</a>专门介绍，发现分析地再细致，对比的越全面，等到用的时候，还是容易一脸懵：这个和这个的区别是什么来着？现在想了个新角度，如果需要返回自身，就用apply和also，返回lambda的值就用let和run。这样好记了吗，还不好记吗，那就来个更简单的，3个字母的返回lambda，剩下的返回调用者本身。至于lambda内部的参数，不是this就是it，试一下就知道了。</p>
+<h3 id="3-let-run-apply-also"><a href="#3-let-run-apply-also" class="headerlink" title="3. let/run/apply/also"></a>3. let/run/apply/also</h3><p>还是这4个方法，之前写了<span class="exturl" data-url="aHR0cHM6Ly9veW5peC5naXRodWIuaW8vMjAyMS8wOC81MTdiYjE5NGY1Yjkv">一篇文章<i class="fa fa-external-link-alt"></i></span>专门介绍，发现分析地再细致，对比的越全面，等到用的时候，还是容易一脸懵：这个和这个的区别是什么来着？现在想了个新角度，如果需要返回自身，就用apply和also，返回lambda的值就用let和run。这样好记了吗，还不好记吗，那就来个更简单的，3个字母的返回lambda，剩下的返回调用者本身。至于lambda内部的参数，不是this就是it，试一下就知道了。</p>
 <h3 id="4-操作符"><a href="#4-操作符" class="headerlink" title="4. 操作符"></a>4. 操作符</h3><p>kotlin里面提供了好大一堆操作符，都是为了方便日常开发使用，要是能记住，用的时候可以少写几行代码，记不住也没关系，就自己写呗，也没几行。这里列举几个出来：</p>
 <ul>
 <li>any：list.any，有一个符合就返回true，any就是任一的意思，与之相反的是none</li>
@@ -332,26 +332,6 @@
 </div>
        
       </div>
-        <div class="reward-container">
-  <div></div>
-  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
-  </button>
-  <div id="qr" style="display: none;">
-      
-      <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
-        <p>微信支付</p>
-      </div>
-      
-      <div style="display: inline-block;">
-        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
-        <p>支付宝</p>
-      </div>
-
-  </div>
-</div>
-
         
 
 <div>

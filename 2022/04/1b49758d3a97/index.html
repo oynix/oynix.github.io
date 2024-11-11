@@ -293,7 +293,7 @@
 <li>搜索方法，如果知道在哪个文件，那就直接用Android Studio里的搜索功能，在哪嗖的一下就搜出来了。但是，有时方法属于某个内部类的，所以文件的名字就不是类的名字，这样就搜不到文件，这个时候就直接用grep命令，在大杀器面前，没有什么可以藏起来。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ~/Library/Android/sdk/sources/android-30</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> r:recursive 查找当前目录，及其所有子目录下的所有文件中，包含关键字的行，支持占位符，支持正则，搜索神器</span></span><br><span class="line">grep -r &quot;keyWord&quot; .</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p>以上这些，是帮助学习过程能顺利向前推进的方式，有了动力，下面就说方向。</p>
-<h3 id="4-Launcher"><a href="#4-Launcher" class="headerlink" title="4. Launcher"></a>4. Launcher</h3><p>首先明确的是，桌面Launcher也是应用，是一个有些特殊的应用，它在系统启动过程中启动的，Android系统启动流程之前简单写过，<a target="_blank" rel="noopener" href="https://oynix.github.io/2022/01/f6c3174008b0/">点进去可以再看一遍</a>。桌面上看到的应用图标，点击之后的打开，长按之后的小浮窗，图标分组管理，拖拽调整位置，卸载时的动画，等等，这些都是Launcher的功能，各大厂商就是修改了Launcher里面的代码后，实现了自己独特风格的桌面。抛开其他的不谈，这里只看点击Launcher上的应用图标后，到应用完全打开，这其中的全过程。</p>
+<h3 id="4-Launcher"><a href="#4-Launcher" class="headerlink" title="4. Launcher"></a>4. Launcher</h3><p>首先明确的是，桌面Launcher也是应用，是一个有些特殊的应用，它在系统启动过程中启动的，Android系统启动流程之前简单写过，<span class="exturl" data-url="aHR0cHM6Ly9veW5peC5naXRodWIuaW8vMjAyMi8wMS9mNmMzMTc0MDA4YjAv">点进去可以再看一遍<i class="fa fa-external-link-alt"></i></span>。桌面上看到的应用图标，点击之后的打开，长按之后的小浮窗，图标分组管理，拖拽调整位置，卸载时的动画，等等，这些都是Launcher的功能，各大厂商就是修改了Launcher里面的代码后，实现了自己独特风格的桌面。抛开其他的不谈，这里只看点击Launcher上的应用图标后，到应用完全打开，这其中的全过程。</p>
 <p>我们上面刚刚下载的，是SDK的源码，这些SDK是供我们在开发APP过程调用的，而Launcher本身就是个APP，是系统自带的APP，它不属于SDK的源码，所以不管用哪种方式，在刚下载的源码中都是搜不到的蛛丝马迹的。这个时候怎么办？对，如果不想去找framework的源码，那就靠推测。</p>
 <p>既然Launcher是个APP，那最终就是要继承自Activity的，点击图标就是启动Activity，那就直接看Activity里的startActivity就可以了。</p>
 <h3 id="5-Activity-startActivity"><a href="#5-Activity-startActivity" class="headerlink" title="5. Activity#startActivity"></a>5. Activity#startActivity</h3><p>搜索打开Activity.java，定位startActivity方法，发现它有几个重载的方法（重载和重写的区别在于，重写是换核不换壳，重载是换参数换返回值），但是不管哪个最终都走到了startActivityForResult方法里，其内又调用了Instrumentation的execStartActivity，Instrumentaion是一个管理Activity和Application生命周期的变量，在Activity搜索这个变量的赋值，发现是在attach方法里初始化，下一步跟进它的execStartActivity方法。</p>
@@ -383,26 +383,6 @@
 </div>
        
       </div>
-        <div class="reward-container">
-  <div></div>
-  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
-  </button>
-  <div id="qr" style="display: none;">
-      
-      <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpeg" alt="oynix 微信支付">
-        <p>微信支付</p>
-      </div>
-      
-      <div style="display: inline-block;">
-        <img src="/images/alipay.jpeg" alt="oynix 支付宝">
-        <p>支付宝</p>
-      </div>
-
-  </div>
-</div>
-
         
 
 <div>
