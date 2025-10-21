@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/p.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/p.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/p.png">
+  <link rel="mask-icon" href="/images/p.png" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oynix.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="转载：原文地址  unity Asset的简单介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Asset的一生（二）">
+<meta property="og:url" content="https://oynix.com/2025/10/076f4db2b790/index.html">
+<meta property="og:site_name" content="oynix">
+<meta property="og:description" content="转载：原文地址  unity Asset的简单介绍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/48119d8cd31836be6659a229b06da3a3.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/3605ea45576b4504b32152cec776b29c.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/8e9c2f0f08c505b1f1bcd7a24b63e444.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/002dc2c43ddfe255ccecb7e9b8a4da4f.gif">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/65fb4378f2fc812d8f81faf4bf2a341f.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/638ae7c1fa44fb4d5b73d97ba8f94560.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/cb70b6ba3a14dd1c41d0250a8c2a88bb.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/9b1774d9c938760c974fda4d944bddc5.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/0c993c2b6e60b355d116f18ede9dfa82.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/24cac18fb43aa7f80d61ef8f712aac4f.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/10/47a2b3804ec9f79d0a3a230be69bfdc9.png">
+<meta property="article:published_time" content="2025-10-19T14:17:32.000Z">
+<meta property="article:modified_time" content="2025-10-21T08:39:56.665Z">
+<meta property="article:author" content="oynix">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Repost">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-imgs.oynix.com/2025/10/48119d8cd31836be6659a229b06da3a3.png">
+
+<link rel="canonical" href="https://oynix.com/2025/10/076f4db2b790/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Asset的一生（二） | oynix</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FDBNTK34GB');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="oynix" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">oynix</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">于无声处听惊雷，于无色处见繁花</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">120</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">33</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">176</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fas fa-envelope-open-text fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-articles">
+
+    <a href="/articles/" rel="section"><i class="fa fa-blog fa-fw"></i>技术博客</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.com/2025/10/076f4db2b790/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/p.png">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Asset的一生（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-19 22:17:32" itemprop="dateCreated datePublished" datetime="2025-10-19T22:17:32+08:00">2025-10-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>转载：<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIudW5pdHkuY24vcHJvamVjdHMvNjE1NjYyMjNlZGJjMmEwMDIxNTU3MzY0">原文地址<i class="fa fa-external-link-alt"></i></span></p>
+<blockquote>
+<p>unity Asset的简单介绍</p>
+</blockquote>
+<span id="more"></span>
+
+<p>由于篇幅问题，所以分了两篇，继续我们上一篇的介绍吧~</p>
+<h2 id="3-Asset与AssetBundle"><a href="#3-Asset与AssetBundle" class="headerlink" title="3.Asset与AssetBundle"></a>3.Asset与AssetBundle</h2><h3 id="1-什么是AssetBundle？"><a href="#1-什么是AssetBundle？" class="headerlink" title="1.什么是AssetBundle？"></a>1.什么是AssetBundle？</h3><p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnVuaXR5LmNuLzIwMjEuMS9Eb2N1bWVudGF0aW9uL01hbnVhbC9Bc3NldEJ1bmRsZXNJbnRyby5odG1s">AssetBundle<i class="fa fa-external-link-alt"></i></span>是什么？严格来说，AssetBundle是Asset的一个集合，是个压缩包。是什么？严格来说，AssetBundle是Asset的一个集合，是个压缩包。相比直接使用Asset，它有如下几个好处：</p>
+<ol>
+<li><p>可以帮我们解决文件之间的依赖关系，一个项目中里面的资源依赖是非常复杂的，AssetBundle可以帮我们解决这样的问题，即<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnVuaXR5M2QuY29tL01hbnVhbC9Bc3NldEJ1bmRsZXMtRGVwZW5kZW5jaWVzLmh0bWw=">Dependencies<i class="fa fa-external-link-alt"></i></span>，但是也可能造成资源冗余的新问题。</p>
+</li>
+<li><p>可以做一个跨平台，在打包的时候我们希望在不同的平台上用不同的东西，比如说不同平台不同的文件格式，希望打成不同的bundle。</p>
+</li>
+<li><p>可以帮我们做一个快速的索引。</p>
+</li>
+<li><p>它是被压缩过的，可以节省内存。</p>
+</li>
+</ol>
+<p>所以说AssetBundle实际上是Unity的一套虚拟文件系统，它延展了Unity的跨平台性，使我们的Build Pipline的代码是可以一致性的，也就是说我们只需要写一份代码就可以打各个平台的AB，只需要简单的调整一些参数即可。</p>
+<p>AssetBundle简单来说由两部分组成的，一部分就是压缩的内容，叫内容体，还有一部分就是它的头。也就是摘要信息，官方示意图如下：</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/48119d8cd31836be6659a229b06da3a3.png"></p>
+<p>实际的AssetBundle要比这个更复杂，它包裹了很多层，最里面那层是大家经常看到的cab为开头的这种key（如下图，我们用AssetStudio查看AssetBundle时就可以看见这个key），再外面一层叫artifactKey，两层去包裹这样的一个AssetBundle。</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/3605ea45576b4504b32152cec776b29c.png"></p>
+<p>还有种特殊的AssetBundle，就是Scene，它是一个单独的AssetBundle，因为它和其他的Asset的处理方式是不一样的，所以Asset和Scene是不能打到一起的，要分开打。</p>
+<p>当我们加载一个AssetBundle的时候，它的头会立刻加载进内存，这个也是我们在Profiler里面经常看到的SerializedFile。剩下的内容，也就是Bundle里面的Asset，它是按需加载的。也就是说如果我们不去加载这个Asset，它是不会从包体里被加载到内存中的。但是有一个例外，就是默认的<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnVuaXR5LmNuLzIwMjEuMS9Eb2N1bWVudGF0aW9uL01hbnVhbC9Bc3NldEJ1bmRsZXMtQ2FjaGUuaHRtbA==">LZMA<i class="fa fa-external-link-alt"></i></span>的压缩，这种压缩格式用一个数据流代表整个AssetBundle，因此要读取里面任意一个Asset的时候需要解压整个数据流。</p>
+<h3 id="2-AssetBundle的参数"><a href="#2-AssetBundle的参数" class="headerlink" title="2.AssetBundle的参数"></a>2.AssetBundle的参数</h3><p>当我们调用Unity的API去打AssetBundle的时候，实际上有很多的参数可以供我们选择。如果没有选择合适的参数，就可能会导致在包体，内存以及加载时间等方面造成很多的浪费。</p>
+<p>实际上我们经常用到的有这么几个：</p>
+<ol>
+<li><p>ChunkBasedCompression：这个参数是压缩AssetBundle的用的。前面提到Android的StreamingAssets是不压缩的。为了减小包体大小，可以使用该参数对AssetBundle进行压缩。它实际上是一个由Unity改良过的LZ4，使它的算法更符合Unity的使用方式。</p>
+</li>
+<li><p>DisableWriteTypetree：这个其实是会被很多开发者忽略的一个参数，它非常有用，可以帮我们减小AssetBundle包体的大小，同时也可以减小内存，以及减少我们加载这个AssetBundle时的CPU时间。</p>
+</li>
+<li><p>DisableLoadAssetByFileName，DisableLoadAssetByFileNameWithExtension：当我们加载好一个AssetBundle然后使用LoadAsset加载Asset的时候，需要传递Asset的路径名称。这个名称有三种写法，分别是Asset的文件名，Asset的文件名+扩展名，Asset的全路径，如下：</p>
+</li>
+</ol>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AssetBundle ab = AssetBundle.<span class="constructor">LoadFromFile(Path.Combine(Application.<span class="params">streamingAssetsPath</span>, <span class="string">&quot;sphere&quot;</span>)</span>);</span><br><span class="line"><span class="constructor">Instantiate(<span class="params">ab</span>.LoadAsset(<span class="string">&quot;Sphere&quot;</span>)</span>);</span><br><span class="line"><span class="constructor">Instantiate(<span class="params">ab</span>.LoadAsset(<span class="string">&quot;Sphere.prefab&quot;</span>)</span>);</span><br><span class="line"><span class="constructor">Instantiate(<span class="params">ab</span>.LoadAsset(<span class="string">&quot;Assets/Sphere.prefab&quot;</span>)</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果我们打AssetBundle时，不设置上面两个参数，那么使用这三种名称都可以正确的加载AB里面的Asset。但是其中只有全路径是被序列化到AssetBundle当中的，我们查看对应的.manifest也可以发现里面存储的是全路径：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Assets:</span><br><span class="line">- Assets/<span class="module-access"><span class="module"><span class="identifier">Sphere</span>.</span></span>prefab</span><br></pre></td></tr></table></figure>
+
+<p>而文件名和文件名+扩展名是在AssetBundle被加载成功后产生的，因此就会产生一定的代价的。当我们没有Disable打AssetBundle的时候，实际上是算了一个Hash进去的，当通过文件名去找Asset的时候，它会去生成这个文件名的原路径，然后去对比。所以呢，在CPU时间和内存上多多少少会有一些消耗。如果我们确定我们的加载Asset的方式是用全路径加载的话，那么就可以把它关闭掉。</p>
+<p>实践出真知，我们来简单的测试一下，假如我们有如下代码来生成不同设置下的AssetBundle：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class AssetBundleEditor : Editor</span><br><span class="line">&#123;</span><br><span class="line">    [MenuItem(&quot;Build/BuildBundleWithUncompresse&quot;)]</span><br><span class="line">    public static void BuildBundleWithUncompresse()</span><br><span class="line">    &#123;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.StandaloneWindows64);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [MenuItem(&quot;Build/BuildBundleWithTypeTree&quot;)]</span><br><span class="line">    public static void BuildBundleWithTypeTree()</span><br><span class="line">    &#123;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [MenuItem(&quot;Build/BuildBundleWithoutTypeTree&quot;)]</span><br><span class="line">    public static void BuildBundleWithoutTypeTree()</span><br><span class="line">    &#123;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, </span><br><span class="line">            BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DisableWriteTypeTree, BuildTarget.StandaloneWindows64);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [MenuItem(&quot;Build/BuildBundleWithoutExtraName&quot;)]</span><br><span class="line">    public static void BuildBundleWithoutExtraName()</span><br><span class="line">    &#123;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, </span><br><span class="line">            BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DisableLoadAssetByFileName | BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension,</span><br><span class="line">            BuildTarget.StandaloneWindows64);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样的Prefab在四种设置下得到的AssetBundle大小如下图：</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/8e9c2f0f08c505b1f1bcd7a24b63e444.png"></p>
+<p>可以发现在都使用压缩的情况下，用和不用TypeTree大小差了将近30%，可见如果不写入TypeTree，那么当AssetBundle很多的时候，可以节省的大小是非常可观的。个人测试了下，大约2.5G的AssetBundle，如果不写入TypeTree可以缩小到2.2G。</p>
+<p>但是也会发现，不写入FileName这些，AssetBundle似乎并没有什么缩小，这是因为我们的AssetBundle太小了，名字只有一个sphere，所以基本看不出大小上的变化，若点击查看详情，可以发现大约有1字节的变化。DisableLoadAssetByFileName更主要的是针对CPU Time和运行时内存的优化。</p>
+<p>接下来来看看运行时的情况，写一个简单的Demo，来看下不同参数打出来的AssetBundle在内存中的使用情况。点击按钮的时候调用下面代码，加载我们的AssetBundle，首先测试的是使用ChunkBasedCompression打出的AssetBundle：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void LoadAsset()</span><br><span class="line">&#123;</span><br><span class="line">    AssetBundle ab = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, &quot;sphere&quot;));</span><br><span class="line">    Instantiate(ab.LoadAsset(&quot;Sphere&quot;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们打个EXE文件出来测试，一定要在运行时环境测试，build时勾选Development Build。然后运行我们的exe文件，Profiler窗口选择我们运行的程序，点击Load按钮，Take Sample查看Memory项，如下图：</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/002dc2c43ddfe255ccecb7e9b8a4da4f.gif"></p>
+<p>会发现我们的AssetBundle被加载进了内存（如下图），前面提到CAB-xxx包含的是AssetBundle头的信息，因此后面跟着的大小也是AssetBundle头的大小。</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/65fb4378f2fc812d8f81faf4bf2a341f.png"></p>
+<p>注意，如果在编辑器里面运行这个Demo测试，你会发现在SerializedFile下加载了茫茫多的资源，这也是因为Unity编辑器为了保证我们编辑时的体验，会预先加载一部分资源，因此我们需要打包出来在运行时测试，得到的结果才是真实环境下的结果。</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/638ae7c1fa44fb4d5b73d97ba8f94560.png"></p>
+<p>然后我们把再加上DisableWriteTypeTree选项来测试一下，得到的结果如下，会发现不写入TypeTree的话，内存空间同样减少了一大截。</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/cb70b6ba3a14dd1c41d0250a8c2a88bb.png"></p>
+<p>接着我们使用DisableLoadAssetByFileName(WithExtension)来打测试一下，会发现我们的Asset加载不出来了，因为LoadAsset(“Sphere”)的结果为null了，只有使用全路径才能正确的加载。</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/9b1774d9c938760c974fda4d944bddc5.png"></p>
+<h3 id="3-AssetBundle的识别"><a href="#3-AssetBundle的识别" class="headerlink" title="3.AssetBundle的识别"></a>3.AssetBundle的识别</h3><p>当我们前后两次打出AssetBundle的时候，如何判断哪些AssetBundle是有差异的，哪些AssetBundle是没有发生变化的呢？</p>
+<p>很多人会通过计算两次打出来AssetBundle的md5来判断是否发生变化，实际上这种方式是不推荐的。因为在Unity打包的过程中，有一些因素是不稳定的，可能导致你两次打包之后的AssetBundle，虽然你里面的东西没有变，但是打出来的Binary不是严格一致的，从而md5也是不一样的。所以不建议算打出来之后的AssetBundle。那怎么算呢？我们可以算Library里的文件的md5，或者是原文件以及对应的meta文件的md5，用这些算出来的hash做为AssetBundle的变化依据是可以的。</p>
+<p>在跟AssetBundle一起生成出来的 .manifest 文件中，包含有 AssetFileHash 的字段，可以用来作为我们的识别依据。此外在 .manifest 中还有个<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3poLWNuLyVFNSVCRSVBQSVFNyU5MiVCMCVFNSU4NiU5NyVFOSVBNCU5OCVFNiVBMCVBMSVFOSVBOSU5Nw==">CRC<i class="fa fa-external-link-alt"></i></span>（cyclic redundancy check）的字段用来判断AssetBundle的完整性，也常常被加入识别依据当中。</p>
+<h3 id="4-AssetBundle的策略"><a href="#4-AssetBundle的策略" class="headerlink" title="4.AssetBundle的策略"></a>4.AssetBundle的策略</h3><p>那么我们AssetBundle的大小怎么样是最合适的呢？简单来说不要去走极端，打的过大或过小都是不好的。</p>
+<p>AssetBundle过大的问题：</p>
+<ol>
+<li><p>不容易被下载下来，手机的网络速度相对比较慢，如果AssetBundle很大且没有断点续传，万一用户下了一半失败了，那么就得重新下载，极端的情况下可能就是根本下不下来。</p>
+</li>
+<li><p>如果一个AssetBundle里面的东西非常非常的多，就会导致AssetBundle头里面记录的信息摘要，也会非常非常的多。</p>
+</li>
+</ol>
+<p>AssetBundle过小的问题：</p>
+<ol>
+<li>例如打了一个1K的AssetBundle，那么AssetBundle头的占比就会非常的大，这样有效的数据量就非常的小，大部分的数据量都变成了头文件。</li>
+</ol>
+<p>Scene打包AssetBundle是合适的，只是说一些组件不要都扔到一个AssetBundle里。官方推荐1-2M是一个比较合适的大小，5G普及后，5-10m也ok。这些指的是需要从网上下载的AssetBundle，如果是放在StreamingAsset下本地带的AssetBundle就可以5-10m左右，不要大于10M，如果大于10M就会有很多问题出现。</p>
+<h2 id="4-Asset的加载及管理"><a href="#4-Asset的加载及管理" class="headerlink" title="4.Asset的加载及管理"></a>4.Asset的加载及管理</h2><h3 id="1-Editor和Runtime加载机制不同"><a href="#1-Editor和Runtime加载机制不同" class="headerlink" title="1.Editor和Runtime加载机制不同"></a>1.Editor和Runtime加载机制不同</h3><p>比如说前面查看Profiler时看的SerializedFile项，在Editor下可以到五十几个，为什么呢？因为使用Unity编辑器的时候，Unity首先保证的是开发过程中的流畅度。因为开发环境的设备一般比较好，所以会尽量把一些资源都提前加载进来，甚至有些情况下，会去额外的加载一些数据来方便和加速大家的编辑和制作过程。</p>
+<p>而在Runtime的时候，Unity会严格保证按需加载的方式，来尽量节省目标设备上的内存和CPU，所以它们是完全不一样的两套模式，加载机制也都是完全不一样的。因此我们不能用以Editor的Profiler去当做衡量标准，一定要去Profiler真机，这个才是最终的衡量标准。</p>
+<h3 id="2-序列化和反序列化"><a href="#2-序列化和反序列化" class="headerlink" title="2.序列化和反序列化"></a>2.序列化和反序列化</h3><p>先来做一个简单的测试，新建一个空场景，里面什么都没有，然后我们创建三个Cube在场景内，如下图：</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/0c993c2b6e60b355d116f18ede9dfa82.png"></p>
+<p>接着我们用文本编辑器打开该Scene文件看一看，会发现里面Cube相关的Object信息会有三份，例如三份Transform，三份MeshRenderer，整个文件大概有400行左右。</p>
+<p>接下来我们把这三个Cube删掉，创建一个Cube的Prefab，放三个该Prefab在场景内，如下图：</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/24cac18fb43aa7f80d61ef8f712aac4f.png"></p>
+<p>再来看看Scene文件，神奇了，该文件变得只有300行左右了，原本很多重复的Object也没有了，变成了三份PrefabInstance信息：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">---</span> <span class="type">!u!1001</span> <span class="string">&amp;2515783927632439704</span></span><br><span class="line"><span class="attr">PrefabInstance:</span></span><br><span class="line">  <span class="attr">m_ObjectHideFlags:</span> <span class="number">0</span></span><br><span class="line">  <span class="attr">serializedVersion:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">m_Modification:</span></span><br><span class="line">    <span class="attr">m_TransformParent:</span> &#123;<span class="attr">fileID:</span> <span class="number">0</span>&#125;</span><br><span class="line">    <span class="attr">m_Modifications:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">target:</span> &#123;<span class="attr">fileID:</span> <span class="number">2515783927589610787</span>, <span class="attr">guid:</span> <span class="string">d8e3e5db1969c994dacbd9ce76c282fa</span>, <span class="attr">type:</span> <span class="number">3</span>&#125;</span><br><span class="line">      <span class="attr">propertyPath:</span> <span class="string">m_Name</span></span><br><span class="line">      <span class="attr">value:</span> <span class="string">Cube</span></span><br><span class="line">      <span class="attr">objectReference:</span> &#123;<span class="attr">fileID:</span> <span class="number">0</span>&#125;</span><br><span class="line">    <span class="bullet">-</span> <span class="attr">target:</span> &#123;<span class="attr">fileID:</span> <span class="number">2515783927589610791</span>, <span class="attr">guid:</span> <span class="string">d8e3e5db1969c994dacbd9ce76c282fa</span>, <span class="attr">type:</span> <span class="number">3</span>&#125;</span><br><span class="line">      <span class="attr">propertyPath:</span> <span class="string">m_RootOrder</span></span><br><span class="line">      <span class="attr">value:</span> <span class="number">0</span></span><br><span class="line">      <span class="attr">objectReference:</span> &#123;<span class="attr">fileID:</span> <span class="number">0</span>&#125;</span><br><span class="line">    <span class="bullet">-</span> <span class="attr">target:</span> &#123;<span class="attr">fileID:</span> <span class="number">2515783927589610791</span>, <span class="attr">guid:</span> <span class="string">d8e3e5db1969c994dacbd9ce76c282fa</span>, <span class="attr">type:</span> <span class="number">3</span>&#125;</span><br><span class="line">      <span class="attr">propertyPath:</span> <span class="string">m_LocalPosition.x</span></span><br><span class="line">      <span class="attr">value:</span> <span class="number">0</span></span><br><span class="line">      <span class="attr">objectReference:</span> &#123;<span class="attr">fileID:</span> <span class="number">0</span>&#125;</span><br><span class="line">    <span class="string">......</span></span><br><span class="line">    <span class="attr">m_RemovedComponents:</span> []</span><br><span class="line">  <span class="attr">m_SourcePrefab:</span> &#123;<span class="attr">fileID:</span> <span class="number">100100000</span>, <span class="attr">guid:</span> <span class="string">d8e3e5db1969c994dacbd9ce76c282fa</span>, <span class="attr">type:</span> <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出使用Prefab的方式，会利用一个PrefabInstance通过guid来引用外部的Prefab，而不是把所有的Object信息都添加进来，来减少数据量。Unity在根据Asset做序列化和反序列化的时候，是以Asset文件里的单位来做的，所以可以简单的理解为，里面的内容越多，要解析的也越多，速度就越慢。</p>
+<p>这就意味着当Unity去解析打到版本里的场景的时候，解析使用了Prefab的场景会更快，而且更省内存。因为在解析使用了Prefab场景的时候，Unity会优先把PrefabInstance指向的Prefab（例子中的Cube）解析出来，并且让场景中相同Prefab的引用指向同一块内存，所以在内存中，这三个Cube相对比较省的，只解析了一遍。而对于不使用Prefab的第一种情况，Unity会认为那三个Cube是完全不同的三个东西，所以在读取这个场景的时候Cube会被解析三遍，这个过程就浪费了。</p>
+<p>若我们做场景的时候拖一堆白色的东西在底下（即没有使用Prefab），就会导致整个场景的加载速度非常的慢。所以建议大家能用Prefab的地方尽量用Prefab，这不仅制作过程会变得方便，在Runtime时性能也会有所提升。</p>
+<h3 id="3-TypeTree（兼容性之树）"><a href="#3-TypeTree（兼容性之树）" class="headerlink" title="3.TypeTree（兼容性之树）"></a>3.TypeTree（兼容性之树）</h3><p>在前面介绍打AssetBundle选项的时候，提到了不写入TypeTree的种种好处，那么既然写入TypeTree有这么多的缺点，Unity为什么还要默认写入呢？因为它是为了给Unity跨版本之间做兼容性用的。</p>
+<p>不管是在Prefab文件里或者是meta文件里，经常会看到有一个字段叫作serializedVersion，值是一个数字，它代表着当前Object或者是Importer的数据格式版本。因为随着Unity引擎不断的发展，需要更多或更少的数据格式来描述一个数据内容，当我们每次去做数据更改的时候都会去修改serializedVersion，来表示当前我用的是哪一个版本。</p>
+<p>例如导入同一张图片，在不同Unity版本下的.meta文件如下：</p>
+<p><img src="https://blog-imgs.oynix.com/2025/10/47a2b3804ec9f79d0a3a230be69bfdc9.png"></p>
+<p>通过serializedVersion可以知道2020.3.13的版本在TextureImporter的结构上比起2018.4.20版本已经修改过两次了，例如新版本里多了名为vTOnly的属性。</p>
+<p>如果我们不开启写入TypeTree，Unity在打AssetBundle的时候，只会把Object以及Importer里的值写入到AssetBundle当中，例如图中的0、0、1、0、0等等。然后当我们使用这个AssetBundle的时候，会按照当前Unity的版本对应的格式反向解析这些值，例如第一个值0是mipMapMode，第二个值0是enableMipMap，第三个值1是sRGBTexture。</p>
+<p>这样就会存在一个问题，假如我们的AssetBundle是2018版本打的，然后使用是在2020的版本，那么在反向解析的时候，格式按照的是2020的，那么原本是grayScaleToAlpha的值会被赋值到vTOnly上，并且后面的值也全乱了，就会导致AssetBundle在跨版本后就用不了。</p>
+<p>而TypeTree就是上诉问题的一个解决方案，当我们开启TypeTree的写入，Unity在打AssetBundle时会先把数据内容的树状结构先写入一遍，即mipMapMode、enableMipMap、sRGBTexture这些字段，然后才去写入它们的值，这也就导致了AssetBundle的大小增加。然后在使用的时候，Unity会先解析TypeTree，然后再去反向解析数据内容。这样当我们用2020解析2018的AssetBundle时，发现有个字段vTOnly是TypeTree里没有的，那么就会使用默认值填充。再比如有个字段是2018有的，2020没有的，那么会丢弃这个字段对应的值，防止反向解析出错。</p>
+<p>也就是说Unity通过serializedVersion以及TypeTree的方式，来把跨版本兼容性给做出来了，这就是TypeTree的作用。所以如果你写入了TypeTree，那么你的AssetBundle中就会额外增加所有TypeTree的信息，还会在CPU加载的时候额外遍历一遍TypeTree，同时会在内存中生成一个TypeTree的结构。所以这就是为什么磁盘空间加了，内存加了，CPU时间也加了。</p>
+<p>那在什么情况下，我们可以不用TypeTree呢？当你确认项目打apk，ipa这些包的Unity版本和打AssetBundle的版本是一致的，那么这个时候就可以放心的关掉TypeTree，去节省掉这一部分内容。绝大多数的项目都可以关掉，除非项目需要做跨版本兼容。</p>
+<h3 id="4-同步和异步"><a href="#4-同步和异步" class="headerlink" title="4.同步和异步"></a>4.同步和异步</h3><p>在加载Asset的时候，Unity提供了有同步和异步的API，例如LoadAsset和LoadAssetAsync，那么它们分别什么时候选用比较好呢？</p>
+<p>实际上这只是一个策略的问题，并没有哪个更好。同步最大的优点是快，因为在这一帧里面主线程所有的CPU全都会归你用，所有的时间片全都归你用，它可以一门心思的把这件事情做完，再做其他的事情。但是同步的问题就是会造成主线程卡顿。异步可以简单的理解为多线程（其实还是有点区别的），最大的优点是不怎么会造成主线程的卡顿（也不是完全不卡顿），主线程可以尽量不卡顿的去跑。但是异步永远比同步至少慢一帧，也就是说我这一帧发起的异步，最快也要下一帧才会开始执行。而且异步涉及到一个时间片的问题，所以有的时候异步的总体时间会比同步来的长。比如你用同步去加载一个东西，可能3ms就加载完了，但是你用异步去加载可能就要5ms或6ms才加载完，甚至更长。但是异步花费的这些时间是分布在多个帧里面的，在后台线程里面去跑的，所以它会尽量减少卡顿。</p>
+<p>也就是说你在一个对卡顿非常敏感的场景里面，比如战斗时的场景，那么你可以使用异步的方式，然后做一些兼容方式，保证它没有加载完之前有一些处理。但是你是在Loading的时候完全可以考虑分帧去使用同步，但是不能一帧里面加载太多东西，这样的话整体的速度会变快。</p>
+<p>还需要注意的是，异步和同步如果混合使用，是会有问题的，下面一点就会介绍这个问题。</p>
+<h3 id="5-Preload与Presistent"><a href="#5-Preload与Presistent" class="headerlink" title="5.Preload与Presistent"></a>5.Preload与Presistent</h3><p>在Unity引擎内部，是由PreloadManager与PresistentManager来主要负责加载的。PreloadManager负责调度任务，当上层有一个任务下来，比如说我要去加载Asset，那么它会形成一个新的Operation，这个Operation会给到PreloadManager。在PreloadManager里面有个队列，然后每一帧会从里面去取出一个任务（也就是一个Operation）去执行它。而当Operation执行的时候，会去调用PresistentManager（持久化管理器）。PresistentManager的主要的任务是把文件从硬盘上读取到内存当中，同时去给它分配一个id。</p>
+<p>如果我们现在有个Operation是异步的，它正在执行。而在下一帧，PreloadManager又加载了一个同步的Operation，这就会导致同步的和异步的Operation会去抢着用PresistentManager。而PresistentManager分配ID和做IO这些都是要阻断线程的，所以它会 zao造成block。也就意味着你的异步工作可能会被你的同步工作阻断，反过来也有可能。所以同时使用的时候，会经常看见一个非常长的Loading.LockPersistenManager，锁的现象出现。</p>
+<p>注：在2020的版本里，应该会解决这个锁的问题，因此如果一起使用，主线程阻塞的情况会变少。</p>
+<p>参考：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIudW5pdHkuY24vZXh0ZXJuYWwtbGluaz9saW5rPWh0dHBzOi8vemh1YW5sYW4uemhpaHUuY29tL3AvMTEzMDQ5OTgy">Jeffrey Zhuang：U3D GetPreloadData 崩溃分析<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9hbnN3ZXIudXdhNGQuY29tL3F1ZXN0aW9uLzU5ZWFlMGM0ZTBhNWU2Mzc3MjRhMTU3Mg==">AssetBundle lockpersistentmanager开销 – UWA问答<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<h2 id="4-Asset的卸载"><a href="#4-Asset的卸载" class="headerlink" title="4.Asset的卸载"></a>4.Asset的卸载</h2><h3 id="1-UnloadUnusedAssets"><a href="#1-UnloadUnusedAssets" class="headerlink" title="1.UnloadUnusedAssets"></a>1.UnloadUnusedAssets</h3><p>它可以卸载掉那些没用的Asset，把它从内存中清除掉。它也是个Operation，它和加载一样，也是归PreloadManager处理的，它必须独成的，不能并行。因为Unity在一次Load Operation开始的阶段就已经确定了哪些Asset要被Load，所以在Load的过程中又发生了Unload这样的操作，那就会导致有些确定了使用且已经被Load的Asset被卸载掉了，就会导致最后的出错。</p>
+<p>所以Unity现在的设计是一个同步的过程，所以这个过程会造成卡顿。Unity在切换Scene的时候会自动调用一次UnloadUnusedAssets，如果是通过Scene来管理的话就没太大的必要关心造成的卡顿了。如果不是，那就需要自己找些合适的时机去调用一下。</p>
+<h3 id="2-AssetBundle-Unload"><a href="#2-AssetBundle-Unload" class="headerlink" title="2.AssetBundle.Unload"></a>2.AssetBundle.Unload</h3><p>它又分true和false，但是无论哪一个都和上面的不一样，它不是一个Operation，也就是不归PreloadManager管。它会遍历当前加载过的东西，然后去把它删掉。</p>
+<p>如果是true那就是把AssetBundle和它加载出来的Asset全都一起干掉。这个在不合适的时机就有可能发生Runtime的错误。如果是false，那么只是把AssetBundle给丢掉，Asset是不会被扔掉的。那么当你第二次去加载同一个AssetBundle的时候，在内存中就会有两份Asset，因为当AssetBundle被卸载的时候，它和对应的Asset的关系就被切割掉了。所以AssetBundle不知道之前的Asset是不是还在内存中，是不是从自己这加载出来的。所以使用AssetBundle.Unload就很考验游戏的规划。</p>
+<p>Unity为什么不做成Reference？因为Unity内部对于这些Asset实际上是没有Reference的，很多时候是通过遍历去查找，实际上不存在大家想象的ReferenceCount，它和C#其实是不太一样的。目前Unity也是正在解决，或者用<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnVuaXR5LmNuL1BhY2thZ2VzL2NvbS51bml0eS5hZGRyZXNzYWJsZXNAMS4xOS9tYW51YWwvaW5kZXguaHRtbA==">Addressables<i class="fa fa-external-link-alt"></i></span>可以解决一部分的。  </p>
+
+    </div>
+
+    
+    
+    
+    <div>
+       
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- (完) -------------</div>
+    
+</div>
+       
+      </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>oynix
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://oynix.com/2025/10/076f4db2b790/" title="Asset的一生（二）">https://oynix.com/2025/10/076f4db2b790/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/Repost/" rel="tag"># Repost</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/10/3b17f0e9cc5f/" rel="prev" title="Asset的一生（一）">
+      <i class="fa fa-chevron-left"></i> Asset的一生（一）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Asset%E4%B8%8EAssetBundle"><span class="nav-text">3.Asset与AssetBundle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFAssetBundle%EF%BC%9F"><span class="nav-text">1.什么是AssetBundle？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-AssetBundle%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-text">2.AssetBundle的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-AssetBundle%E7%9A%84%E8%AF%86%E5%88%AB"><span class="nav-text">3.AssetBundle的识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-AssetBundle%E7%9A%84%E7%AD%96%E7%95%A5"><span class="nav-text">4.AssetBundle的策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Asset%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%8F%8A%E7%AE%A1%E7%90%86"><span class="nav-text">4.Asset的加载及管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Editor%E5%92%8CRuntime%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E4%B8%8D%E5%90%8C"><span class="nav-text">1.Editor和Runtime加载机制不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">2.序列化和反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-TypeTree%EF%BC%88%E5%85%BC%E5%AE%B9%E6%80%A7%E4%B9%8B%E6%A0%91%EF%BC%89"><span class="nav-text">3.TypeTree（兼容性之树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%BC%82%E6%AD%A5"><span class="nav-text">4.同步和异步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Preload%E4%B8%8EPresistent"><span class="nav-text">5.Preload与Presistent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Asset%E7%9A%84%E5%8D%B8%E8%BD%BD"><span class="nav-text">4.Asset的卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-UnloadUnusedAssets"><span class="nav-text">1.UnloadUnusedAssets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-AssetBundle-Unload"><span class="nav-text">2.AssetBundle.Unload</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="oynix"
+      src="/images/p.png">
+  <p class="site-author-name" itemprop="name">oynix</p>
+  <div class="site-description" itemprop="description">避免没有计划的行动</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">176</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">120</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL295bml4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oynix"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOm95bml4b0BnbWFpbC5jb20=" title="E-Mail → mailto:oynixo@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fas fa-basketball-ball"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oynix</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">600k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9:05</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '70fea9109cf120e422df',
+      clientSecret: 'f988e3db3d5c32bf420ceff04fa7de68ce924020',
+      repo        : 'oynix.github.io',
+      owner       : 'oynix',
+      admin       : ['oynix'],
+      id          : '36565527ae1b727e6f222e56e94e2dda',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
