@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://blog-imgs.oynix.com/2025/12/3ddc0dd86a8b283ede989f0e1ba42023.png">
 <meta property="og:image" content="https://blog-imgs.oynix.com/2025/12/03239dbaa2cb714e05c1091527ea7cc1.png">
 <meta property="article:published_time" content="2025-11-15T14:17:32.000Z">
-<meta property="article:modified_time" content="2025-12-02T06:36:03.035Z">
+<meta property="article:modified_time" content="2025-12-02T07:40:49.507Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="ImmortalWrt">
 <meta property="article:tag" content="NanoPi">
@@ -322,7 +322,7 @@
 <p>我的NAS十分简约，只是插了一块儿12T的大硬盘到R5S的USB接口上，冗余、备份什么的都没有。首先，这是一块机械硬盘，我赌它不会像SSD那样轻易坏，这是一场豪赌，其次，里面存的数据不是那种损坏后就要了命的，如果真的意外坏了也可接受，最后，现在硬盘价格涨的飞快，贵的离谱，要做RAID的成本太高了，这是主要原因，所以我选择单硬盘硬抗。</p>
 <p><img src="https://blog-imgs.oynix.com/2025/12/03239dbaa2cb714e05c1091527ea7cc1.png"></p>
 <p>页面很简单，如图所示，配置分为2部分，一个是常规设置，一个是模版设置。</p>
-<p>共享目录我配置了2个目录，一个Public，指向<code>/mnt/sda1/Public</code>，允许的用户为master，一个Private，指向<code>/mnt/sda1/Private</code>，允许的用户为root和master，那块12T的大硬盘就挂在了<code>/mnt/sda1</code>目录。</p>
+<p>共享目录我配置了2个目录，一个Public，指向<code>/mnt/sda1/Public</code>，允许的用户为master和rott，一个Private，指向<code>/mnt/sda1/Private</code>，允许的用户为root，那块12T的大硬盘就挂在了<code>/mnt/sda1</code>目录。</p>
 <p>这里的用户需要多说一句，samba的用户和系统用户是两组用户，但前者依附于后者，系统刚装好的时候，默认只有一名为root的系统用户，此时可以可以创建一个名为root的samba用户，如果需要再创建一个名为master的samba用户，则需要先创建一个名为master的系统用户，大致就是这个关系。</p>
 <p>创建系统用户以及设置密码的命令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -m 表示创建home目录</span></span><br><span class="line">useradd -m username</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按照提示输入新密码即可</span></span><br><span class="line">passwd username</span><br></pre></td></tr></table></figure>
