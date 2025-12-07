@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="搭建好一个ImmortalWrt，只是第一步，相当于打开了一扇门，至于门里的世界有多丰富，那就要看有多少的兴趣和精力了，一般都需要做的一件事，就是实现从公网访问家里的Wrt，满足随时随地访问的需求。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog-imgs.oynix.com/2025/12/ecf9af8948c3a831f26a046f3383d813.png">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2025/12/d61fcc6a0f14794e5738033b49168bb0.png">
 <meta property="og:image" content="https://blog-imgs.oynix.com/2025/12/67aec6b21e7492d1ca97a9ffbc1f13ef.png">
 <meta property="article:published_time" content="2025-11-16T14:17:32.000Z">
-<meta property="article:modified_time" content="2025-12-07T09:07:31.397Z">
+<meta property="article:modified_time" content="2025-12-07T11:15:35.500Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Samba">
 <meta property="article:tag" content="ImmortalWrt">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog-imgs.oynix.com/2025/12/ecf9af8948c3a831f26a046f3383d813.png">
+<meta name="twitter:image" content="https://blog-imgs.oynix.com/2025/12/d61fcc6a0f14794e5738033b49168bb0.png">
 
 <link rel="canonical" href="https://oynix.com/2025/11/c944ffa68903/">
 
@@ -289,7 +289,7 @@
 <p>内网穿透中，常见的是通过一个VPS中转，家宽你不是没有公网IP吗，没关系，我VPS有，我能被访问，家宽你和我一直保持着联系，你们谁要有什么事就跟我说，我帮你转告给家宽，大体流程便如此。至于其中的实现细节，又有着多种选择，比如FRP、wireguard等。</p>
 <h3 id="2-配置ImmortalWrt"><a href="#2-配置ImmortalWrt" class="headerlink" title="2.配置ImmortalWrt"></a>2.配置ImmortalWrt</h3><p>而我则用了另一种方式：通过IPv6。自然前提是需要一个v6的地址，不出意外的话，运营商都会分配一个，配置完Wrt后，网络接口里可以看到2个wan口，一个是v4，另一个便是v6，地址是特别长的一串，和32位的v4地址不同，v6直接顶到128位，多到用不完。</p>
 <p>除了v6地址之外，应该还会看到一个PD，叫前缀代理，因为v6地址有保质期，到期了运营商就换个新的给你，但是只给一个前缀，后面的部分留给自己分配，可以随机，也可以和其他参数关联，比如MAC地址等。</p>
-<p><img src="https://blog-imgs.oynix.com/2025/12/ecf9af8948c3a831f26a046f3383d813.png"></p>
+<p><img src="https://blog-imgs.oynix.com/2025/12/d61fcc6a0f14794e5738033b49168bb0.png"></p>
 <p>这个时候，wrt实际上已经暴露在公网了，随手搜一个能ping v6地址的网站，把wan6的地址复制进去，就会发现全国都是绿色的，表明不仅能通，速度还很快。</p>
 <p>内网访问wrt的地址是：<code>http://192.168.2.1</code>，从公网访问就在浏览器地址栏输入v6的地址即可：<code>http://[ipv6]</code>，注意，这里的中括号不是格式占位符，而是v6地址确实需要写在中括号里面。</p>
 <p>按下回车，会发现并没有出现预想中wrt的登录页面。这是因为不加端口号时，默认访问80端口，而80端口的数据包在经由运营商的某个路由器时，随手就给你扔了，没有为什么，访问80端口就是不行。</p>
