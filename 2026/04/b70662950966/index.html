@@ -29,12 +29,14 @@
 <meta property="og:site_name" content="oynix">
 <meta property="og:description" content="上篇文说了如何在 ImmortalWrt 上配置 HomeProxy，实际上 Sing-Box 支持的平台非常丰富，几乎可以说是全平台都支，所以趁着热乎劲，把 MacOS 上的 ClashMeta，也换成了 Sing-Box，这也是不得不做的事，之前提到过，因为我买的机场主坏了，不给我订阅链接了。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-imgs.oynix.com/2026/04/7559b65a9cb7a1e17d2d1431cf6be1e8.png">
 <meta property="article:published_time" content="2026-04-18T14:17:32.000Z">
-<meta property="article:modified_time" content="2026-04-25T16:06:45.329Z">
+<meta property="article:modified_time" content="2026-04-28T05:47:27.172Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Sing-Box">
 <meta property="article:tag" content="Tailscale">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-imgs.oynix.com/2026/04/7559b65a9cb7a1e17d2d1431cf6be1e8.png">
 
 <link rel="canonical" href="https://oynix.com/2026/04/b70662950966/">
 
@@ -298,6 +300,8 @@
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p <span class="regexp">/etc/</span>resolver</span><br><span class="line">sudo tee <span class="regexp">/etc/</span>resolver<span class="regexp">/tailcad2d7.ts.net &gt;/</span>dev/<span class="keyword">null</span> &lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">nameserver <span class="number">100.100</span>.<span class="number">100.100</span></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 
 <p>文件名就是要匹配的域名后缀，文件内容是 DNS 服务器的地址。如此配置后，Sing-Box 仍然可以正常劫持 DNS 请求流量，同时，Tailscale 也可以通过 MagicDNS 的域名正常请求。</p>
+<p><img src="https://blog-imgs.oynix.com/2026/04/7559b65a9cb7a1e17d2d1431cf6be1e8.png"></p>
+<p>如此这般设置过，就可以看到这清爽的 DNS 泄漏检测结果了。</p>
 <p>这里还有一个问题，dig 命令并不会完整按照所有的顺序去选择 DNS 服务器，可以使用这种方式替换，虽然没有那么方便，单是结果是准确的：</p>
 <figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先监听 <span class="number">53</span> 端口，DNS 请求都是从这个端口发出：</span><br><span class="line">sudo tcpdump -ni <span class="literal">any</span> <span class="keyword">port</span> <span class="number">53</span></span><br></pre></td></tr></table></figure>
 
