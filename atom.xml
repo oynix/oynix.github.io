@@ -6,7 +6,7 @@
   <link href="https://oynix.com/atom.xml" rel="self"/>
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://oynix.com/"/>
-  <updated>2026-04-28T05:47:27.172Z</updated>
+  <updated>2026-05-29T04:19:01.739Z</updated>
   <id>https://oynix.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MacOS 上禁止应用自动更新</title>
+    <link href="https://oynix.com/2026/05/aeabe90473f3/"/>
+    <id>https://oynix.com/2026/05/aeabe90473f3/</id>
+    <published>2026-05-15T14:17:32.000Z</published>
+    <updated>2026-05-29T04:19:01.739Z</updated>
+    
+    <content type="html"><![CDATA[<p>为什么会有这个需求呢？起因就是微信，旧版本有更新时，会弹个弹窗，询问要不要更新，拒绝掉就可以保持版本。但新版本变坏了，设置里有个禁止自动更新的开关，即便是关掉，当有新版本时，它还是会自动后台下载，在某次不经意间的重启后，它就自动替换旧版本，完成了更新，不给你选择的机会。</p><span id="more"></span><p>发现这个现象后，我就开始关注这些应用的更新操作，发现Arc浏览器也是如出一辙，自动更新这个开关形同虚设，在这些应用看来，就算天塌了，我该更新也要更新。</p><p>但是大多新版本对我而言，都没什么吸引力，无非是增加了一些功能，优化了一些使用体验，也可能呢移除了一些我正在使用的功能。如果我真的需要，我会手动更新的，这个应用装到了我的设备上，那就该我说了算。</p><p>一番查证，发现了 2 个思路可以禁止自动更新的操作：</p><h4 id="1-思路1"><a href="#1-思路1" class="headerlink" title="1. 思路1"></a>1. 思路1</h4><p>自动更新前，它会先把新的安装包，一般都是个app结尾的文件提前下载到缓存目录，路径如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/用户名/Library/Caches/应用包名/</span><br></pre></td></tr></table></figure><p>只要将这个目录的写权限禁止掉，那么就无法下载了，继而无法安装。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R 500 /Users/用户名/Library/Caches/应用包名/</span><br></pre></td></tr></table></figure><p>在修改权限后，Arc 浏览器会提示我升级失败，遇到问题，说明奏效了，因为它无法下载。但是微信却没有任何提示，本就是后台偷偷摸摸在做，出了错不提示也正常。</p><p>但这种方式有个特点，重启之后，Cache目录会清空，应用启动后，会重建对应的应用包名的目录，然后权限就重置了，如果需要的话，还需重新设置一下权限。</p><h4 id="2-思路2"><a href="#2-思路2" class="headerlink" title="2. 思路2"></a>2. 思路2</h4><p>每个应用对应的app文件，本质就是个文件夹，可以右击选择查看包内容。升级时，是将新的app文件，直接替换旧的，这个方式是给app文件改标记，增加不可以修改，这样就无法替换了，比如，禁止微信更新：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chflags -R uchg /Applications/WeChat.app</span><br></pre></td></tr></table></figure><p>这个操作比<code>chmod</code>的权限更高一些，执行前需要彻底关闭应用，同时还需要给执行命令的终端窗口开启完全磁盘访问的权限，不然可能无法访问到app内的文件，导致修改失败。</p><p>执行完之后，可以查看是否成功，如果输出结果中有<code>uchg</code>标记，表示成功，同时，当再次打开app后，会发现dock中的应用图标左下角多了一个锁的小图标。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -lO /Applications/WeChat.app</span><br><span class="line">drwxr-xr-x  10 xxxx  admin  uchg 320  5 18 21:20 Contents</span><br></pre></td></tr></table></figure><p>如果想接触这个标记，可以通过下面的命令，验证方式同上。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chflags -R nouchg /Applications/WeChat.app</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;为什么会有这个需求呢？起因就是微信，旧版本有更新时，会弹个弹窗，询问要不要更新，拒绝掉就可以保持版本。但新版本变坏了，设置里有个禁止自动更新的开关，即便是关掉，当有新版本时，它还是会自动后台下载，在某次不经意间的重启后，它就自动替换旧版本，完成了更新，不给你选择的机会。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="MacOS" scheme="https://oynix.com/categories/MacOS/"/>
+    
+    
+    <category term="MacOS" scheme="https://oynix.com/tags/MacOS/"/>
+    
+  </entry>
   
   <entry>
     <title>解决 MacOS 上 Tailscale 拦截所有 DNS 流量问题</title>
