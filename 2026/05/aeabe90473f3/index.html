@@ -30,7 +30,7 @@
 <meta property="og:description" content="为什么会有这个需求呢？起因就是微信，旧版本有更新时，会弹个弹窗，询问要不要更新，拒绝掉就可以保持版本。但新版本变坏了，设置里有个禁止自动更新的开关，即便是关掉，当有新版本时，它还是会自动后台下载，在某次不经意间的重启后，它就自动替换旧版本，完成了更新，不给你选择的机会。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-05-15T14:17:32.000Z">
-<meta property="article:modified_time" content="2026-05-29T04:19:01.739Z">
+<meta property="article:modified_time" content="2026-09-21T03:20:19.180Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="MacOS">
 <meta name="twitter:card" content="summary">
@@ -259,14 +259,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -301,6 +301,19 @@
 
 <p>如果想接触这个标记，可以通过下面的命令，验证方式同上。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chflags -R nouchg /Applications/WeChat.app</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-追加"><a href="#3-追加" class="headerlink" title="3. 追加"></a>3. 追加</h4><p>真的很难明白，新版本到底有什么好，竟让它如何迫切想要升级，搞不懂。</p>
+<p>即便是锁定了版本，它还是每次一启动就会下载新版本的 dmg 安装文件，下载完就弹窗提示安装升级，关掉之后，过一会又会弹，不胜其烦。</p>
+<p>临时解决方式就是，将弹窗最小化，这样当它又想弹的时候，发现上一次的还在，它就不弹了。</p>
+<p>当然，还有一种解决方式：就是禁止下载。观察了一会，看看哪个链接在沾满下载带宽，就很容易找到了它的下载域名，将其禁掉之后，发现就不下载了。</p>
+<p>禁掉还有个好处：节省流量和带宽，既节省它的也节省自己的。因为每次启动都会下载一遍，就算上一次已经下载好了，也会直接删掉，然后重新下载。</p>
+<p>所以每次启动都会看到下载带宽被拉满了在跑，现在的安装文件已经快 600MB 了，它也真是不心疼 CDN 流量，一个用户一天启动10次，就会跑将近 6GB 的流量，这么多用户不知道要跑多少流量。</p>
+<p>目前我这里的下载域名是：<code>dldir1v6.qq.com</code>，直接加到 REJECT 的规则里就可以，这个可能会变，不过也没关系，当发现失效了，就把新的也加上就好了。</p>
+<p>最后再补充点，上面提到过，一般应用会把安装包下载到：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/用户名/Library/Caches/应用包名/</span><br></pre></td></tr></table></figure>
+
+<p>但是微信不太一般，下载完成之后竟然没在这里面找到，翻了半天，终于找到它把蛋下哪去了，原来是沙盒里，藏的还挺深：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/用户名/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -429,7 +442,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%80%9D%E8%B7%AF1"><span class="nav-text">1. 思路1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%80%9D%E8%B7%AF2"><span class="nav-text">2. 思路2</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%80%9D%E8%B7%AF1"><span class="nav-text">1. 思路1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%80%9D%E8%B7%AF2"><span class="nav-text">2. 思路2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%BF%BD%E5%8A%A0"><span class="nav-text">3. 追加</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -512,12 +525,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">637k</span>
+    <span title="站点总字数">638k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:39</span>
+    <span title="站点阅读时长">9:40</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
