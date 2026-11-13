@@ -22,21 +22,22 @@
     var CONFIG = {"hostname":"oynix.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="在AI盛行的时代，一句话就能解决问题，却还要坚持手搓的时候属实不多了。">
+  <meta name="description" content="之前在MacOS上遇到过这个问题，这次在Debian上也遇到了，同一个问题在两个不同的类Unix系统上解决起来还有些不一样。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用certbot管理免费证书">
-<meta property="og:url" content="https://oynix.com/2026/11/a549f659196d/index.html">
+<meta property="og:title" content="解决Debian上Tailscale拦截所有DNS流量问题">
+<meta property="og:url" content="https://oynix.com/2026/11/71db783b6df2/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="在AI盛行的时代，一句话就能解决问题，却还要坚持手搓的时候属实不多了。">
+<meta property="og:description" content="之前在MacOS上遇到过这个问题，这次在Debian上也遇到了，同一个问题在两个不同的类Unix系统上解决起来还有些不一样。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-11-01T14:17:32.000Z">
-<meta property="article:modified_time" content="2026-11-13T05:52:30.017Z">
+<meta property="article:modified_time" content="2026-11-13T08:10:53.551Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Linux">
-<meta property="article:tag" content="Cloudflare">
+<meta property="article:tag" content="Tailscale">
+<meta property="article:tag" content="Debian">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://oynix.com/2026/11/a549f659196d/">
+<link rel="canonical" href="https://oynix.com/2026/11/71db783b6df2/">
 
 
 <script id="page-configurations">
@@ -49,7 +50,7 @@
   };
 </script>
 
-  <title>使用certbot管理免费证书 | oynix</title>
+  <title>解决Debian上Tailscale拦截所有DNS流量问题 | oynix</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBNTK34GB"></script>
     <script>
@@ -135,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">132</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">133</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -145,7 +146,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">185</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">186</span></a>
 
   </li>
         <li class="menu-item menu-item-message">
@@ -212,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.com/2026/11/a549f659196d/">
+    <link itemprop="mainEntityOfPage" href="https://oynix.com/2026/11/71db783b6df2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/p.png">
@@ -225,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          使用certbot管理免费证书
+          解决Debian上Tailscale拦截所有DNS流量问题
         </h1>
 
         <div class="post-meta">
@@ -260,14 +261,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -279,64 +280,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在AI盛行的时代，一句话就能解决问题，却还要坚持手搓的时候属实不多了。</p>
+        <p>之前在MacOS上遇到过这个问题，这次在Debian上也遇到了，同一个问题在两个不同的类Unix系统上解决起来还有些不一样。</p>
 <span id="more"></span>
 
-<p>原本我也是让Agent去VPS做这些事的，注册证书、自动更新，等等，但经过多次下来，发现VPS上的配置被它改的东一块、西一块的，最后就只好手动整理了一下，在此做个记录。</p>
-<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>我用到证书的场景，主要是搭配域名一块儿使用，在VPS上暴露了几个服务，想要用https就需要有证书，权威机构颁发的证书动辄就几百几千，本着能省则省的原则，选了免费组织的证书：Let’s Encrypt。申请证书、更新证书，都是免费的，每次有效期90天，所以需要定时刷新证书。</p>
-<p>对于这些操作，官方提供了一个工具，叫做：certbot，常见的申请、更新证书操作，通过这个工具都可实现。</p>
-<h3 id="2-颁发流程"><a href="#2-颁发流程" class="headerlink" title="2. 颁发流程"></a>2. 颁发流程</h3><p>这里需要先说下Let’s Encrypt这个CA机构颁发证书的大致流程，这个说明白，后面关于certbot的多个参数就很好理解了。</p>
-<p>假设，我需要给example.com这个域名申请证书，把这个请求发给机构之后，机构会返回一个token，之后，机构会访问一个固定URL，来验证我是不是这个域名的所有者：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/.well-known/acme-challenge/&lt;token&gt;</span><br></pre></td></tr></table></figure>
-<p>所以，我拿到token之后，需要存到本地，并对外暴露，添加路由映射，比如通过Nginx，使得访问上面这个链接时，可以正确返回token，token是个文件名，文件内容除了包含token，还有一些其他用于验证的数据，机构访问URL，验证通过，则正式签发证书。</p>
-<p>本质上，就是需要一个验证的操作：需要验证我是我申请的这个域名的所有者。</p>
-<p>访问固定URL来验证是常见的方式，既然有常见的，就会有不太常见的，比如通过DNS验证：向机构申请某个域名的证书，机构会返回用于验证用的信息，在DNS解析中增加一条TXT类型的记录，内容就是这些验证用的信息，然后机构通过解析这条TXT类型的DNS记录，同样可以验证我就是这个域名的所有者，验证通过后，则正式签发证书。</p>
-<p>添加TXT记录，一般都通过域名服务商提供的API来完成，比如Cloudflare，这种方式的优点是不受VPS端口限制，适用于无法暴露80端口，或者80端口在提供其他服务的情况。</p>
-<p>证书下发到本地之后，要想证书生效，还需要一个操作：安装。</p>
-<p>所谓安装证书，其实就是应用证书，对于需要证书的服务，把证书路径配置进去，对于正在使用证书的服务，能重载的就热重载一下，不支持重载的就重启一下，然后就可以了。</p>
-<p>验证Authenticator + 安装Installer，就是全部流程。</p>
-<h3 id="3-安装工具"><a href="#3-安装工具" class="headerlink" title="3. 安装工具"></a>3. 安装工具</h3><p>我用的Linux是Debian，安装方式如下，root登录的话不用加sudo，直接跑即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install -y certbot</span><br></pre></td></tr></table></figure>
+<p>前文写过，在MacOS上，可以通过在<code>/etc/resolver</code>中按需增加域名的文件，系统在发起DNS请求时，就会优先命中，从而使用文件内指明的DNS服务器，但是这个方法在Debian上就行不通了。</p>
+<h3 id="1-原因"><a href="#1-原因" class="headerlink" title="1. 原因"></a>1. 原因</h3><p>MacOS上，DNS查询操作，进程会通过IPC交给内置的引擎<code>mDNSResponder</code>来处理，而<code>/etc/resolver/</code>就是专门用来给查询做分流用，这是在设计层面便支持这个操作。</p>
+<p>而Debian的设计，没有分流这个操作，发起DNS查询请求时，会按顺序向 <code>/etc/resolv.conf</code> 中配置的服务器查询，直到得到一个结果（NXDOMAIN也算结果）。而Tailscale在启动后，会修改resolv.conf文件，将全局DNS指向自己的DNS服务器，使得所有DNS查询走的都是 <code>100.100.100.100</code> 。</p>
+<p>所以，要想实现DNS分流，就需要再引入一个角色，来接管所有的查询，按需分流，我选的是systemd-resolved，比 dnsmasq 更加合适。</p>
+<p>安装和启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install -y systemd-resolved</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ sudo systemctl daemon-reload</span><br><span class="line">$ sudo systemctl <span class="built_in">enable</span> systemd-resolved</span><br><span class="line">$ sudo systemctl start systemd-resolved</span><br></pre></td></tr></table></figure>
 
-<h3 id="4-证书验证和安装"><a href="#4-证书验证和安装" class="headerlink" title="4.证书验证和安装"></a>4.证书验证和安装</h3><p>上面提到了多种证书验证的方式，这里只说其中的第一种，也就是通过80端口访问token文件的方式，而，对于这种方式，certbot提供了多种模式，分别是：</p>
-<ul>
-<li>standalone</li>
-<li>webroot</li>
-<li>nginx</li>
-</ul>
-<p>standalone是起一个单独的、临时的Python Web服务器，占用80端口，以供机构访问验证，webroot则是需要借用Nginx服务提供80端口，供机构访问验证，这2种都只是提供验证，不管安装，nginx模式则是在webroot的基础上，还提供安装证书，属于验证、安装一把抓，虽然省心，但是它会动态修改nginx的配置文件，修改端口，这是个很危险的操作，容易产生副作用。</p>
-<p>这里我用的都是webroot方式，也是业内较为标准的方式。不使用standalone是因为大多数VPS都安装了Nginx，使用很方便，同时，certbot提供了hook，每次申请、更新证书之后，都会执行hook，在hook中，重启或者重载一下用到证书的服务，也不用每次都手动安装证书。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">certbot certonly --webroot -w /var/www/html -d sub.domain.com</span><br></pre></td></tr></table></figure>
+<h3 id="2-原理"><a href="#2-原理" class="headerlink" title="2. 原理"></a>2. 原理</h3><p>systemd-resolved会在本地 <code>127.0.0.53:53</code> 起一个服务，然后修改 <code>/etc/resolv.conf</code>，将全局DNS服务器指向自己，从而接管所有DNS查询。</p>
+<p>Tailscale启动时，如果发现systemd-resolved在运行，则不会修改 <code>/etc/resolv.conf</code>，而是把自己的分流规则告诉它。</p>
+<p>systemd-resolved运行后，需要重启一下Tailscale，注意是守护进程，而不是服务， <code>tailscale down &amp;&amp; tailscale up</code> 是重启服务的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl restart tailscaled</span><br></pre></td></tr></table></figure>
 
-<p>这里需要带着<code>certonly</code>，表示只申请、更新证书，不安装，使用webroot这种不带安装的方式时，就需要带着这个参数，不然就会报错，使用nginx则可以不带。后面的-w就是token文件存放的位置，这个也可以写别的路径，但一般都用这个，最终的存放路径是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/www/html/.well-known/acme-challenge/&lt;token&gt;</span><br></pre></td></tr></table></figure>
+<p>通过以下命令可查看systemd-resolved的状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ resovlectl status</span><br></pre></td></tr></table></figure>
 
-<p>Nginx还需要增加配置，让这个token可访问，80端口如果没用，直接加载default中就可以了：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/sites-enabled/default</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span> default_server;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span> default_server</span><br><span class="line">    </span><br><span class="line">    server_name _;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /.well-known/acme-challenge/ &#123;</span><br><span class="line">        <span class="attribute">root</span> /var/www/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>证书验证完成并下发后，存储的路径是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/letsencrypt/live/sub.domain.com/cert.pem</span><br><span class="line">/etc/letsencrypt/live/sub.domain.com/chain.pem</span><br><span class="line">/etc/letsencrypt/live/sub.domain.com/fullchain.pem</span><br><span class="line">/etc/letsencrypt/live/sub.domain.com/privkey.pem</span><br></pre></td></tr></table></figure>
-
-<p>证书自动更新的配置路径是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/letsencrypt/renewal/sub.domain.com.conf</span><br></pre></td></tr></table></figure>
-
-<p>可通过这个命令查看当前所有证书信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ certbot certificates</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-hooks"><a href="#5-hooks" class="headerlink" title="5. hooks"></a>5. hooks</h3><p>在<code>/etc/letsencrypt/renewal-hooks</code>下有3个目录，分别是：pre、deploy和post，分别对应3个回调时机：</p>
-<ul>
-<li>pre：续签前调用</li>
-<li>deploy：续签成功后调用</li>
-<li>post：续签结束后调用，成功、失败都会调用</li>
-</ul>
-<p>在deploy下创建文件reload.sh，并增加如下内容：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> /etc/letsencrypt/renewal-hooks/deploy/reload.sh</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 证书更新后自动执行</span></span><br><span class="line">systemctl reload nginx</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 其他使用证书的服务，比如sing-box</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl restart sing-box</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>给hook增加执行权限：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload.sh</span><br></pre></td></tr></table></figure>
-
-<p>这样，当签发成功后，会自动调用reload.sh，完成证书安装。</p>
-<p>至此，证书自动更新就算完成了。</p>
+<h3 id="3-配置"><a href="#3-配置" class="headerlink" title="3. 配置"></a>3. 配置</h3><p>默认状态下，resolved没有缺省的全局DNS服务器，需要手动添加一个，它的配置文件在这，systemd开头的服务，都统一在systemd下，而不是独占etc下的一个目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/systemd/resolved.conf</span><br></pre></td></tr></table></figure>
+<p>但这个默认配置文件在服务升级时，可能会被修改或者覆盖，更常见的配置方式是，创建一个配置目录，然后在目录中单独增加配置，配置目录中的配置会按字母顺序加载，后面的会覆盖或者追加前面的配置，因此，配置目录中的配置文件一般都以数字开头，数字越大优先级越高：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /etc/systemd/resolved.conf.d/</span><br><span class="line"></span><br><span class="line">$ cat /etc/systemd/resolved.conf.d/10-default-dns.conf</span><br><span class="line">[Resolve]</span><br><span class="line"></span><br><span class="line">DNS=1.1.1.1 8.8.8.8</span><br></pre></td></tr></table></figure>
+<p>还可以按需添加配置文件，比如20-name-dns.conf。</p>
+<h3 id="4-libnss-resolve"><a href="#4-libnss-resolve" class="headerlink" title="4. libnss-resolve"></a>4. libnss-resolve</h3><p>查看Name Service Switch的配置文件，可以看到有一行是这么写的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/nsswitch.conf</span><br><span class="line">...</span><br><span class="line">hosts: files dns</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>意思是，当需要查询DNS时，先查找/etc/hosts文件，然后再根据 /etc/resov.conf 发起DNS查询请求，这时会向 127.0.0.53:53 发送DNS查询报文。</p>
+<p>以上流程，是配置后的正常流程。查询DNS的进程，和resolved的进程，这两个进程实际上可以通过更快的IPC方式进行通信：D-Bus IPC，而不是发送报文，只需再安装个libnss-resolve：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install -y libnss-resolve</span><br></pre></td></tr></table></figure>
+<p>安装过程中，Debian会自动运行配置脚步，完成之后，再次查看 nsswitch.conf，会发现hosts那行有所变化：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/nsswitch.conf</span><br><span class="line">...</span><br><span class="line">hosts: files resolve [!UNAVAIL=<span class="built_in">return</span>] dns</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>在进行DNS查询前，会先尝试通过IPC直接将请求发给resolved，当不可用时，才会继续根据resolv.conf发送DNS查询报文。</p>
+<h3 id="5-sing-box，clash"><a href="#5-sing-box，clash" class="headerlink" title="5. sing-box，clash"></a>5. sing-box，clash</h3><p>如果安装了sing-box这类网络工具，同时开启了DNS拦截，通过增加路由规则，目标端口是TCP/UDP 53的数据包，都会被送入sing-box内部，也包括resolved发送的DNS查询请求，所以，这时最终生效的便是sing-box的DNS分流规则了。</p>
 
     </div>
 
@@ -361,7 +336,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://oynix.com/2026/11/a549f659196d/" title="使用certbot管理免费证书">https://oynix.com/2026/11/a549f659196d/</a>
+    <a href="https://oynix.com/2026/11/71db783b6df2/" title="解决Debian上Tailscale拦截所有DNS流量问题">https://oynix.com/2026/11/71db783b6df2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -392,7 +367,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/Cloudflare/" rel="tag"># Cloudflare</a>
+              <a href="/tags/Tailscale/" rel="tag"># Tailscale</a>
+              <a href="/tags/Debian/" rel="tag"># Debian</a>
           </div>
 
         
@@ -401,8 +377,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2026/08/c08550ed68f7/" rel="prev" title="通过Cloudflare部署博客">
-      <i class="fa fa-chevron-left"></i> 通过Cloudflare部署博客
+    <a href="/2026/10/10a7954d3fcf/" rel="prev" title="使用certbot管理免费证书">
+      <i class="fa fa-chevron-left"></i> 使用certbot管理免费证书
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -464,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%A2%81%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-text">2. 颁发流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85%E5%B7%A5%E5%85%B7"><span class="nav-text">3. 安装工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81%E5%92%8C%E5%AE%89%E8%A3%85"><span class="nav-text">4.证书验证和安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-hooks"><span class="nav-text">5. hooks</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8E%9F%E5%9B%A0"><span class="nav-text">1. 原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8E%9F%E7%90%86"><span class="nav-text">2. 原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE"><span class="nav-text">3. 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-libnss-resolve"><span class="nav-text">4. libnss-resolve</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-sing-box%EF%BC%8Cclash"><span class="nav-text">5. sing-box，clash</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -480,7 +456,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">185</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -493,7 +469,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-count">133</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -547,12 +523,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">643k</span>
+    <span title="站点总字数">645k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:45</span>
+    <span title="站点阅读时长">9:46</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
@@ -646,7 +622,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'oynix.github.io',
       owner       : 'oynix',
       admin       : ['oynix'],
-      id          : '603039644ce9076a7f992898988eb76a',
+      id          : '50e73c4ad34ba652e6e87655163f55fa',
         language: '',
       distractionFreeMode: true
     });
