@@ -131,17 +131,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">133</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">135</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">38</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">39</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">186</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">187</span></a>
 
   </li>
         <li class="menu-item menu-item-message">
@@ -203,6 +203,134 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://oynix.com/2026/11/60884fdc10bc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/p.png">
+      <meta itemprop="name" content="oynix">
+      <meta itemprop="description" content="避免没有计划的行动">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="oynix">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/11/60884fdc10bc/" class="post-title-link" itemprop="url">部署RustDesk服务端</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-11-08 22:17:32" itemprop="dateCreated datePublished" datetime="2026-11-08T22:17:32+08:00">2026-11-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RustDesk/" itemprop="url" rel="index"><span itemprop="name">RustDesk</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><p>服务端主要为两个服务：hbbs和hbbs，可以通过docker安装，也可以直接使用systemd管理可执行文件，因为较为简单，我用的是systemd。</p>
+<p>下载地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3J1c3RkZXNrL3J1c3RkZXNrLXNlcnZlci9yZWxlYXNlcw==">Github Releases<i class="fa fa-external-link-alt"></i></span></p>
+<p>我用的系统是Debian，下载、解压，然后移动到 <code>/usr/bin/</code> 下，便于管理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/rustdesk/rustdesk-server/releases/download/1.1.16/rustdesk-server-linux-amd64.zip</span><br><span class="line"></span><br><span class="line">unzip rustdesk-server-linux-amd64.zip</span><br><span class="line"></span><br><span class="line">mv hbbr hbbs rustdesk-utils /usr/bin/</span><br></pre></td></tr></table></figure>
+
+<p>配置hbbr加入systemd管理，创建 <code>/etc/systemd/system/rustdesk-hbbr.service</code> ，指定运行端口为31117，默认的是21117，k指定ed25519的私钥，<code>_</code> 表示让程序自动生成：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=RustDesk Relay Server</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">WorkingDirectory</span>=/opt/rustdesk-server</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/hbbr -k _ -p <span class="number">31117</span></span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>配置hbbs加入systemd管理，创建 <code>/etc/systemd/system/rustdesk-hbbs.service</code> ，和hbbr一样，k指定的私钥，运行在31116端口，如果不指定则运行在默认的21116端口，r指定的是缺省的hbbr服务器，host可以是域名也可以是公网IP地址，当客户端不配置hbbr服务器时，就会使用缺省的：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=RustDesk Signal Server</span><br><span class="line"><span class="attr">After</span>=network.target rustdesk-hbbr.service</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">WorkingDirectory</span>=/opt/rustdesk-server</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/hbbs -k _ -p <span class="number">31116</span> -r host:<span class="number">31117</span></span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>指定的工作目录可能不存在，需要手动创建一下，然后再启动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /opt/rustdesk-server</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl <span class="built_in">enable</span> rustdesk-hbbr rustdesk-hbbs</span><br><span class="line">systemctl start rustdesk-hbbr rustdesk-hbbs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看log</span></span><br><span class="line">journalctl -f -u rustdesk-hbbr</span><br><span class="line">journalctl -f -u rustdesk-hbbs</span><br></pre></td></tr></table></figure>
+
+<p>至此，服务端就完成了。另外说一句，这里没有使用默认的端口21116和21117，原因在于，某些ISP的骨干网络，在检测到客户端尝试和21117端口建立连接时，会自动发送RESET数据包，服务端收到后断开连接，导致客户端无法顺利和relay服务器建立连接，只好换个端口避开这个策略。</p>
+<h3 id="2-配置客户端"><a href="#2-配置客户端" class="headerlink" title="2. 配置客户端"></a>2. 配置客户端</h3><p>RustDesk的客户端下载地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3J1c3RkZXNrL3J1c3RkZXNrL3JlbGVhc2Vz">GitHub<i class="fa fa-external-link-alt"></i></span>，根据系统选择对应的安装包下载即可。客户端的中继服务器预留了4个可配置项：</p>
+<ul>
+<li>ID服务器</li>
+<li>中继服务器</li>
+<li>API服务器</li>
+<li>Key</li>
+</ul>
+<p>实际上只需要填一个ID服务器以及Key，中继服务器默认会使用hbbs下发的缺省服务器，而API服务器是用来集中管理设备的网页后台，这是Pro版本的功能，Key的路径在服务器上，路径如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /opt/rustdesk-server/id_ed25519.pub</span><br></pre></td></tr></table></figure>
+
+<p>至于ID服务器，可以直接写ip:31116，也可以写domain.name:31116，需要在域名后台增加一条A记录，指向VPS公网IP。</p>
+<p>将多个设备的RustDesk的ID服务器和Key都配置成一样的，这样当无法直接打洞时，就可以通过relay服务端实现连接。</p>
+<h3 id="3-原理"><a href="#3-原理" class="headerlink" title="3. 原理"></a>3. 原理</h3><h4 id="3-1-STUN打洞"><a href="#3-1-STUN打洞" class="headerlink" title="3.1 STUN打洞"></a>3.1 STUN打洞</h4><p>要想明白原理，就得先说说STUN打洞，全称为 Session Traversal Utilities for NAT（NAT会话穿越工具）。</p>
+<p>要想两个设备直连，就需要建立直接连接，这个过程中，公网IP是必不可少的。但是，不像服务器那样，我们自己的设备一般都没有公网IP，所以其他设备没办法通过公网IP直接找到我们自己的设备，我们自己的设备一般都会被分配一个内网地址，比如：设备A，地址是 <code>192.168.1.100</code> 。</p>
+<p>简单来说，数据包发往外网前，会被路由器上的NAT服务器，将来自 <code>192.168.1.100:8080</code> 的数据包的源地址改成路由器的公网IP+随机端口，比如<code>50000</code>，并在路由器上记录映射关系：端口<code>50000</code>是 <code>192.168.1.100:8080</code> 在用，接收端收到数据，处理之后，将响应数据发往路由器的公网IP的<code>50000</code>端口，路由器收到数据，根据映射关系，继续将数据包发给 <code>192.168.1.100:8080</code> ，这样，便完成了一次请求+响应。</p>
+<p>路由器上的NAT映射关系，不会在收到响应数据后立刻删除，而是会保存一段时间，在这段时间内，如果给路由器的公网IP+<code>50000</code>端口发数据，路由器会根据映射关系，继续把数据发给 <code>192.168.1.100:8080</code>，从某种意义上来说，设备A便也有了公网IP。</p>
+<p>上面只是简化后的流程，实际上，会有多种情况的NAT，分为多种类型。</p>
+<p>NAT1：路由器不做限制，只要映射表有记录，就会将收到的数据转发给对应的设备，来源是多个IP和端口，目标都是某个内网地址，就像一个圆锥，所以这类NAT又被称为Full Cone，全锥形。</p>
+<p>NAT2：限制来源IP，即，路由器还额外记录了数据包的目标IP，只有记录过的IP给路由器发的数据包，才会被转发到内网，相当于在NAT1上做了一步限制，这种称为Restricted Cone，IP受限锥形。</p>
+<p>NAT3：这种NAT进一步收紧限制，除了限制IP来源，还要限制端口，设备A通过路由器给IP1+Port1发送数据包，则路由器只转发来自IP1+Port1的数据包给设备A，其他来源的数据包则不转发，这种称为Port Restricted Cone，端口受限锥形。</p>
+<p>NAT4：这种最为严格，设备A向往发送数据包时，只要目标IP和目标Port有一个发生变化，路由器就会给这个数据包分配一个新的端口，端口一直变化，导致无法重复使用端口，这种称为Symmetric，对称型。</p>
+<p>因此，要想打洞成功，直接给一个内网的设备发数据，那么它所在的网络至少不能是NAT4，对于前三种NAT，只要内网IP和端口不变，则它在路由器上占用的端口则一直不变，STUN则正是利用此特性。</p>
+<p>关于NAT，由于不同地区网络的不同特性，一个数据包由发出，到最终被接收，中间可能会经过多次NAT，限制最严的NAT决定了最终的NAT类型，也就是木桶的短板效应，也就是说，只要其中有一个Symmetric的NAT，那么所有NAT最终会被这个对称型限制而无法通过STUN打洞。</p>
+<h4 id="3-2-hbbs"><a href="#3-2-hbbs" class="headerlink" title="3.2 hbbs"></a>3.2 hbbs</h4><p>hbbs是ID/注册与心跳服务器，客户端A通过不断给hbbs发送心跳包，来占用一个路由器的端口，客户端B也是如此，hbbs记录各个设备的公网IP和占用的端口，A和B也可以通过hbbs知道对方的IP和端口。</p>
+<p>当A需要连接B时，A和B会同时给对方发送数据包。A发送数据包后，路由器A会记录B的IP和Port，B发送数据包后，路由器B会记录A的IP和Port，如此一来，当路由器A收到来自B的IP和Port的数据后，由于已经提前记录，所以不管是NAT1到3中的哪一种，数据包都会被转发至内网的设备A，设备B那边也是一样的道理，双方可以直接互发数据，打洞成功，走直连。</p>
+<p>对称型网络真的无法打洞吗？其实也不是，NAT1、NAT2 可以和NAT4打洞直连。</p>
+<p>假设设备A是NAT4，设备B只知道路由器A的公网IP，但是猜不到路由器A会给A设备A分配哪个端口，设备A知道设备B的IP和Port。</p>
+<p>所以，设备B先给设备A的IP和任意Port发送数据包，这一步主要为了在路由器B上记录设备A的IP，避免NAT1过滤IP的情况，然后，设备A给设备B发数据包，由于路由器B不限制端口，限制IP也没关系，因为刚刚以及记录过了，所以数据包会被转发至内网的B，设备B拿到第一个包之后，根据数据包中的源地址便可以获取路由器A的端口号，如此一来，A和B便互相知晓对方的公网IP和Port，打洞成功，走直连。</p>
+<h4 id="3-3-hbbr"><a href="#3-3-hbbr" class="headerlink" title="3.3 hbbr"></a>3.3 hbbr</h4><p>当打洞失败，无法直连时，设备A和B都无法知道对方的端口，就要通过hbbr这个relay中继服务器了。由于网络结构的复杂性，有些时候会有假性成功，判断打洞成功，但无法连通，这个时候需要勾上客户端的强制使用中继服务器，不再尝试直连。</p>
+
+      
+    </div>
+
+    
+    
+    
+    <div>
+       
+      </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1024,99 +1152,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://oynix.com/2025/11/5f5af27a11fb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/p.png">
-      <meta itemprop="name" content="oynix">
-      <meta itemprop="description" content="避免没有计划的行动">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="oynix">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/5f5af27a11fb/" class="post-title-link" itemprop="url">裁剪粒子系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-02 22:17:32" itemprop="dateCreated datePublished" datetime="2025-11-02T22:17:32+08:00">2025-11-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
-<p>就普遍性而言，粒子系统常用在一闪而过的效果，来达到一种烘托氛围、增强玩家体验的目的，比如胜利撒个花，胜利过关放个烟花，等等。但这次就遇到了不普遍的：它出现在了列表中，并且会随着列表一起滑动，当超过Scroll Rect的Viewport范围时，它并不会像列表中其他UI元素一样，自觉消失于视野之中，而是以一种让人意想不到的方式，继续发着光、闪着亮。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/11/5f5af27a11fb/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-       
-      </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1188,20 +1223,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">186</span>
+          <span class="site-state-item-count">187</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">133</span>
+        <span class="site-state-item-count">135</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1255,12 +1290,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">648k</span>
+    <span title="站点总字数">652k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:49</span>
+    <span title="站点阅读时长">9:53</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
