@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"oynix.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。 1. 安装服务端主要为两个服务：hbbs和hbbs，可以通过docker安装，也可以直接使用systemd管理可执行文件，因为较为简单，我用的是systemd。 下载地址：Gi">
+  <meta name="description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="部署RustDesk服务端">
 <meta property="og:url" content="https://oynix.com/2026/11/60884fdc10bc/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。 1. 安装服务端主要为两个服务：hbbs和hbbs，可以通过docker安装，也可以直接使用systemd管理可执行文件，因为较为简单，我用的是systemd。 下载地址：Gi">
+<meta property="og:description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-11-08T14:17:32.000Z">
-<meta property="article:modified_time" content="2026-11-16T10:29:07.103Z">
+<meta property="article:modified_time" content="2026-11-17T00:53:27.146Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Debian">
@@ -282,6 +282,8 @@
 
       
         <p>RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。</p>
+<span id="more"></span>
+
 <h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><p>服务端主要为两个服务：hbbs和hbbs，可以通过docker安装，也可以直接使用systemd管理可执行文件，因为较为简单，我用的是systemd。</p>
 <p>下载地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3J1c3RkZXNrL3J1c3RkZXNrLXNlcnZlci9yZWxlYXNlcw==">Github Releases<i class="fa fa-external-link-alt"></i></span></p>
 <p>我用的系统是Debian，下载、解压，然后移动到 <code>/usr/bin/</code> 下，便于管理：</p>
