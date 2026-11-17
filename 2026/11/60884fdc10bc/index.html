@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"oynix.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gittabl","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。">
+  <meta name="description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果处于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="部署RustDesk服务端">
 <meta property="og:url" content="https://oynix.com/2026/11/60884fdc10bc/index.html">
 <meta property="og:site_name" content="oynix">
-<meta property="og:description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。">
+<meta property="og:description" content="RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果处于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-11-08T14:17:32.000Z">
-<meta property="article:modified_time" content="2026-11-17T00:53:27.146Z">
+<meta property="article:modified_time" content="2026-11-17T01:04:42.669Z">
 <meta property="article:author" content="oynix">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Debian">
@@ -281,7 +281,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果出于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。</p>
+        <p>RustDesk 虽然自带了官方的中继服务器，但是速度一般，如果处于使用高峰期或者用的人多了，就会很卡。如果有可用的机器，可以部署一个服务端，服务占用很小，对机器要求很低，但会大幅改善使用体验，如果机器在国内，效果会更好。</p>
 <span id="more"></span>
 
 <h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><p>服务端主要为两个服务：hbbs和hbbs，可以通过docker安装，也可以直接使用systemd管理可执行文件，因为较为简单，我用的是systemd。</p>
@@ -319,14 +319,14 @@
 <p>NAT1：路由器不做限制，只要映射表有记录，就会将收到的数据转发给对应的设备，来源是多个IP和端口，目标都是某个内网地址，就像一个圆锥，所以这类NAT又被称为Full Cone，全锥形。</p>
 <p>NAT2：限制来源IP，即，路由器还额外记录了数据包的目标IP，只有记录过的IP给路由器发的数据包，才会被转发到内网，相当于在NAT1上做了一步限制，这种称为Restricted Cone，IP受限锥形。</p>
 <p>NAT3：这种NAT进一步收紧限制，除了限制IP来源，还要限制端口，设备A通过路由器给IP1+Port1发送数据包，则路由器只转发来自IP1+Port1的数据包给设备A，其他来源的数据包则不转发，这种称为Port Restricted Cone，端口受限锥形。</p>
-<p>NAT4：这种最为严格，设备A向往发送数据包时，只要目标IP和目标Port有一个发生变化，路由器就会给这个数据包分配一个新的端口，端口一直变化，导致无法重复使用端口，这种称为Symmetric，对称型。</p>
+<p>NAT4：这种最为严格，设备A向外发送数据包时，只要目标IP和目标Port有一个发生变化，路由器就会给这个数据包分配一个新的端口，端口一直变化，导致无法重复使用端口，这种称为Symmetric，对称型。</p>
 <p>因此，要想打洞成功，直接给一个内网的设备发数据，那么它所在的网络至少不能是NAT4，对于前三种NAT，只要内网IP和端口不变，则它在路由器上占用的端口则一直不变，STUN则正是利用此特性。</p>
 <p>关于NAT，由于不同地区网络的不同特性，一个数据包由发出，到最终被接收，中间可能会经过多次NAT，限制最严的NAT决定了最终的NAT类型，也就是木桶的短板效应，也就是说，只要其中有一个Symmetric的NAT，那么所有NAT最终会被这个对称型限制而无法通过STUN打洞。</p>
 <h4 id="3-2-hbbs"><a href="#3-2-hbbs" class="headerlink" title="3.2 hbbs"></a>3.2 hbbs</h4><p>hbbs是ID/注册与心跳服务器，客户端A通过不断给hbbs发送心跳包，来占用一个路由器的端口，客户端B也是如此，hbbs记录各个设备的公网IP和占用的端口，A和B也可以通过hbbs知道对方的IP和端口。</p>
 <p>当A需要连接B时，A和B会同时给对方发送数据包。A发送数据包后，路由器A会记录B的IP和Port，B发送数据包后，路由器B会记录A的IP和Port，如此一来，当路由器A收到来自B的IP和Port的数据后，由于已经提前记录，所以不管是NAT1到3中的哪一种，数据包都会被转发至内网的设备A，设备B那边也是一样的道理，双方可以直接互发数据，打洞成功，走直连。</p>
 <p>对称型网络真的无法打洞吗？其实也不是，NAT1、NAT2 可以和NAT4打洞直连。</p>
-<p>假设设备A是NAT4，设备B只知道路由器A的公网IP，但是猜不到路由器A会给A设备A分配哪个端口，设备A知道设备B的IP和Port。</p>
-<p>所以，设备B先给设备A的IP和任意Port发送数据包，这一步主要为了在路由器B上记录设备A的IP，避免NAT1过滤IP的情况，然后，设备A给设备B发数据包，由于路由器B不限制端口，限制IP也没关系，因为刚刚以及记录过了，所以数据包会被转发至内网的B，设备B拿到第一个包之后，根据数据包中的源地址便可以获取路由器A的端口号，如此一来，A和B便互相知晓对方的公网IP和Port，打洞成功，走直连。</p>
+<p>假设设备A是NAT4，设备B只知道路由器A的公网IP，但是猜不到路由器A会给设备A分配哪个端口，而设备A知道设备B的IP和Port。</p>
+<p>所以，设备B先给设备A的IP和任意Port发送数据包，这一步主要为了在路由器B上记录设备A的IP，避免NAT2过滤IP的情况，然后，设备A给设备B发数据包，由于路由器B不限制端口，限制IP也没关系，因为刚刚以及记录过了，所以数据包会被转发至内网的B，设备B拿到第一个包之后，根据数据包中的源地址便可以获取路由器A的端口号，如此一来，A和B便互相知晓对方的公网IP和Port，打洞成功，走直连。</p>
 <h4 id="3-3-hbbr"><a href="#3-3-hbbr" class="headerlink" title="3.3 hbbr"></a>3.3 hbbr</h4><p>当打洞失败，无法直连时，设备A和B都无法知道对方的端口，就要通过hbbr这个relay中继服务器了。由于网络结构的复杂性，有些时候会有假性成功，判断打洞成功，但无法连通，这个时候需要勾上客户端的强制使用中继服务器，不再尝试直连。</p>
 
     </div>
